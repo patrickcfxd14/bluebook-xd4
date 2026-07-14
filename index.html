@@ -134,6 +134,31 @@ svg{display:block}
 .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:4px 11px;color:var(--ink-2)}
 .chip .d{width:6px;height:6px;border-radius:99px}
 
+/* GROUP LISTING (Veículos Aéreos/Terrestres, Manuais dos Fabricantes, Diários) */
+.grp{max-width:980px;margin:0 auto;padding:32px 40px 100px}
+.grp-head{display:flex;align-items:center;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:24px;flex-wrap:wrap}
+.grp-head .gh-ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.grp-head .gh-ic svg{width:26px;height:26px}
+.grp-head h1{font-size:21px;color:var(--ink);font-weight:600}
+.grp-head .gh-sub{color:var(--ink-2);font-size:13.5px;margin-top:2px}
+.grp-head .gh-count{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--sky);border:1px solid var(--sky-line);padding:7px 14px;border-radius:99px;white-space:nowrap}
+.grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.grp-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.grp-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
+.grp-card .thumb{width:100%;height:132px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;overflow:hidden}
+.grp-card .thumb svg{width:44px;height:44px}
+.grp-card .thumb img{width:100%;height:100%;object-fit:cover}
+.grp-card .body{padding:16px 17px 17px;display:flex;flex-direction:column;gap:6px;flex:1}
+.grp-card .cat{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--xd4);font-weight:700}
+.grp-card h4{font-size:15.5px;color:var(--ink);font-weight:600;line-height:1.3}
+.grp-card .meta{font-size:12.5px;color:var(--ink-2)}
+.grp-card .foot{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.grp-card .foot .st{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.grp-card .foot .st .d{width:7px;height:7px;border-radius:50%}
+.grp-card .foot .badge2{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--sky);color:var(--ink-2);border:1px solid var(--sky-line)}
+@media(max-width:680px){ .grp{padding:24px 18px 80px} .grp-grid{grid-template-columns:1fr 1fr} }
+@media(max-width:420px){ .grp-grid{grid-template-columns:1fr} }
+
 /* DOC READER */
 .doc{max-width:840px;margin:0 auto;padding:32px 56px 140px;position:relative}
 .crumbs{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-3);margin-bottom:20px;flex-wrap:wrap}
@@ -752,6 +777,7 @@ function routeTo(id){
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
+  if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='pdf'){ renderPDF(n); show(viewDoc); toggleSpy(false); return; }
   renderPlaceholder(n); show(viewDoc); toggleSpy(false);
@@ -1414,6 +1440,63 @@ function titleCase(s){
 }
 
 /* ---------- PLACEHOLDER ---------- */
+/* ---------- GROUP LISTING ---------- */
+function grpCard(k){
+  let thumb, cat, meta;
+  if(k.type==='vehicle'){
+    const v=k.vehicle||{};
+    thumb = v.img ? `<img src="${v.img}" alt="${stripHTML(k.label)}" onerror="this.parentElement.innerHTML=IC['${k.icon}']">` : IC[k.icon]||IC.drone;
+    cat = v.cls || 'Veículo';
+    meta = v.maker ? `Fabricante: ${v.maker}` : '';
+  } else if(k.type==='group'){
+    thumb = IC[k.icon]||IC.folder;
+    cat = 'Categoria';
+    meta = (k.children?k.children.length:0)+' item(s)';
+  } else if(k.type==='pdf'){
+    thumb = IC.pdf||IC.file;
+    cat = 'Manual do Fabricante';
+    meta = 'Documento PDF';
+  } else if(k.type==='logbook'){
+    thumb = IC[k.icon]||IC.file;
+    cat = 'Registro de Missão';
+    meta = 'Diário de bordo digital';
+  } else {
+    thumb = IC[k.icon]||IC.file;
+    cat = k.code || 'Documento';
+    meta = k.rev || '';
+  }
+  const badge2 = k.badge ? `<span class="badge2">${k.badge}</span>` : (k.code?`<span class="badge2 mono">${k.code}</span>`:'');
+  return `<div class="grp-card" onclick="selectNode('${k.id}')">
+    <div class="thumb">${thumb}</div>
+    <div class="body">
+      <div class="cat">${cat}</div>
+      <h4>${stripHTML(k.label)}</h4>
+      ${meta?`<div class="meta">${meta}</div>`:''}
+      <div class="foot">
+        <span class="st"><span class="d st-${k.status||'draft'}"></span>${stName[k.status]||'—'}</span>
+        ${badge2}
+      </div>
+    </div>
+  </div>`;
+}
+function renderGroup(n){
+  const kids = n.children||[];
+  const cards = kids.map(grpCard).join('');
+  viewDoc.innerHTML=`
+  <div class="grp">
+    ${crumbsHTML(n.id)}
+    <div class="grp-head">
+      <div class="gh-ic">${IC[n.icon]||IC.folder}</div>
+      <div>
+        <h1>${stripHTML(n.label)}</h1>
+        <div class="gh-sub">Selecione um item para abrir</div>
+      </div>
+      <div class="gh-count">${kids.length} item${kids.length===1?'':'s'}</div>
+    </div>
+    <div class="grp-grid">${cards || '<div style="color:var(--ink-3);font-size:14px">Nenhum item cadastrado ainda.</div>'}</div>
+  </div>`;
+}
+
 function renderPlaceholder(n){
   const secs=(n.phSections||['Seção 1','Seção 2','Seção 3']).map((s,i)=>`<div class="ph-skel-row"><span class="n">${String(i+1).padStart(2,'0')}</span><span>${s}</span><span class="bar"></span></div>`).join('');
   viewDoc.innerHTML=`
