@@ -36,13 +36,13 @@ svg{display:block}
 .logo-chip{background:#fff;border-radius:10px;height:42px;width:42px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .logo-chip img{width:100%;height:100%;object-fit:contain;display:block}
 .home-logo{width:auto;height:96px;object-fit:contain;margin:8px auto 18px;display:block}
-.brand{display:flex;flex-direction:column;line-height:1.1;cursor:pointer}
+.brand{display:flex;flex-direction:column;line-height:1.1;cursor:pointer;min-width:0;overflow:hidden}
 .brand .t1{font-weight:700;font-size:16px;letter-spacing:.2px}
-.brand .t2{font-weight:400;font-size:10px;color:#9FB4CE;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.brand .t2{font-weight:400;font-size:10px;color:#9FB4CE;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .banner-right{margin-left:auto;display:flex;align-items:center;gap:16px}
-.clock{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9FB4CE;text-align:right;line-height:1.3}
+.clock{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9FB4CE;text-align:right;line-height:1.3;flex-shrink:0}
 .clock b{color:#fff;display:block;font-weight:600}
-.icon-btn{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9FB4CE;transition:.15s}
+.icon-btn{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9FB4CE;transition:.15s;flex-shrink:0}
 .icon-btn:hover{background:rgba(255,255,255,.1);color:#fff}
 .icon-btn svg{width:18px;height:18px}
 .kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:2px 6px;color:#cfe0f2}
@@ -513,6 +513,15 @@ table.lb-table td.lb-local input{min-width:100px}
 }
 @media(max-width:560px){
   .ag-title{font-size:25px}
+  .brand .t2{display:none}
+  .banner{padding:0 12px;gap:10px}
+  .banner-right{gap:8px}
+  .node-row{padding:12px 14px!important}
+  .lb-save,.lb-print{flex:1 1 100%;justify-content:center}
+  .clock{font-size:11px}
+}
+@media(max-width:400px){
+  .clock span{display:none}
 }
 </style>
 </head>
@@ -700,14 +709,8 @@ const TREE = [
           { id:'m-rover', label:'Rover — Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
         ]}
     ]},
-  { id:'diarios', label:'<b>Diários de Bordo</b> — Digital', icon:'file', status:'ok', type:'group', root:true,
-    children:[
-      { id:'elios3-log', label:'Flyability Elios 3 — CSN — 31/10/2025', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook' }
-    ]},
-  { id:'diarios-manut', label:'<b>Diários de Manutenção</b> — Digital', icon:'wrench', status:'ok', type:'group', root:true,
-    children:[
-      { id:'elios3-maint', label:'Flyability Elios 3 — Nº 01/2026 — 15/03/2026', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog' }
-    ]}
+  { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
+  { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true }
 ];
 
 /* index by id + parent map for breadcrumbs */
@@ -1253,8 +1256,44 @@ function renderPOPGO2(){
   <nav class="spy" id="spy"></nav>`;
   buildSpy(); toggleSpy(true);
 }
+/* ============================================================
+   INTEGRAÇÃO COM GOOGLE DRIVE / GOOGLE SHEETS
+   Cole aqui a URL do seu Web App do Google Apps Script
+   (veja instruções de configuração enviadas pela XD4Solutions).
+   Enquanto estiver vazia ("" ), os diários salvam apenas
+   localmente nesta sessão do navegador.
+   ============================================================ */
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbymY63xOk2kcp0e2Ci51oGmsEe8G-TsqFu-zp7XaMTSOpBo4U_-P_XC1-Ry13zHCXmxjw/exec";
+
+async function sendToDrive(kind, payload){
+  if(!GAS_ENDPOINT){ return {ok:false, reason:'not_configured'}; }
+  try{
+    const res = await fetch(GAS_ENDPOINT, {
+      method:'POST',
+      redirect:'follow',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // evita preflight OPTIONS, que o Apps Script não trata
+      body: JSON.stringify({ kind, savedAt: new Date().toISOString(), payload })
+    });
+    const text = await res.text();
+    let json = null;
+    try{ json = JSON.parse(text); }catch(_e){ /* resposta não era JSON */ }
+    if(!res.ok){
+      console.error('Google Drive respondeu com erro HTTP', res.status, text);
+      return {ok:false, reason:'http_error', status:res.status, raw:text};
+    }
+    if(json && json.ok === false){
+      console.error('Google Apps Script retornou erro:', json);
+      return {ok:false, reason:'script_error', raw:json};
+    }
+    return {ok:true, data:json};
+  }catch(e){
+    console.error('Falha de rede ao enviar para o Google Drive:', e);
+    return {ok:false, reason:'network_error', error:String(e)};
+  }
+}
+
 const LOGBOOK_SEED = {
-  'elios3-log': {
+  'diarios': {
     equipamento:'ELIOS', modelo:'ELIOS 3', fabricante:'FLYABILITY',
     cliente:'CSN', data:'2025-10-31',
     horasAnterior:'', horasDia:'', horasTotal:'',
@@ -1285,6 +1324,18 @@ function lbFmt(mins){ if(mins==null) return '--:--'; const h=Math.floor(mins/60)
 
 let LB_STATE = null;
 
+const LAST_PDF_URL = {}; // guarda o link do PDF gerado no Drive por diário, na última vez que foi salvo nesta sessão
+
+function exportarPDF(nodeId, fallbackPrint){
+  const url = LAST_PDF_URL[nodeId];
+  if(url){
+    window.open(url, '_blank');
+  } else {
+    alert('Este diário ainda não foi salvo no Google Drive nesta sessão.\n\nClique em "Salvar" primeiro — depois disso, este botão abre o PDF oficial gerado no Drive (com a formatação completa). Por ora, vou abrir a impressão do formulário na tela.');
+    fallbackPrint();
+  }
+}
+
 function renderLogbook(n){
   LB_STATE = JSON.parse(JSON.stringify(LOGBOOK_SEED[n.id] || {
     equipamento:'', modelo:'', fabricante:'', cliente:'', data:new Date().toISOString().slice(0,10),
@@ -1298,7 +1349,7 @@ function renderLogbook(n){
       <div class="lb-ic">${IC.file}</div>
       <div>
         <h1>Diário de Bordo — Registro Digital</h1>
-        <div class="lb-sub">${stripHTML(n.label)} · Substitui o preenchimento manual em papel</div>
+        <div class="lb-sub">Registro oficial de cada missão de voo — operadores, baterias e voos realizados — em substituição ao preenchimento manual em papel.</div>
       </div>
       <div class="lb-status" id="lbStatus"><span class="d"></span><span id="lbStatusText">Rascunho não salvo</span></div>
     </div>
@@ -1365,8 +1416,8 @@ function renderLogbook(n){
     <div class="lb-section">
       <div class="lb-actions">
         <button class="lb-save" onclick="lbSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Bordo</button>
-        <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
-        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Em breve: sincronização automática com Google Drive / SharePoint ao salvar.</span>
+        <button class="lb-print" onclick="exportarPDF(&#39;diarios&#39;, ()=>window.print())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
       </div>
     </div>
   </div>
@@ -1419,9 +1470,9 @@ function lbToast(msg){
   const t = document.getElementById('lbToast');
   document.getElementById('lbToastText').textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3200);
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
 }
-function lbSave(){
+async function lbSave(){
   ['lbCliente','lbData','lbHorasAnterior','lbOp1Nome','lbOp1Sisant','lbOp2Nome','lbOp2Sisant','lbOcorrencias'].forEach(id=>{
     const el = document.getElementById(id); if(!el) return;
     if(id==='lbCliente') LB_STATE.cliente = el.value;
@@ -1436,11 +1487,17 @@ function lbSave(){
   const s = document.getElementById('lbStatus');
   s.classList.add('saved');
   document.getElementById('lbStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  lbToast('Diário salvo com sucesso (armazenamento local desta demonstração)');
+  const r = await sendToDrive('diario_bordo', LB_STATE);
+  if(r.ok){
+    lbToast('Diário salvo e enviado ao Google Drive');
+    if(r.data && r.data.pdfUrl){ LAST_PDF_URL.diarios = r.data.pdfUrl; }
+  }
+  else if(r.reason==='not_configured'){ lbToast('Diário salvo localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); lbToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
 }
 
 const MAINTLOG_SEED = {
-  'elios3-maint': {
+  'diarios-manut': {
     equipamento:'ELIOS', modelo:'ELIOS 3', numSerie:'1826EE3RDAB24380420', fabricante:'FLYABILITY', operador:'PATRICK',
     numDoc:'01/2026', revisao:'00', horasManutencao:'N/A',
     discrepancias:[
@@ -1467,7 +1524,7 @@ function renderMaintLog(n){
       <div class="lb-ic">${IC.wrench}</div>
       <div>
         <h1>Diário de Manutenção — Registro Digital</h1>
-        <div class="lb-sub">${stripHTML(n.label)} · Parte I — Situação Técnica do Equipamento</div>
+        <div class="lb-sub">Registro oficial de discrepâncias, ações corretivas e liberação do equipamento — em substituição ao preenchimento manual em papel.</div>
       </div>
       <div class="lb-status" id="mtStatus"><span class="d"></span><span id="mtStatusText">Rascunho não salvo</span></div>
     </div>
@@ -1532,8 +1589,8 @@ function renderMaintLog(n){
     <div class="lb-section">
       <div class="lb-actions">
         <button class="lb-save" onclick="mtSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Manutenção</button>
-        <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
-        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Em breve: sincronização automática com Google Drive / SharePoint ao salvar.</span>
+        <button class="lb-print" onclick="exportarPDF(&#39;diarios-manut&#39;, ()=>window.print())"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
       </div>
     </div>
   </div>
@@ -1592,9 +1649,9 @@ function mtToast(msg){
   const t = document.getElementById('mtToast');
   document.getElementById('mtToastText').textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3200);
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
 }
-function mtSave(){
+async function mtSave(){
   ['mtNumSerie','mtOperador','mtNumDoc','mtRevisao','mtHoras','mtRespNome','mtRespData','mtInspecao'].forEach(id=>{
     const el = document.getElementById(id); if(!el) return;
     if(id==='mtNumSerie') MT_STATE.numSerie = el.value;
@@ -1609,7 +1666,13 @@ function mtSave(){
   const s = document.getElementById('mtStatus');
   s.classList.add('saved');
   document.getElementById('mtStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  mtToast('Diário salvo com sucesso (armazenamento local desta demonstração)');
+  const r = await sendToDrive('diario_manutencao', MT_STATE);
+  if(r.ok){
+    mtToast('Diário salvo e enviado ao Google Drive');
+    if(r.data && r.data.pdfUrl){ LAST_PDF_URL['diarios-manut'] = r.data.pdfUrl; }
+  }
+  else if(r.reason==='not_configured'){ mtToast('Diário salvo localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); mtToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
 }
 
 function titleCase(s){
