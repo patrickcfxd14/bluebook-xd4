@@ -411,6 +411,81 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .ag-submit:active{transform:translateY(0)}
 .ag-footer{font-size:12px;color:#7C90AB;max-width:420px;margin-top:6px}
 #authGate.hidden{display:none}
+/* ===== DIGITAL LOGBOOK ===== */
+.lb-head{display:flex;align-items:center;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:20px;flex-wrap:wrap}
+.lb-head .lb-ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.lb-head .lb-ic svg{width:26px;height:26px}
+.lb-head h1{font-size:21px;color:var(--ink);font-weight:600}
+.lb-head .lb-sub{color:var(--ink-2);font-size:13.5px;margin-top:2px}
+.lb-status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:99px;background:var(--draft-bg);color:var(--draft);transition:.2s}
+.lb-status .d{width:7px;height:7px;border-radius:50%;background:currentColor}
+.lb-status.saved{background:var(--ok-bg);color:var(--ok)}
+
+.lb-section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:18px}
+.lb-section h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.lb-section h3 svg{width:15px;height:15px}
+
+.lb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.lb-field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:6px;font-weight:600}
+.lb-field input,.lb-field select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--sky);color:var(--ink);font-size:14px;font-family:inherit;transition:.15s}
+.lb-field input:focus,.lb-field select:focus{outline:none;border-color:var(--xd4);background:var(--paper);box-shadow:0 0 0 3px rgba(43,169,224,.12)}
+.lb-field input[readonly]{color:var(--ink-2);background:var(--sky);cursor:default}
+.lb-field.ro .static{padding:9px 11px;background:var(--sky);border-radius:9px;font-size:14px;color:var(--ink);font-weight:600;border:1px solid var(--line)}
+
+.lb-ops{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lb-op-card{background:var(--sky);border:1px solid var(--sky-line);border-radius:12px;padding:16px}
+.lb-op-card .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--xd4);font-weight:700;margin-bottom:10px}
+.lb-op-card .lb-grid{grid-template-columns:1fr 1fr}
+
+.lb-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+table.lb-table{width:100%;border-collapse:collapse;min-width:820px}
+table.lb-table thead th{background:var(--navy);color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:10px 8px;text-align:center;font-weight:600;white-space:nowrap}
+table.lb-table tbody td{padding:6px;border-top:1px solid var(--line);text-align:center;background:var(--paper)}
+table.lb-table tbody tr:nth-child(even) td{background:var(--sky)}
+table.lb-table input,table.lb-table select{width:100%;border:1px solid transparent;background:transparent;text-align:center;padding:7px 4px;border-radius:6px;font-size:13.5px;color:var(--ink);font-family:inherit}
+table.lb-table input:focus,table.lb-table select:focus{outline:none;border-color:var(--xd4);background:var(--sky)}
+table.lb-table input[readonly]{color:var(--ink-2);font-variant-numeric:tabular-nums}
+table.lb-table td.lb-local input{min-width:100px}
+.lb-rowdel{width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-3);transition:.15s}
+.lb-rowdel:hover{background:var(--crit-bg);color:var(--crit)}
+.lb-rowdel svg{width:14px;height:14px}
+.lb-sig{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:transparent;transition:.15s;background:var(--paper)}
+.lb-sig.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.lb-sig svg{width:13px;height:13px}
+.lb-addrow{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:13px;font-weight:600;color:var(--xd4);padding:8px 4px}
+.lb-addrow:hover{text-decoration:underline}
+.lb-addrow svg{width:15px;height:15px}
+.lb-tfoot{display:flex;gap:26px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);flex-wrap:wrap}
+.lb-tfoot .item{text-align:left}
+.lb-tfoot .k{font-size:11px;text-transform:uppercase;color:var(--ink-3);letter-spacing:.05em;margin-bottom:3px}
+.lb-tfoot .v{font-size:19px;font-weight:700;color:var(--navy);font-family:'IBM Plex Mono',monospace}
+[data-theme="dark"] .lb-tfoot .v{color:var(--xd4)}
+
+.lb-occ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--sky);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical}
+.lb-occ textarea:focus{outline:none;border-color:var(--xd4);background:var(--paper)}
+
+.lb-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+.lb-save{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--xd4),var(--blue));color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:14.5px;font-weight:600;box-shadow:0 8px 20px rgba(43,169,224,.28);transition:.15s}
+.lb-save:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.lb-save svg{width:17px;height:17px}
+.lb-print{display:inline-flex;align-items:center;gap:8px;background:var(--sky);color:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:600;transition:.15s}
+.lb-print:hover{background:var(--paper);color:var(--ink)}
+.lb-print svg{width:15px;height:15px}
+.lb-hint{font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.lb-hint svg{width:13px;height:13px;flex-shrink:0}
+
+.lb-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:13px 22px;border-radius:11px;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:500;opacity:0;pointer-events:none;transition:.25s}
+.lb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.lb-toast svg{width:17px;height:17px;color:#3FB98A;flex-shrink:0}
+
+@media print{
+  .banner,.tree-panel,.crumbs,.lb-actions,.lb-addrow,.lb-rowdel,.mob-tree-btn{display:none!important}
+  .content{overflow:visible!important;padding:0!important}
+  .lb-section,.lb-head{box-shadow:none!important;border:1px solid #ccc!important}
+}
+@media(max-width:680px){
+  .lb-ops{grid-template-columns:1fr}
+}
 @media(max-width:560px){
   .ag-title{font-size:25px}
 }
@@ -539,7 +614,7 @@ const TREE = [
           { id:'aereos', label:'<b>Veículos Aéreos</b>', icon:'drone', type:'group', status:'ok',
             children:[
               { id:'elios3', label:'Flyability Elios 3', icon:'drone', type:'vehicle', status:'ok',
-                vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'ok', img:'https://www.flyability.com/hs-fs/hubfs/Elios%203/Webpage/Images/Packshot%20-%2014.jpg',
+                vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'ok', img:'https://www.flyability.com/hs-fs/hubfs/WebAdjustment/20220423_dark-bg-%2B-e3_v2.jpg?width=1920&height=1061',
                   specs:[['Peso','1.5','kg'],['Autonomia','12','min'],['Proteção','IP54',''],['Sensor','4K + LiDAR','']],
                   maint:[['2026-06-14','Troca de gaiola de proteção','ok'],['2026-05-02','Calibração de sensores','ok'],['2026-03-20','Atualização de firmware','ok']] },
                 children:[
@@ -599,6 +674,10 @@ const TREE = [
           { id:'m-g1', label:'Unitree G1 — Manual', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' },
           { id:'m-rover', label:'Rover — Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
         ]}
+    ]},
+  { id:'diarios', label:'<b>Diários de Bordo</b> — Digital', icon:'file', status:'ok', type:'group', root:true,
+    children:[
+      { id:'elios3-log', label:'Flyability Elios 3 — CSN — 31/10/2025', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook' }
     ]}
 ];
 
@@ -672,6 +751,7 @@ function routeTo(id){
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
+  if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='pdf'){ renderPDF(n); show(viewDoc); toggleSpy(false); return; }
   renderPlaceholder(n); show(viewDoc); toggleSpy(false);
@@ -739,6 +819,7 @@ function renderHome(){
           <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">POP e TOP do Elios 3 publicados<small>IT-OPE-004</small></div></div>
           <div class="feed-row"><div class="feed-ic">⚙</div><div class="feed-tx">Diário de manutenção em uso<small>FO-OPE-017</small></div></div>
           <div class="feed-row"><div class="feed-ic">＋</div><div class="feed-tx">MGM — Manual Geral de Manutenção na estrutura<small>IT-MNT-001</small></div></div>
+          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">Diário de Bordo digital do Elios 3 disponível<small>Novo</small></div></div>
         </div>
       </div>
     </div>
@@ -769,6 +850,11 @@ function renderHome(){
         <div class="cat-ic">${IC.folder}</div><h2>Manuais dos Fabricantes</h2>
         <div class="desc">Documentação técnica original (PDF).</div>
         <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>6 PDFs</span></div>
+      </div>
+      <div class="cat-card" onclick="selectNode('diarios')">
+        <div class="cat-ic">${IC.file}</div><h2>Diários de Bordo</h2>
+        <div class="desc">Registro digital de missão, com cálculo automático de horas.</div>
+        <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
       </div>
     </div>
   </div>`;
@@ -1130,6 +1216,192 @@ function renderPOPGO2(){
   <nav class="spy" id="spy"></nav>`;
   buildSpy(); toggleSpy(true);
 }
+const LOGBOOK_SEED = {
+  'elios3-log': {
+    equipamento:'ELIOS', modelo:'ELIOS 3', fabricante:'FLYABILITY',
+    cliente:'CSN', data:'2025-10-31',
+    horasAnterior:'', horasDia:'', horasTotal:'',
+    op1:{nome:'JOÃO LUIZ DUTRA', sisant:'TQYC'},
+    op2:{nome:'PATRICK MACEDO', sisant:'EMAZVP'},
+    voos:[
+      {etapa:'VOO 1', local:'CICLONE 1', partida:'09:04', corte:'09:10', bateria:'BAT-2', ciclo:17, codigo:'INS', rubrica:true},
+      {etapa:'VOO 2', local:'CICLONE 1', partida:'10:10', corte:'10:17', bateria:'BAT-3', ciclo:11, codigo:'INS', rubrica:true},
+      {etapa:'VOO 3', local:'CICLONE 2', partida:'14:01', corte:'14:08', bateria:'BAT-1', ciclo:23, codigo:'INS', rubrica:true},
+      {etapa:'VOO 4', local:'CICLONE 2', partida:'14:43', corte:'14:50', bateria:'BAT-4', ciclo:20, codigo:'INS', rubrica:true},
+      {etapa:'VOO 5', local:'CICLONE 3', partida:'15:04', corte:'15:10', bateria:'BAT-6', ciclo:8, codigo:'INS', rubrica:true},
+      {etapa:'VOO 6', local:'CICLONE 3', partida:'16:04', corte:'16:10', bateria:'BAT-5', ciclo:16, codigo:'INS', rubrica:true}
+    ],
+    ocorrencias:''
+  }
+};
+const CODIGO_VOO_OPTS = [['INS','Inspeção'],['TRE','Treinamento'],['APR','Apresentação'],['EXP','Experiência'],['POC','Prova de Conceito']];
+
+function lbMinDiff(a,b){
+  if(!a||!b) return null;
+  const [ah,am]=a.split(':').map(Number), [bh,bm]=b.split(':').map(Number);
+  if(isNaN(ah)||isNaN(bh)) return null;
+  let d=(bh*60+bm)-(ah*60+am);
+  if(d<0) d+=24*60;
+  return d;
+}
+function lbFmt(mins){ if(mins==null) return '--:--'; const h=Math.floor(mins/60), m=mins%60; return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'); }
+
+let LB_STATE = null;
+
+function renderLogbook(n){
+  LB_STATE = JSON.parse(JSON.stringify(LOGBOOK_SEED[n.id] || {
+    equipamento:'', modelo:'', fabricante:'', cliente:'', data:new Date().toISOString().slice(0,10),
+    horasAnterior:'', horasDia:'', horasTotal:'', op1:{nome:'',sisant:''}, op2:{nome:'',sisant:''}, voos:[], ocorrencias:''
+  }));
+
+  viewDoc.innerHTML = `
+  <div class="doc" style="max-width:1040px">
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-ic">${IC.file}</div>
+      <div>
+        <h1>Diário de Bordo — Registro Digital</h1>
+        <div class="lb-sub">${stripHTML(n.label)} · Substitui o preenchimento manual em papel</div>
+      </div>
+      <div class="lb-status" id="lbStatus"><span class="d"></span><span id="lbStatusText">Rascunho não salvo</span></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Identificação da Missão</h3>
+      <div class="lb-grid">
+        <div class="lb-field ro"><label>Equipamento</label><div class="static">${LB_STATE.equipamento}</div></div>
+        <div class="lb-field ro"><label>Modelo</label><div class="static">${LB_STATE.modelo}</div></div>
+        <div class="lb-field ro"><label>Fabricante</label><div class="static">${LB_STATE.fabricante}</div></div>
+        <div class="lb-field"><label>Cliente</label><input id="lbCliente" value="${LB_STATE.cliente}" placeholder="Nome do cliente"></div>
+        <div class="lb-field"><label>Data</label><input id="lbData" type="date" value="${LB_STATE.data}"></div>
+      </div>
+      <div class="lb-grid" style="margin-top:14px">
+        <div class="lb-field"><label>Horas da Célula Anterior</label><input id="lbHorasAnterior" value="${LB_STATE.horasAnterior}" placeholder="00:00"></div>
+        <div class="lb-field"><label>Horas da Célula do Dia</label><input id="lbHorasDia" readonly value="${lbFmt(LB_STATE.voos.reduce((s,v)=>s+(lbMinDiff(v.partida,v.corte)||0),0))}"></div>
+        <div class="lb-field"><label>Total Horas Células</label><input id="lbHorasTotal" readonly value="${LB_STATE.horasTotal||'—'}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Operadores</h3>
+      <div class="lb-ops">
+        <div class="lb-op-card">
+          <div class="tag">Operador de Inspeção 01</div>
+          <div class="lb-grid">
+            <div class="lb-field"><label>Nome</label><input id="lbOp1Nome" value="${LB_STATE.op1.nome}"></div>
+            <div class="lb-field"><label>SISANT</label><input id="lbOp1Sisant" value="${LB_STATE.op1.sisant}"></div>
+          </div>
+        </div>
+        <div class="lb-op-card">
+          <div class="tag">Operador de Inspeção 02</div>
+          <div class="lb-grid">
+            <div class="lb-field"><label>Nome</label><input id="lbOp2Nome" value="${LB_STATE.op2.nome}"></div>
+            <div class="lb-field"><label>SISANT</label><input id="lbOp2Sisant" value="${LB_STATE.op2.sisant}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Registro de Voos</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr>
+            <th>Etapa</th><th>Local</th><th>Partida</th><th>Corte</th><th>Tempo</th><th>T. Acum.</th><th>Bateria</th><th>Ciclo</th><th>Código</th><th>Rubrica</th><th></th>
+          </tr></thead>
+          <tbody id="lbVoosBody"></tbody>
+        </table>
+      </div>
+      <button class="lb-addrow" onclick="lbAddVoo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar voo</button>
+      <div class="lb-tfoot">
+        <div class="item"><div class="k">Voos registrados</div><div class="v" id="lbTotVoos">0</div></div>
+        <div class="item"><div class="k">Tempo total de voo</div><div class="v" id="lbTotTempo">00:00</div></div>
+        <div class="item"><div class="k">Ciclos totais</div><div class="v" id="lbTotCiclos">0</div></div>
+      </div>
+    </div>
+
+    <div class="lb-section lb-occ">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Ocorrências</h3>
+      <textarea id="lbOcorrencias" placeholder="Descreva aqui qualquer ocorrência, anormalidade ou observação relevante da missão…">${LB_STATE.ocorrencias}</textarea>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="lbSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Bordo</button>
+        <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Em breve: sincronização automática com Google Drive / SharePoint ao salvar.</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="lbToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="lbToastText">Diário salvo</span></div>
+  `;
+  lbRenderVoos();
+}
+
+function lbRenderVoos(){
+  const body = document.getElementById('lbVoosBody');
+  if(!body) return;
+  let acum = 0;
+  body.innerHTML = LB_STATE.voos.map((v,i)=>{
+    const tempo = lbMinDiff(v.partida, v.corte);
+    acum += (tempo||0);
+    const opts = CODIGO_VOO_OPTS.map(([c,l])=>`<option value="${c}" ${v.codigo===c?'selected':''}>${c}</option>`).join('');
+    return `<tr>
+      <td><input value="${v.etapa}" onchange="lbSet(${i},'etapa',this.value)"></td>
+      <td class="lb-local"><input value="${v.local}" onchange="lbSet(${i},'local',this.value)"></td>
+      <td><input type="time" value="${v.partida}" onchange="lbSet(${i},'partida',this.value)"></td>
+      <td><input type="time" value="${v.corte}" onchange="lbSet(${i},'corte',this.value)"></td>
+      <td><input readonly value="${lbFmt(tempo)}"></td>
+      <td><input readonly value="${lbFmt(acum)}"></td>
+      <td><input value="${v.bateria}" onchange="lbSet(${i},'bateria',this.value)"></td>
+      <td><input value="${v.ciclo}" onchange="lbSet(${i},'ciclo',this.value)" style="text-align:center"></td>
+      <td><select onchange="lbSet(${i},'codigo',this.value)">${opts}</select></td>
+      <td><div class="lb-sig ${v.rubrica?'on':''}" onclick="lbToggleRubrica(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div></td>
+      <td><div class="lb-rowdel" onclick="lbDelVoo(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('lbTotVoos').textContent = LB_STATE.voos.length;
+  document.getElementById('lbTotTempo').textContent = lbFmt(acum);
+  document.getElementById('lbTotCiclos').textContent = LB_STATE.voos.reduce((s,v)=>s+(Number(v.ciclo)||0),0);
+  const hd = document.getElementById('lbHorasDia'); if(hd) hd.value = lbFmt(acum);
+  lbMarkDirty();
+}
+function lbSet(i,field,val){ LB_STATE.voos[i][field]=val; lbRenderVoos(); }
+function lbToggleRubrica(i){ LB_STATE.voos[i].rubrica = !LB_STATE.voos[i].rubrica; lbRenderVoos(); }
+function lbDelVoo(i){ LB_STATE.voos.splice(i,1); lbRenderVoos(); }
+function lbAddVoo(){
+  const n = LB_STATE.voos.length+1;
+  LB_STATE.voos.push({etapa:'VOO '+n, local:'', partida:'', corte:'', bateria:'', ciclo:'', codigo:'INS', rubrica:false});
+  lbRenderVoos();
+}
+function lbMarkDirty(){
+  const s = document.getElementById('lbStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('lbStatusText').textContent='Rascunho não salvo'; }
+}
+function lbToast(msg){
+  const t = document.getElementById('lbToast');
+  document.getElementById('lbToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+function lbSave(){
+  ['lbCliente','lbData','lbHorasAnterior','lbOp1Nome','lbOp1Sisant','lbOp2Nome','lbOp2Sisant','lbOcorrencias'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    if(id==='lbCliente') LB_STATE.cliente = el.value;
+    if(id==='lbData') LB_STATE.data = el.value;
+    if(id==='lbHorasAnterior') LB_STATE.horasAnterior = el.value;
+    if(id==='lbOp1Nome') LB_STATE.op1.nome = el.value;
+    if(id==='lbOp1Sisant') LB_STATE.op1.sisant = el.value;
+    if(id==='lbOp2Nome') LB_STATE.op2.nome = el.value;
+    if(id==='lbOp2Sisant') LB_STATE.op2.sisant = el.value;
+    if(id==='lbOcorrencias') LB_STATE.ocorrencias = el.value;
+  });
+  const s = document.getElementById('lbStatus');
+  s.classList.add('saved');
+  document.getElementById('lbStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  lbToast('Diário salvo com sucesso (armazenamento local desta demonstração)');
+}
+
 function titleCase(s){
   if(s===s.toUpperCase()){ s=s.toLowerCase(); }
   // Capitaliza a 1a letra de cada palavra (respeita / e -), mantém siglas conhecidas
