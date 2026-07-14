@@ -703,6 +703,10 @@ const TREE = [
   { id:'diarios', label:'<b>Diários de Bordo</b> — Digital', icon:'file', status:'ok', type:'group', root:true,
     children:[
       { id:'elios3-log', label:'Flyability Elios 3 — CSN — 31/10/2025', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook' }
+    ]},
+  { id:'diarios-manut', label:'<b>Diários de Manutenção</b> — Digital', icon:'wrench', status:'ok', type:'group', root:true,
+    children:[
+      { id:'elios3-maint', label:'Flyability Elios 3 — Nº 01/2026 — 15/03/2026', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog' }
     ]}
 ];
 
@@ -777,6 +781,7 @@ function routeTo(id){
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
+  if(n.type==='maintlog'){ renderMaintLog(n); show(viewDoc); return; }
   if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='pdf'){ renderPDF(n); show(viewDoc); toggleSpy(false); return; }
@@ -846,6 +851,7 @@ function renderHome(){
           <div class="feed-row"><div class="feed-ic">⚙</div><div class="feed-tx">Diário de manutenção em uso<small>FO-OPE-017</small></div></div>
           <div class="feed-row"><div class="feed-ic">＋</div><div class="feed-tx">MGM — Manual Geral de Manutenção na estrutura<small>IT-MNT-001</small></div></div>
           <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">Diário de Bordo digital do Elios 3 disponível<small>Novo</small></div></div>
+          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">Diário de Manutenção digital do Elios 3 disponível<small>Novo</small></div></div>
         </div>
       </div>
     </div>
@@ -880,6 +886,11 @@ function renderHome(){
       <div class="cat-card" onclick="selectNode('diarios')">
         <div class="cat-ic">${IC.file}</div><h2>Diários de Bordo</h2>
         <div class="desc">Registro digital de missão, com cálculo automático de horas.</div>
+        <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
+      </div>
+      <div class="cat-card" onclick="selectNode('diarios-manut')">
+        <div class="cat-ic">${IC.wrench}</div><h2>Diários de Manutenção</h2>
+        <div class="desc">Registro digital de discrepâncias, ações corretivas e liberação do equipamento.</div>
         <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
       </div>
     </div>
@@ -1426,6 +1437,179 @@ function lbSave(){
   s.classList.add('saved');
   document.getElementById('lbStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   lbToast('Diário salvo com sucesso (armazenamento local desta demonstração)');
+}
+
+const MAINTLOG_SEED = {
+  'elios3-maint': {
+    equipamento:'ELIOS', modelo:'ELIOS 3', numSerie:'1826EE3RDAB24380420', fabricante:'FLYABILITY', operador:'PATRICK',
+    numDoc:'01/2026', revisao:'00', horasManutencao:'N/A',
+    discrepancias:[
+      {etapa:'PÓS VOO', descDisc:'HÉLICES DESGASTADAS', descInter:'NADA CONSTA', rub1:true, etapaAcao:'PÓS VOO', descAcao:'TROCA DAS HÉLICES', rub2:true}
+    ],
+    outros:[],
+    respNome:'PATRICK MACEDO', respData:'2026-03-15', respRub:true,
+    inspecao:'Inspeção pré-voo realizada conforme checklist operacional. Verificados integridades estruturais da aeronave, hélices e fixações, gaiola de proteção, câmeras e sensores, sistema de iluminação, bateria, conexões, comunicação com o controle e status geral dos sistemas. Após a ação corretiva de substituição das hélices, não foram identificadas anomalias. Equipamento liberado para operação.'
+  }
+};
+
+let MT_STATE = null;
+
+function renderMaintLog(n){
+  MT_STATE = JSON.parse(JSON.stringify(MAINTLOG_SEED[n.id] || {
+    equipamento:'', modelo:'', numSerie:'', fabricante:'', operador:'', numDoc:'', revisao:'00', horasManutencao:'',
+    discrepancias:[], outros:[], respNome:'', respData:new Date().toISOString().slice(0,10), respRub:false, inspecao:''
+  }));
+
+  viewDoc.innerHTML = `
+  <div class="doc" style="max-width:1080px">
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-ic">${IC.wrench}</div>
+      <div>
+        <h1>Diário de Manutenção — Registro Digital</h1>
+        <div class="lb-sub">${stripHTML(n.label)} · Parte I — Situação Técnica do Equipamento</div>
+      </div>
+      <div class="lb-status" id="mtStatus"><span class="d"></span><span id="mtStatusText">Rascunho não salvo</span></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Identificação do Equipamento</h3>
+      <div class="lb-grid">
+        <div class="lb-field ro"><label>Equipamento</label><div class="static">${MT_STATE.equipamento}</div></div>
+        <div class="lb-field ro"><label>Modelo</label><div class="static">${MT_STATE.modelo}</div></div>
+        <div class="lb-field"><label>Nº Série</label><input id="mtNumSerie" value="${MT_STATE.numSerie}"></div>
+        <div class="lb-field ro"><label>Fabricante</label><div class="static">${MT_STATE.fabricante}</div></div>
+        <div class="lb-field"><label>Operador</label><input id="mtOperador" value="${MT_STATE.operador}"></div>
+      </div>
+      <div class="lb-grid" style="margin-top:14px">
+        <div class="lb-field"><label>Documento Nº</label><input id="mtNumDoc" value="${MT_STATE.numDoc}"></div>
+        <div class="lb-field"><label>Revisão</label><input id="mtRevisao" value="${MT_STATE.revisao}"></div>
+        <div class="lb-field"><label>Horas para Manutenção de 50h</label><input id="mtHoras" value="${MT_STATE.horasManutencao}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Discrepância / Inter-Pós-Voo / Ação Corretiva</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr>
+            <th>Etapa</th><th>Discrepância</th><th>Inter/Pós-Voo</th><th>Rubrica</th><th>Etapa</th><th>Ação Corretiva</th><th>Rubrica</th><th></th>
+          </tr></thead>
+          <tbody id="mtDiscBody"></tbody>
+        </table>
+      </div>
+      <button class="lb-addrow" onclick="mtAddDisc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar discrepância</button>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6M9 8h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>Outros Registros</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th>Etapa</th><th>Descrição</th><th>Rubrica</th><th></th></tr></thead>
+          <tbody id="mtOutrosBody"></tbody>
+        </table>
+      </div>
+      <button class="lb-addrow" onclick="mtAddOutro()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar registro</button>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Responsável pela Liberação</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Nome</label><input id="mtRespNome" value="${MT_STATE.respNome}"></div>
+        <div class="lb-field"><label>Data</label><input id="mtRespData" type="date" value="${MT_STATE.respData}"></div>
+        <div class="lb-field">
+          <label>Rubrica</label>
+          <div class="lb-sig ${MT_STATE.respRub?'on':''}" id="mtRespSig" onclick="mtToggleRespRub()" style="margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section lb-occ">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 9-8 10-4.5-1-8-5-8-10V7l8-4z"/></svg>Inspeção Pré-Voo</h3>
+      <textarea id="mtInspecao" placeholder="Descreva o resultado da inspeção pré-voo…">${MT_STATE.inspecao}</textarea>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="mtSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Manutenção</button>
+        <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Imprimir / Exportar PDF</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Em breve: sincronização automática com Google Drive / SharePoint ao salvar.</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="mtToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="mtToastText">Diário salvo</span></div>
+  `;
+  mtRenderDisc();
+  mtRenderOutros();
+}
+
+function mtRenderDisc(){
+  const body = document.getElementById('mtDiscBody');
+  if(!body) return;
+  body.innerHTML = MT_STATE.discrepancias.map((d,i)=>`<tr>
+      <td><input value="${d.etapa}" onchange="mtSetDisc(${i},'etapa',this.value)"></td>
+      <td class="lb-local"><input value="${d.descDisc}" onchange="mtSetDisc(${i},'descDisc',this.value)"></td>
+      <td class="lb-local"><input value="${d.descInter}" onchange="mtSetDisc(${i},'descInter',this.value)"></td>
+      <td><div class="lb-sig ${d.rub1?'on':''}" onclick="mtToggleDisc(${i},'rub1')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div></td>
+      <td><input value="${d.etapaAcao}" onchange="mtSetDisc(${i},'etapaAcao',this.value)"></td>
+      <td class="lb-local"><input value="${d.descAcao}" onchange="mtSetDisc(${i},'descAcao',this.value)"></td>
+      <td><div class="lb-sig ${d.rub2?'on':''}" onclick="mtToggleDisc(${i},'rub2')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div></td>
+      <td><div class="lb-rowdel" onclick="mtDelDisc(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div></td>
+    </tr>`).join('') || `<tr><td colspan="8" style="color:var(--ink-3);padding:14px">Nenhuma discrepância registrada.</td></tr>`;
+  mtMarkDirty();
+}
+function mtSetDisc(i,field,val){ MT_STATE.discrepancias[i][field]=val; mtMarkDirty(); }
+function mtToggleDisc(i,field){ MT_STATE.discrepancias[i][field] = !MT_STATE.discrepancias[i][field]; mtRenderDisc(); }
+function mtDelDisc(i){ MT_STATE.discrepancias.splice(i,1); mtRenderDisc(); }
+function mtAddDisc(){ MT_STATE.discrepancias.push({etapa:'',descDisc:'',descInter:'',rub1:false,etapaAcao:'',descAcao:'',rub2:false}); mtRenderDisc(); }
+
+function mtRenderOutros(){
+  const body = document.getElementById('mtOutrosBody');
+  if(!body) return;
+  body.innerHTML = MT_STATE.outros.map((o,i)=>`<tr>
+      <td><input value="${o.etapa}" onchange="mtSetOutro(${i},'etapa',this.value)"></td>
+      <td class="lb-local"><input value="${o.desc}" onchange="mtSetOutro(${i},'desc',this.value)"></td>
+      <td><div class="lb-sig ${o.rub?'on':''}" onclick="mtToggleOutro(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div></td>
+      <td><div class="lb-rowdel" onclick="mtDelOutro(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div></td>
+    </tr>`).join('') || `<tr><td colspan="4" style="color:var(--ink-3);padding:14px">Nenhum outro registro.</td></tr>`;
+  mtMarkDirty();
+}
+function mtSetOutro(i,field,val){ MT_STATE.outros[i][field]=val; mtMarkDirty(); }
+function mtToggleOutro(i){ MT_STATE.outros[i].rub = !MT_STATE.outros[i].rub; mtRenderOutros(); }
+function mtDelOutro(i){ MT_STATE.outros.splice(i,1); mtRenderOutros(); }
+function mtAddOutro(){ MT_STATE.outros.push({etapa:'',desc:'',rub:false}); mtRenderOutros(); }
+
+function mtToggleRespRub(){
+  MT_STATE.respRub = !MT_STATE.respRub;
+  document.getElementById('mtRespSig').classList.toggle('on', MT_STATE.respRub);
+  mtMarkDirty();
+}
+function mtMarkDirty(){
+  const s = document.getElementById('mtStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('mtStatusText').textContent='Rascunho não salvo'; }
+}
+function mtToast(msg){
+  const t = document.getElementById('mtToast');
+  document.getElementById('mtToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+function mtSave(){
+  ['mtNumSerie','mtOperador','mtNumDoc','mtRevisao','mtHoras','mtRespNome','mtRespData','mtInspecao'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    if(id==='mtNumSerie') MT_STATE.numSerie = el.value;
+    if(id==='mtOperador') MT_STATE.operador = el.value;
+    if(id==='mtNumDoc') MT_STATE.numDoc = el.value;
+    if(id==='mtRevisao') MT_STATE.revisao = el.value;
+    if(id==='mtHoras') MT_STATE.horasManutencao = el.value;
+    if(id==='mtRespNome') MT_STATE.respNome = el.value;
+    if(id==='mtRespData') MT_STATE.respData = el.value;
+    if(id==='mtInspecao') MT_STATE.inspecao = el.value;
+  });
+  const s = document.getElementById('mtStatus');
+  s.classList.add('saved');
+  document.getElementById('mtStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  mtToast('Diário salvo com sucesso (armazenamento local desta demonstração)');
 }
 
 function titleCase(s){
