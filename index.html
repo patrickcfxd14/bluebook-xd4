@@ -134,7 +134,7 @@ svg{display:block}
 .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:4px 11px;color:var(--ink-2)}
 .chip .d{width:6px;height:6px;border-radius:99px}
 
-/* GROUP LISTING (Veículos Aéreos/Terrestres, Manuais dos Fabricantes, Diários) */
+/* GROUP LISTING (Veículos Aéreos/Terrestres, Diários) */
 .grp{max-width:980px;margin:0 auto;padding:32px 40px 100px}
 .grp-head{display:flex;align-items:center;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:24px;flex-wrap:wrap}
 .grp-head .gh-ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
@@ -185,7 +185,7 @@ svg{display:block}
 .chapindex .cols{display:grid;grid-template-columns:1fr 1fr;gap:1px 34px;min-width:0}
 .chapindex a{display:flex;align-items:baseline;text-decoration:none;color:var(--ink-2);font-size:13px;padding:6px 4px;border-radius:6px;transition:.12s;cursor:pointer;min-width:0}
 .chapindex a:hover{background:var(--sky);color:var(--ink)}
-.chapindex a .n{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;font-size:12px;min-width:32px;flex-shrink:0}
+.chapindex a .n{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;font-size:12px;min-width:32px;margin-right:8px;flex-shrink:0}
 .chapindex a .tt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1}
 .chapindex a .dots{flex:1;min-width:8px;border-bottom:1px dotted var(--sky-line);margin:0 8px;transform:translateY(-3px)}
 
@@ -643,7 +643,7 @@ const XD4_LOGO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAC5CAYAAACMaD
 /* ---------- DADOS: árvore-mestra (edite aqui para crescer) ---------- */
 const TREE = [
   { id:'home', label:'<b>Início</b> — Painel operacional', icon:'home', type:'home', status:'ok', leaf:true },
-  { id:'org', label:'<b>Organograma</b> — Estrutura', icon:'org', type:'org', status:'ok', leaf:true },
+  { id:'org', label:'<b>Estrutura Documental</b>', icon:'org', type:'org', status:'ok', leaf:true },
   { id:'mgo', label:'<b>MGO</b> — Manual Geral de Operações', icon:'book', code:'IT-OPE-003', status:'ok', type:'mgo', root:true,
     children:[
           { id:'aereos', label:'<b>Veículos Aéreos</b>', icon:'drone', type:'group', status:'ok',
@@ -654,7 +654,8 @@ const TREE = [
                   maint:[['2026-06-14','Troca de gaiola de proteção','ok'],['2026-05-02','Calibração de sensores','ok'],['2026-03-20','Atualização de firmware','ok']] },
                 children:[
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
-                  { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' }
+                  { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
+                  { id:'elios3-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
                 ]},
               { id:'elios2', label:'Flyability Elios 2', icon:'drone', type:'vehicle', status:'ok',
                 vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'warn', img:'https://absolutendt.ca/wp-content/uploads/2025/03/Elios-2-1.png',
@@ -662,7 +663,8 @@ const TREE = [
                   maint:[['2026-04-11','Substituição de hélices','ok'],['2026-02-08','Revisão geral','ok']] },
                 children:[
                   { id:'elios2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'88 seções', status:'ok', type:'pop-elios2' },
-                  { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] }
+                  { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'elios2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
                 ]}
             ]},
           { id:'terrestres', label:'<b>Veículos Terrestres</b>', icon:'robot', type:'group', status:'ok',
@@ -673,7 +675,8 @@ const TREE = [
                   maint:[['2026-05-30','Ajuste de atuadores','ok'],['2026-04-15','Recebimento e comissionamento','ok']] },
                 children:[
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
-                  { id:'go2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] }
+                  { id:'go2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'go2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
                 ]},
               { id:'g1', label:'Unitree G1', icon:'robot', type:'vehicle', status:'ok',
                 vehicle:{ maker:'Unitree', cls:'Robô Humanoide', ready:'warn', img:'https://www.unitree.com/images/a20ba1ebc0724df8a8135744dee8bbea_2740x1720.jpg',
@@ -681,7 +684,8 @@ const TREE = [
                   maint:[['2026-06-01','Comissionamento inicial','warn']] },
                 children:[
                   { id:'g1-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'62 seções', status:'ok', type:'pop-g1' },
-                  { id:'g1-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] }
+                  { id:'g1-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'g1-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
                 ]},
               { id:'rover', label:'Rover', icon:'robot', type:'vehicle', status:'ok',
                 vehicle:{ maker:'XD4', cls:'Plataforma sobre Rodas', ready:'warn',
@@ -689,27 +693,13 @@ const TREE = [
                   maint:[['2026-05-12','Montagem de payload','ok']] },
                 children:[
                   { id:'rover-pop', label:'POP — Operação', icon:'file', status:'ok', type:'placeholder', phSections:['Setup','Operação'] },
-                  { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] }
+                  { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'rover-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
                 ]}
             ]}
     ] },
   { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
-  { id:'fabricantes', label:'<b>Manuais dos Fabricantes</b>', icon:'folder', type:'group', status:'ok',
-    children:[
-      { id:'m-aereos', label:'<b>Veículos Aéreos</b>', icon:'drone', type:'group', status:'ok',
-        children:[
-          { id:'m-elios3', label:'Flyability Elios 3 — Manual', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' },
-          { id:'m-elios3-spec', label:'Elios 3 — Specs Técnicas', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' },
-          { id:'m-elios2', label:'Flyability Elios 2 — Manual', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
-        ]},
-      { id:'m-terrestres', label:'<b>Veículos Terrestres</b>', icon:'robot', type:'group', status:'ok',
-        children:[
-          { id:'m-go2', label:'Unitree GO2 — Manual', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' },
-          { id:'m-g1', label:'Unitree G1 — Manual', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' },
-          { id:'m-rover', label:'Rover — Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
-        ]}
-    ]},
   { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
   { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true }
 ];
@@ -729,7 +719,7 @@ function buildTree(nodes,depth=0){
     el.className='node'+(n.root?' root':'')+(n.children?'':'');
     if(n.pinned) el.classList.add('pinned');
     el.dataset.id=n.id;
-    const hasKids=!!(n.children&&n.children.length);
+    const hasKids=!!(n.children&&n.children.length)&&n.type!=='vehicle';
     const row=document.createElement('div'); row.className='node-row'; row.dataset.id=n.id;
     row.innerHTML=`
       <span class="caret ${hasKids?'':'leaf'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg></span>
@@ -864,9 +854,9 @@ function renderHome(){
     <div class="home-sec-label">Categorias</div>
     <div class="cat-grid">
       <div class="cat-card" onclick="selectNode('org')">
-        <div class="cat-ic">${IC.org}</div><h2>Organograma</h2>
-        <div class="desc">Cadeia de comando e estrutura documental do SGQ.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>Pessoas</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Documentos</span></div>
+        <div class="cat-ic">${IC.org}</div><h2>Estrutura Documental</h2>
+        <div class="desc">O MGO no topo e todas as famílias de documentos do SGQ abaixo.</div>
+        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>MGO</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Documentos</span></div>
       </div>
       <div class="cat-card" onclick="selectNode('mgo')">
         <div class="cat-ic">${IC.book}</div><h2>Manuais Gerais</h2>
@@ -883,11 +873,6 @@ function renderHome(){
         <div class="desc">Robôs Unitree e Rover.</div>
         <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>GO2</span><span class="chip"><span class="d" style="background:var(--ok)"></span>G1</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Rover</span></div>
       </div>
-      <div class="cat-card" onclick="selectNode('fabricantes')">
-        <div class="cat-ic">${IC.folder}</div><h2>Manuais dos Fabricantes</h2>
-        <div class="desc">Documentação técnica original (PDF).</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>6 PDFs</span></div>
-      </div>
       <div class="cat-card" onclick="selectNode('diarios')">
         <div class="cat-ic">${IC.file}</div><h2>Diários de Bordo</h2>
         <div class="desc">Registro digital de missão, com cálculo automático de horas.</div>
@@ -902,28 +887,7 @@ function renderHome(){
   </div>`;
 }
 
-/* ---------- ORGANOGRAMA ---------- */
-/* Dois organogramas derivados de dados. Cada nó pode ter detalhe (responsabilidades). */
-const ORG_PEOPLE={ // cadeia de comando conforme MGO (cap. 4.2)
-  tiers:[
-    [{id:'p-ceo',role:'CEO',name:'Diretor Executivo',icon:'star',lvl:0,tag:'Corporativo',
-      resp:['Responde pela segurança e pela conformidade corporativa da XD4Solutions','Fornece os recursos — financiamento e recursos humanos — para operação e manutenção','Garante que toda operação em nome da empresa seja conduzida sob conformidade'],ref:'mgo'}],
-    [{id:'p-dirop',role:'Diretor de Operações',name:'Máxima autoridade operacional',icon:'user',tag:'Direção',
-      resp:['Máxima autoridade operacional, respondendo por todas as questões da operação','Aprova este Manual e suas revisões, os POPs e as Ordens de Serviço','Atua como elo com os órgãos reguladores (ANAC, DECEA e ANATEL)','Autoriza operações especiais e missões sujeitas a autorizações adicionais','Lidera a incorporação de novas plataformas à frota','Conduz ou supervisiona a investigação de acidentes de maior gravidade'],ref:'mgo'}],
-    [{id:'p-cco',role:'CCO',name:'Coordenador de Operações',icon:'user',tag:'Coordenação',
-      resp:['Responde pela administração rotineira das atividades operacionais','Mantém atualizado o Quadro de Operadores e as plataformas habilitadas','Elabora a escala dos times de inspeção e designa tripulantes e equipamento','Organiza treinamentos e cursos, incluindo habilitação em novas plataformas','Agenda e monitora os serviços contratados, processando as Ordens de Serviço','Gerencia a experiência recente dos operadores por tipo de plataforma'],ref:'mgo'}],
-    [{id:'p-lider',role:'Líder de Operações',name:'Responsável em campo pelo Time de Inspeção',icon:'pilot',tag:'Campo',
-      resp:['Lidera o Time de Inspeção durante a missão, mantendo a disciplina operacional','Conduz ou valida o briefing inicial junto ao responsável do cliente','Confirma, junto ao Operador 1, o início, continuidade ou suspensão da missão','Zela pelo cumprimento dos limites de jornada e das medidas de gerenciamento de fadiga','Ponto de contato local com o cliente durante a execução da missão','Reporta ao Coordenador o andamento e ocorrências identificadas em campo'],ref:'mgo'},
-     {id:'p-safety',role:'Oficial de Segurança',name:'Segurança do Trabalho',icon:'shield',tag:'Assessoria',
-      resp:['Aprovado em curso de segurança operacional reconhecido pela ANAC (mín. 1 ano de experiência)','Participa da elaboração e implementação da política de saúde e segurança','Gerencia a documentação de segurança do trabalho, incluindo PPRA e PCMSO','Acompanha e aplica treinamentos de segurança, comuns e específicos por plataforma','Gerencia a guarda e a distribuição de equipamentos de proteção'],ref:'mgo'}],
-    [{id:'p-op1',role:'Operador 1',name:'Conduz a operação do equipamento',icon:'pilot',tag:'Execução',
-      resp:['Tripulante habilitado que conduz a operação do equipamento','Autonomia plena para decidir em favor da segurança da operação','Diretamente responsável pela condução segura e pelas consequências dela','Não operar sem estar apto física, psicológica e legalmente','Cumpre este Manual, o POP da plataforma e o manual do fabricante'],ref:'mgo'},
-     {id:'p-op2',role:'Operador 2',name:'Assiste o Operador 1',icon:'user',tag:'Execução',
-      resp:['Assiste o Operador 1, sob orientação e responsabilidade deste','Processa os dados brutos coletados em campo, conforme a Ordem de Serviço','Registra com precisão os dados obtidos nas inspeções','Participa da inspeção pré-missão e da conferência dos checklists','Apoia o Operador 1 na elaboração do Plano de Inspeção'],ref:'mgo'}],
-    [{id:'p-tecman',role:'Técnico de Manutenção',name:'Condição técnica da frota',icon:'wrench',tag:'Manutenção',
-      resp:['Encarregado da condição técnica e da operacionalidade continuada dos equipamentos','Avalia boletins de serviço e alertas de segurança dos fabricantes','Aprova a liberação do equipamento para nova missão após manutenção corretiva','Mantém histórico de manutenção, firmware/software e vida útil de componentes críticos','Avalia recalibração de sensores após impacto, transporte ou indicação do sistema','Comunica ao Coordenador qualquer não conformidade que impeça a liberação'],ref:'mgo'}]
-  ]
-};
+/* ---------- ORGANOGRAMA / ESTRUTURA DOCUMENTAL ---------- */
 /* Estrutura documental REAL do SGQ (fonte: organograma-arvore).
    Topo = MGO. Abaixo, as 4 famílias com seus documentos e status:
    keep=vigente/fica · drop=será removido · new=a incluir */
@@ -976,66 +940,19 @@ const ORG_DOCS={
   ]
 };
 
-let orgMode='people';
 function renderOrg(){
-  const legend = '';
   viewDoc.innerHTML=`
   <div class="org">
     <div class="org-head">
-      <h1>${IC.org} Organograma — Estrutura</h1>
-      <p>Duas visões da mesma operação: a <b>cadeia de comando</b> (quem responde por quem) e a <b>estrutura documental do SGQ</b> (o MGO no topo e todas as famílias de documentos abaixo). Clique em qualquer item para ver detalhes.</p>
+      <h1>${IC.org} Estrutura Documental</h1>
+      <p>A <b>estrutura documental do SGQ</b>: o MGO no topo e todas as famílias de documentos abaixo. Clique em qualquer item para abrir o que estiver disponível na plataforma.</p>
     </div>
-    <div class="org-tabs">
-      <div class="org-tab ${orgMode==='people'?'active':''}" onclick="setOrg('people')">${IC.user} Cadeia de Comando</div>
-      <div class="org-tab ${orgMode==='docs'?'active':''}" onclick="setOrg('docs')">${IC.book} Estrutura Documental</div>
-    </div>
-    ${legend}
     <div class="org-panel active" id="orgPanel"></div>
     <div class="org-detail" id="orgDetail"></div>
-    <div class="org-hint">${orgMode==='people'?'Toque nas caixas para ver requisitos e responsabilidades.':'Toque em qualquer documento para abrir o que estiver disponível na plataforma.'}</div>
+    <div class="org-hint">Toque em qualquer documento para abrir o que estiver disponível na plataforma.</div>
   </div>`;
-  if(orgMode==='people') drawPeople(); else drawDocs();
+  drawDocs();
 }
-window.setOrg=function(m){ orgMode=m; renderOrg(); };
-
-function drawPeople(){
-  const panel=document.getElementById('orgPanel');
-  panel.innerHTML='<div class="chart">'+ORG_PEOPLE.tiers.map((tier,ti)=>{
-    const multi=tier.length>1;
-    const cards=tier.map(nd=>{
-      const up=ti>0?'hasup':'';
-      return `<div class="onode ${multi?up:''}">
-        <div class="ocard lvl${nd.lvl||1}" onclick="peopleDetail('${nd.id}')">
-          ${nd.count?`<span class="oc-count">${nd.count}</span>`:''}
-          <div class="oc-ic">${IC[nd.icon]||IC.user}</div>
-          <div class="oc-role">${nd.role}</div>
-          <div class="oc-name">${nd.name}</div>
-          <div class="oc-tag">${nd.tag||''}</div>
-        </div></div>`;
-    }).join('');
-    let style='';
-    if(multi){ const n=tier.length; const pct=100/(n*2); style=`style="--barL:${pct}%;--barR:${pct}%"`; }
-    return `<div class="tier ${multi?'multi':''}" ${style}>${cards}</div>`;
-  }).join('')+'</div>';
-  document.getElementById('orgDetail').classList.remove('show');
-}
-window.peopleDetail=function(id){
-  let nd=null; ORG_PEOPLE.tiers.forEach(t=>t.forEach(x=>{ if(x.id===id) nd=x; }));
-  const d=document.getElementById('orgDetail'); if(!nd){ d.classList.remove('show'); return; }
-  const resp=(nd.resp||[]).map(r=>`<li>${r}</li>`).join('');
-  const link=nd.ref&&BYID[nd.ref]?`<div class="od-link" onclick="selectNode('${nd.ref}')">${IC.file} Abrir documento relacionado →</div>`:'';
-  d.innerHTML=`
-    <div class="od-head">
-      <div class="od-ic">${IC[nd.icon]||IC.user}</div>
-      <div><h3>${nd.role}</h3><div class="sub">${nd.name}${nd.tag?' · '+nd.tag:''}</div></div>
-      <button class="od-close" onclick="document.getElementById('orgDetail').classList.remove('show')">✕</button>
-    </div>
-    <div class="od-body">
-      ${resp?`<h4>Requisitos e Responsabilidades</h4><ul>${resp}</ul>`:'<p style="color:var(--ink-3)">Nó estrutural.</p>'}
-      ${link}
-    </div>`;
-  d.classList.add('show'); d.scrollIntoView({behavior:'smooth',block:'nearest'});
-};
 
 const stLabel={keep:'Vigente',drop:'Será removido',new:'A incluir'};
 function drawDocs(){
