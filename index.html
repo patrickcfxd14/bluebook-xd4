@@ -233,6 +233,26 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .ph-skel-row .n{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-weight:600;font-size:12.5px;flex-shrink:0}
 .ph-skel-row .bar{flex:1;height:8px;border-radius:99px;background:var(--sky-line);opacity:.6}
 
+/* MANUAIS (PDF do repositório GitHub) — lista em linhas, estilo screenshot */
+.manual-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.manual-tab{display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--sky);border-bottom:1px solid var(--line);padding:10px 18px;border-right:1px solid var(--line)}
+.manual-list{display:flex;flex-direction:column}
+.manual-row{display:flex;align-items:center;gap:16px;padding:16px 20px;border-top:1px solid var(--line);text-decoration:none;color:inherit;transition:background .12s;cursor:pointer}
+.manual-row:first-child{border-top:none}
+.manual-row:hover{background:var(--sky)}
+.manual-row.missing{cursor:default}
+.manual-row.missing:hover{background:none}
+.mr-ic{display:flex;flex-direction:column;align-items:center;gap:3px;width:44px;flex-shrink:0;color:var(--accent)}
+.mr-ic svg{width:22px;height:22px}
+.mr-ic.warn{color:var(--warn)}
+.mr-size{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3)}
+.mr-info{flex:1;min-width:0;padding-left:16px;border-left:1px solid var(--sky-line)}
+.mr-name{font-size:14px;color:var(--ink);font-weight:500}
+.mr-type{font-size:12px;color:var(--ink-3);margin-top:2px}
+.mr-type code{font-size:11px}
+.mr-open{font-size:12px;font-weight:600;color:var(--accent);white-space:nowrap;flex-shrink:0}
+.mr-open.warn{color:var(--warn)}
+
 /* VEHICLE PROFILE */
 .vp{max-width:860px;margin:0 auto;padding:32px 44px 100px}
 .vp-hero{display:flex;gap:24px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);margin-bottom:24px}
@@ -655,7 +675,13 @@ const TREE = [
                 children:[
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
                   { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
-                  { id:'elios3-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
+                  { id:'elios3-manual', label:'Manuais', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
+                    files:[
+                      { label:'Elios 3 User Manual v1.3', file:'manuals/elios3-user-manual-v1.3.pdf', size:'45MB' },
+                      { label:'Elios 3 Technical Specifications v1.1', file:'manuals/elios3-technical-specifications-v1.1.pdf', size:'2MB' },
+                      { label:'Elios 3 Original Instructions v1.0', file:'manuals/elios3-original-instructions-v1.0.pdf', size:'255KB' },
+                      { label:'Elios 3 Standard Operating Procedure', file:'manuals/elios3-standard-operating-procedure.pdf', size:'6MB' }
+                    ] }
                 ]},
               { id:'elios2', label:'Flyability Elios 2', icon:'drone', type:'vehicle', status:'ok',
                 vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'warn', img:'https://absolutendt.ca/wp-content/uploads/2025/03/Elios-2-1.png',
@@ -664,7 +690,8 @@ const TREE = [
                 children:[
                   { id:'elios2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'88 seções', status:'ok', type:'pop-elios2' },
                   { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'elios2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
+                  { id:'elios2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                    files:[ { label:'Manual do Fabricante — Elios 2', file:'manuals/elios2.pdf' } ] }
                 ]}
             ]},
           { id:'terrestres', label:'<b>Veículos Terrestres</b>', icon:'robot', type:'group', status:'ok',
@@ -676,7 +703,8 @@ const TREE = [
                 children:[
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
                   { id:'go2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'go2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
+                  { id:'go2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                    files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
                 ]},
               { id:'g1', label:'Unitree G1', icon:'robot', type:'vehicle', status:'ok',
                 vehicle:{ maker:'Unitree', cls:'Robô Humanoide', ready:'warn', img:'https://www.unitree.com/images/a20ba1ebc0724df8a8135744dee8bbea_2740x1720.jpg',
@@ -685,7 +713,8 @@ const TREE = [
                 children:[
                   { id:'g1-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'62 seções', status:'ok', type:'pop-g1' },
                   { id:'g1-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'g1-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
+                  { id:'g1-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                    files:[ { label:'Manual do Fabricante — Unitree G1', file:'manuals/g1.pdf' } ] }
                 ]},
               { id:'rover', label:'Rover', icon:'robot', type:'vehicle', status:'ok',
                 vehicle:{ maker:'XD4', cls:'Plataforma sobre Rodas', ready:'warn',
@@ -694,7 +723,8 @@ const TREE = [
                 children:[
                   { id:'rover-pop', label:'POP — Operação', icon:'file', status:'ok', type:'placeholder', phSections:['Setup','Operação'] },
                   { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'rover-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'pdf' }
+                  { id:'rover-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                    files:[ { label:'Manual do Fabricante — Rover', file:'manuals/rover.pdf' } ] }
                 ]}
             ]}
     ] },
@@ -780,6 +810,7 @@ function routeTo(id){
   if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='pdf'){ renderPDF(n); show(viewDoc); toggleSpy(false); return; }
+  if(n.type==='manual'){ renderManual(n); show(viewDoc); toggleSpy(false); return; }
   renderPlaceholder(n); show(viewDoc); toggleSpy(false);
 }
 
@@ -1616,7 +1647,7 @@ function grpCard(k){
     thumb = IC[k.icon]||IC.folder;
     cat = 'Categoria';
     meta = (k.children?k.children.length:0)+' item(s)';
-  } else if(k.type==='pdf'){
+  } else if(k.type==='pdf'||k.type==='manual'){
     thumb = IC.pdf||IC.file;
     cat = 'Manual do Fabricante';
     meta = 'Documento PDF';
@@ -1677,7 +1708,7 @@ function renderPlaceholder(n){
   </div>`;
 }
 
-/* ---------- PDF ---------- */
+/* ---------- PDF (fallback estático, sem arquivo vinculado) ---------- */
 function renderPDF(n){
   viewDoc.innerHTML=`
   <div class="ph">
@@ -1689,6 +1720,110 @@ function renderPDF(n){
       <div class="ph-status" style="background:var(--ok-bg);color:var(--ok)"><span class="d" style="background:var(--ok)"></span>Disponível</div>
     </div>
     <div class="ph-note">Manual técnico original do fabricante. Quando o arquivo for anexado à plataforma, abrirá aqui no leitor de PDF.</div>
+  </div>`;
+}
+
+/* ---------- MANUAIS (content/manuals/*.pdf vindos do repositório GitHub) ----------
+   Mesma lógica do content/*.json: os PDFs ficam versionados na pasta manuals/
+   deste mesmo repositório/GitHub Pages. Basta subir o arquivo com o nome indicado
+   no campo "file" de cada nó (ver TREE) que ele passa a abrir aqui automaticamente
+   — nada precisa ser alterado neste HTML. */
+async function fileExists(url){
+  try{
+    const res = await fetch(`${url}?v=${Date.now()}`, { method:'HEAD', cache:'no-store' });
+    return res.ok;
+  }catch(_e){ return false; }
+}
+async function renderManual(n){
+  if(n.external) return renderManualExternal(n);
+  const files = n.files||[];
+  viewDoc.innerHTML=`
+  <div class="ph">
+    ${crumbsHTML(n.id)}
+    <div class="ph-head">
+      <div class="ph-ic">${IC.pdf}</div>
+      <h1>${stripHTML(n.label)}</h1>
+      <div class="code">Manual do Fabricante · PDF</div>
+      <div class="ph-status" id="manualStatus"><span class="d"></span>Verificando arquivo(s)…</div>
+    </div>
+    <div class="ph-note">Manuais técnicos originais do fabricante, versionados junto com este site no repositório GitHub (pasta <code>manuals/</code>).</div>
+    <div class="manual-panel">
+      <div class="manual-tab">Standard</div>
+      <div class="manual-list" id="manualList"></div>
+    </div>
+  </div>`;
+
+  const listEl = document.getElementById('manualList');
+  const statusEl = document.getElementById('manualStatus');
+  if(!files.length){
+    statusEl.innerHTML = '<span class="d"></span>Nenhum arquivo cadastrado';
+    listEl.innerHTML = '<div style="padding:24px;color:var(--ink-3);font-size:13.5px">Nenhum manual cadastrado ainda.</div>';
+    return;
+  }
+
+  const results = await Promise.all(files.map(async f=>({ ...f, ok: await fileExists(f.file) })));
+  const okCount = results.filter(r=>r.ok).length;
+
+  if(okCount===results.length){
+    statusEl.style.background='var(--ok-bg)'; statusEl.style.color='var(--ok)';
+    statusEl.innerHTML='<span class="d" style="background:var(--ok)"></span>Disponível';
+  } else if(okCount===0){
+    statusEl.style.background='var(--crit-bg)'; statusEl.style.color='var(--crit)';
+    statusEl.innerHTML='<span class="d" style="background:var(--crit)"></span>Arquivo não encontrado';
+  } else {
+    statusEl.style.background='var(--warn-bg)'; statusEl.style.color='var(--warn)';
+    statusEl.innerHTML='<span class="d" style="background:var(--warn)"></span>Parcialmente disponível';
+  }
+
+  listEl.innerHTML = results.map(f=>{
+    const sizeTag = f.size?`<span class="mr-size">${f.size}</span>`:'';
+    if(f.ok){
+      return `
+      <a class="manual-row" href="${f.file}" target="_blank" rel="noopener">
+        <div class="mr-ic">${IC.pdf}${sizeTag}</div>
+        <div class="mr-info"><div class="mr-name">${f.label}</div><div class="mr-type">PDF</div></div>
+        <div class="mr-open">Abrir ↗</div>
+      </a>`;
+    }
+    return `
+      <div class="manual-row missing" title="Suba o arquivo em ${f.file} no repositório GitHub">
+        <div class="mr-ic warn">${IC.pdf}</div>
+        <div class="mr-info"><div class="mr-name">${f.label}</div><div class="mr-type">Ainda não enviado · <code>${f.file}</code></div></div>
+        <div class="mr-open warn">Pendente</div>
+      </div>`;
+  }).join('');
+}
+
+/* ---------- MANUAIS via site do fabricante (link externo) ----------
+   Aqui a gente não hospeda PDF nenhum: o quadrado "Manuais" abre direto
+   a página oficial do fabricante. Não dá pra verificar disponibilidade
+   com fetch (o domínio externo bloqueia por CORS), então mostramos o
+   link como sempre disponível e deixamos o navegador cuidar do resto. */
+function renderManualExternal(n){
+  const ex = n.external;
+  const items = (ex.items||[]).map(label=>`
+    <a class="manual-row" href="${ex.url}" target="_blank" rel="noopener">
+      <div class="mr-ic">${IC.pdf}</div>
+      <div class="mr-info"><div class="mr-name">${label}</div><div class="mr-type">PDF · ${ex.source||'Site do fabricante'}</div></div>
+      <div class="mr-open">Abrir ↗</div>
+    </a>`).join('');
+  viewDoc.innerHTML=`
+  <div class="ph">
+    ${crumbsHTML(n.id)}
+    <div class="ph-head">
+      <div class="ph-ic">${IC.pdf}</div>
+      <h1>${stripHTML(n.label)}</h1>
+      <div class="code">Manual do Fabricante · Link externo</div>
+      <div class="ph-status" style="background:var(--sky);color:var(--accent)"><span class="d" style="background:var(--accent)"></span>Hospedado por ${ex.source||'fabricante'}</div>
+    </div>
+    <div class="ph-note">Estes documentos ficam hospedados no site do próprio fabricante — sempre a versão mais recente publicada por eles, sem ocupar espaço neste repositório. Clique em qualquer item (ou no botão abaixo) para abrir.</div>
+    <div class="manual-panel">
+      <div class="manual-tab">Standard</div>
+      <div class="manual-list">${items}</div>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <a class="mc-open" style="display:inline-flex;background:var(--sky);border:1px solid var(--sky-line);padding:10px 20px;border-radius:99px" href="${ex.url}" target="_blank" rel="noopener">Abrir toda a documentação em ${ex.source||'site do fabricante'} ↗</a>
+    </div>
   </div>`;
 }
 
