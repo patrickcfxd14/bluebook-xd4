@@ -1,0 +1,56 @@
+name: Converter documentos Word para o Portal de Operações
+
+# Roda automaticamente sempre que um .docx for adicionado/alterado
+# na pasta documentos-fonte/ e enviado (commit) para o repositório.
+on:
+  push:
+    paths:
+      - 'documentos-fonte/**.docx'
+    branches:
+      - main
+
+# Permite também rodar manualmente pela aba "Actions" do GitHub, se necessário
+  workflow_dispatch:
+
+jobs:
+  converter:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar pandoc e dependências
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y pandoc
+          pip install beautifulsoup4 --break-system-packages
+
+      - name: Converter todos os .docx da pasta documentos-fonte/
+        run: |
+          mkdir -p content
+          for f in documentos-fonte/*.docx; do
+            [ -e "$f" ] || continue
+            base=$(basename "$f" .docx)
+            slug=$(echo "$base" | tr '[:upper:]' '[:lower:]' | sed -E 's/[_ ]+/-/g')
+            echo "Convertendo $f -> content/$slug.json"
+            python3 scripts/docx_to_json.py "$f" "content/$slug.json"
+          done
+
+      - name: Publicar o conteúdo atualizado de volta no repositório
+        run: |
+          git config user.name "Blue Book Bot"
+          git config user.email "bot@xd4solutions.com.br"
+          git add content/*.json
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança de conteúdo detectada."
+          else
+            git commit -m "Atualiza conteúdo do Portal a partir dos documentos Word [automático]"
+            git push
+          fi
