@@ -1099,7 +1099,9 @@ const CONTENT_CACHE = {};
 
 async function loadContent(key){
   if(CONTENT_CACHE[key]) return CONTENT_CACHE[key];
-  const res = await fetch(`content/${key}.json`);
+  // cache:'no-store' + parâmetro de versão evitam que o navegador ou a rede do
+  // GitHub Pages sirvam uma cópia antiga do JSON depois de uma atualização.
+  const res = await fetch(`content/${key}.json?v=${Date.now()}`, { cache: 'no-store' });
   if(!res.ok) throw new Error(`Não foi possível carregar content/${key}.json (HTTP ${res.status})`);
   const data = await res.json();
   CONTENT_CACHE[key] = data;
