@@ -272,7 +272,7 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .spec .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600}
 .spec .v{font-size:17px;font-weight:600;color:var(--ink);margin-top:4px;font-family:'IBM Plex Mono',monospace}
 .spec .v small{font-size:11px;color:var(--ink-3);font-weight:400}
-.vp-docs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.vp-docs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
 .vp-doc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;cursor:pointer;transition:.16s;box-shadow:var(--shadow)}
 .vp-doc:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
 .vp-doc .di{width:40px;height:40px;border-radius:10px;background:var(--sky);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:12px}
@@ -414,7 +414,8 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .doc{padding:26px 20px 100px}.ph,.vp{padding:26px 18px 80px}
   .home{padding:18px 16px 70px}
   .ctrl,.home-stats{grid-template-columns:1fr 1fr}
-  .dash-grid,.cat-grid,.vp-docs{grid-template-columns:1fr}
+  .dash-grid,.cat-grid{grid-template-columns:1fr}
+  .vp-docs{grid-template-columns:1fr 1fr}
   .vp-specs{grid-template-columns:1fr 1fr}
   .chapindex .cols{grid-template-columns:1fr}
   .vp-hero{flex-direction:column;text-align:center}
@@ -425,6 +426,9 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .fam-grid::before{display:none}
   .fam-card::before{display:none}
   .fam-connector{display:none}
+}
+@media(max-width:480px){
+  .vp-docs{grid-template-columns:1fr}
 }
 /* ===== AUTH GATE ===== */
 #authGate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:40px 20px}
@@ -675,7 +679,8 @@ const TREE = [
                 children:[
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
                   { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
-                  { id:'elios3-manual', label:'Manuais', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
+                  { id:'elios3-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios3' },
+                  { id:'elios3-manual', label:'Manual do Fabricante', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
                     files:[
                       { label:'Elios 3 User Manual v1.3', file:'manuals/elios3-user-manual-v1.3.pdf', size:'45MB' },
                       { label:'Elios 3 Technical Specifications v1.1', file:'manuals/elios3-technical-specifications-v1.1.pdf', size:'2MB' },
@@ -690,7 +695,8 @@ const TREE = [
                 children:[
                   { id:'elios2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'88 seções', status:'ok', type:'pop-elios2' },
                   { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'elios2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                  { id:'elios2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios2' },
+                  { id:'elios2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Elios 2', file:'manuals/elios2.pdf' } ] }
                 ]}
             ]},
@@ -703,7 +709,8 @@ const TREE = [
                 children:[
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
                   { id:'go2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'go2-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                  { id:'go2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-go2' },
+                  { id:'go2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
                 ]},
               { id:'g1', label:'Unitree G1', icon:'robot', type:'vehicle', status:'ok',
@@ -713,7 +720,8 @@ const TREE = [
                 children:[
                   { id:'g1-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'62 seções', status:'ok', type:'pop-g1' },
                   { id:'g1-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'g1-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                  { id:'g1-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-g1' },
+                  { id:'g1-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree G1', file:'manuals/g1.pdf' } ] }
                 ]},
               { id:'rover', label:'Rover', icon:'robot', type:'vehicle', status:'ok',
@@ -723,7 +731,8 @@ const TREE = [
                 children:[
                   { id:'rover-pop', label:'POP — Operação', icon:'file', status:'ok', type:'placeholder', phSections:['Setup','Operação'] },
                   { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
-                  { id:'rover-manual', label:'Manuais', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+                  { id:'rover-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-rover' },
+                  { id:'rover-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Rover', file:'manuals/rover.pdf' } ] }
                 ]}
             ]}
@@ -805,6 +814,11 @@ function routeTo(id){
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='pto-elios3'){ renderPTOElios3(); show(viewDoc); return; }
+  if(n.type==='phr-elios3'){ renderPhrElios3(); show(viewDoc); return; }
+  if(n.type==='phr-elios2'){ renderPhrElios2(); show(viewDoc); return; }
+  if(n.type==='phr-go2'){ renderPhrGO2(); show(viewDoc); return; }
+  if(n.type==='phr-g1'){ renderPhrG1(); show(viewDoc); return; }
+  if(n.type==='phr-rover'){ renderPhrRover(); show(viewDoc); return; }
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
   if(n.type==='maintlog'){ renderMaintLog(n); show(viewDoc); return; }
   if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
@@ -941,16 +955,21 @@ const ORG_DOCS={
         { label:'Veículos Aéreos', icon:'drone', items:[
           {label:'POP — Elios 3', code:'', ref:'elios3-pop'},
           {label:'TOP — Elios 3', code:'IT-OPE-004', ref:'elios3-top'},
+          {label:'Fraseologia Padrão — Elios 3', code:'', ref:'elios3-fraseologia'},
           {label:'POP — Elios 2', code:'', ref:'elios2-pop'},
-          {label:'TOP — Elios 2', code:'', ref:'elios2-top'}
+          {label:'TOP — Elios 2', code:'', ref:'elios2-top'},
+          {label:'Fraseologia Padrão — Elios 2', code:'', ref:'elios2-fraseologia'}
         ]},
         { label:'Veículos Terrestres', icon:'robot', items:[
           {label:'POP — Unitree GO2', code:'', ref:'go2-pop'},
           {label:'TOP — Unitree GO2', code:'', ref:'go2-top'},
+          {label:'Fraseologia Padrão — Unitree GO2', code:'', ref:'go2-fraseologia'},
           {label:'POP — Unitree G1', code:'', ref:'g1-pop'},
           {label:'TOP — Unitree G1', code:'', ref:'g1-top'},
+          {label:'Fraseologia Padrão — Unitree G1', code:'', ref:'g1-fraseologia'},
           {label:'POP — Rover', code:'', ref:'rover-pop'},
-          {label:'TOP — Rover', code:'', ref:'rover-top'}
+          {label:'TOP — Rover', code:'', ref:'rover-top'},
+          {label:'Fraseologia Padrão — Rover', code:'', ref:'rover-fraseologia'}
         ]}
       ]},
     { id:'fam-fo', code:'FO', title:'Formulários', icon:'file',
@@ -1177,6 +1196,51 @@ function renderPTOElios3(){
     title:'PTO — Flyability Elios 3', subtitle:'Plano de Treinamento Operacional',
     tag:'Plano de Treinamento Operacional do RPAS Flyability Elios 3 — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
     footer:'PTO Flyability Elios 3'
+  });
+}
+
+/* ---------- FRASEOLOGIA PADRÃO (por veículo) ----------
+   Mesmo pipeline do POP/TOP: o conteúdo vem de content/phr-<veiculo>.json,
+   gerado a partir do .docx correspondente. Basta subir o arquivo junto
+   com o POP e o TOP que o texto aparece aqui automaticamente. */
+function renderPhrElios3(){
+  renderDocFromKey('phr-elios3', {
+    idPrefix:'phrelios3', crumbId:'elios3-fraseologia', icon:'file', code:'FRA',
+    title:'Fraseologia Padrão — Flyability Elios 3', subtitle:'Comunicação Operacional Padronizada',
+    tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do Flyability Elios 3 — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
+    footer:'Fraseologia Padrão · Flyability Elios 3'
+  });
+}
+function renderPhrElios2(){
+  renderDocFromKey('phr-elios2', {
+    idPrefix:'phrelios2', crumbId:'elios2-fraseologia', icon:'file', code:'FRA',
+    title:'Fraseologia Padrão — Flyability Elios 2', subtitle:'Comunicação Operacional Padronizada',
+    tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do Flyability Elios 2 — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
+    footer:'Fraseologia Padrão · Flyability Elios 2'
+  });
+}
+function renderPhrGO2(){
+  renderDocFromKey('phr-go2', {
+    idPrefix:'phrgo2', crumbId:'go2-fraseologia', icon:'file', code:'FRA',
+    title:'Fraseologia Padrão — Unitree GO2', subtitle:'Comunicação Operacional Padronizada',
+    tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do robô Unitree GO2 — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
+    footer:'Fraseologia Padrão · Unitree GO2'
+  });
+}
+function renderPhrG1(){
+  renderDocFromKey('phr-g1', {
+    idPrefix:'phrg1', crumbId:'g1-fraseologia', icon:'file', code:'FRA',
+    title:'Fraseologia Padrão — Unitree G1', subtitle:'Comunicação Operacional Padronizada',
+    tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do robô Unitree G1 — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
+    footer:'Fraseologia Padrão · Unitree G1'
+  });
+}
+function renderPhrRover(){
+  renderDocFromKey('phr-rover', {
+    idPrefix:'phrrover', crumbId:'rover-fraseologia', icon:'file', code:'FRA',
+    title:'Fraseologia Padrão — Rover', subtitle:'Comunicação Operacional Padronizada',
+    tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do Rover — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
+    footer:'Fraseologia Padrão · Rover'
   });
 }
 
