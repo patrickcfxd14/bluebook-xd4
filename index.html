@@ -730,7 +730,7 @@ const TREE = [
                   specs:[['Escala','1:10',''],['Motor','Brushless 2500KV',''],['Tração','4WD',''],['Bateria','3S LiPo','']],
                   maint:[['2026-05-12','Montagem de payload (câmera)','ok']] },
                 children:[
-                  { id:'rover-pop', label:'POP — Operação', icon:'file', status:'ok', type:'placeholder', phSections:['Setup','Operação'] },
+                  { id:'rover-pop', label:'POP — Operação', icon:'file', code:'POP', status:'ok', type:'pop-rover' },
                   { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
                   { id:'rover-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-rover' },
                   { id:'rover-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
@@ -840,6 +840,7 @@ function routeTo(id){
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
+  if(n.type==='pop-rover'){ renderPOPRover(); show(viewDoc); return; }
   if(n.type==='pto-elios3'){ renderPTOElios3(); show(viewDoc); return; }
   if(n.type==='phr-elios3'){ renderPhrElios3(); show(viewDoc); return; }
   if(n.type==='phr-elios2'){ renderPhrElios2(); show(viewDoc); return; }
@@ -1239,6 +1240,14 @@ function renderPOPGO2(){
     title:'POP — Robô Unitree GO2', subtitle:'Procedimento Operacional Padrão · Operação',
     tag:'Procedimento Operacional Padrão específico do robô quadrúpede Unitree GO2 — aplicável a todas as variantes (Air, Pro, X, EDU, EDU Plus e GO2-W). Cobre características do robô, configuração, limitações operacionais, equipe, checklists, procedimento de missão, emergências, pós-operação, manutenção de primeiro nível, registros e suplementos.',
     footer:'POP Robô Unitree GO2'
+  });
+}
+function renderPOPRover(){
+  renderDocFromKey('pop-rover', {
+    idPrefix:'roverpop', crumbId:'rover-pop', icon:'file', code:'POP',
+    title:'POP — Rover Sniper (FS53711)', subtitle:'Procedimento Operacional Padrão · Operação',
+    tag:'Procedimento Operacional Padrão específico do Rover Sniper — veículo terrestre rádio-controlado baseado na plataforma FS Racing Sniper 1/10 3S Brushless Truggy (FS53711). Cobre características do veículo, configuração permitida, limitações operacionais, equipe, checklists, procedimento de missão, emergências, pós-operação, manutenção de primeiro nível, registros e suplementos.',
+    footer:'POP Rover Sniper'
   });
 }
 function renderPTOElios3(){
