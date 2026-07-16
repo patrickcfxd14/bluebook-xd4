@@ -740,7 +740,32 @@ const TREE = [
   { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
   { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
-  { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true }
+  { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true },
+  { id:'docs-gerais', label:'Documentos Gerais', icon:'folder', type:'group', status:'ok', hidden:true,
+    children:[
+      { id:'doc-servico-nao-conforme', label:'Serviço não conforme', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'IT-OPE-002 — Serviço não conforme', file:'documentos/it-ope-002-servico-nao-conforme.pdf' } ] },
+      { id:'doc-ordem-servico-nr01', label:'Ordem de serviço NR-01', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'IT-OPE-008 — Ordem de serviço NR-01', file:'documentos/it-ope-008-ordem-servico-nr01.pdf' } ] },
+      { id:'doc-transporte-bateria', label:'Transporte de bateria via modal aéreo', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] },
+      { id:'doc-pto-2026', label:'Plano de Procedimento Operacional — PTO 2026', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'Plano de Procedimento Operacional — PTO 2026', file:'documentos/plano-pto-2026.pdf' } ] },
+      { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] },
+      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'FO-OPE-005 — Ficha de controle de EPI', file:'documentos/fo-ope-005-ficha-controle-epi.pdf' } ] },
+      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'FO-OPE-006 — Ordem de Serviço', file:'documentos/fo-ope-006-ordem-servico.pdf' } ] },
+      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'FO-OPE-018 — Relatório de Missão', file:'documentos/fo-ope-018-relatorio-missao.pdf' } ] },
+      { id:'doc-plano-captura-dados', label:'Plano de Captura de dados', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'FO-OPE-020 — Plano de Captura de dados', file:'documentos/fo-ope-020-plano-captura-dados.pdf' } ] },
+      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'OD-OPE-001 — Tabela de preservação de produtos', file:'documentos/od-ope-001-tabela-preservacao-produtos.pdf' } ] },
+      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
+        files:[ { label:'OD-OPE-003 — Certificado de treino introdutório · Op. de Inspeção de Qualidade', file:'documentos/od-ope-003-certificado-treino-introdutorio.pdf' } ] }
+    ]}
 ];
 
 /* index by id + parent map for breadcrumbs */
@@ -754,6 +779,7 @@ const treeRoot=document.getElementById('treeRoot');
 function buildTree(nodes,depth=0){
   const frag=document.createDocumentFragment();
   nodes.forEach(n=>{
+    if(n.hidden) return; // indexado (roteável via ref) mas fora da árvore lateral
     const el=document.createElement('div');
     el.className='node'+(n.root?' root':'')+(n.children?'':'');
     if(n.pinned) el.classList.add('pinned');
@@ -829,9 +855,24 @@ function routeTo(id){
 }
 
 /* ---------- HOME / DASHBOARD ---------- */
-function countStatus(){ const c={ok:0,warn:0,draft:0,crit:0,total:0,vehicles:0,families:0};
-  Object.values(BYID).forEach(n=>{ if(n.type==='home'||n.type==='group'||n.type==='org')return; c.total++; c[n.status]=(c[n.status]||0)+1; if(n.type==='vehicle')c.vehicles++; });
-  c.families=ORG_DOCS.families.length; return c; }
+function countStatus(){
+  const c={ok:0,warn:0,draft:0,crit:0,total:0,vehicles:0,families:0};
+  const seen=new Set();
+  const tally=ref=>{
+    if(!ref||seen.has(ref))return;
+    const n=BYID[ref]; if(!n)return;
+    seen.add(ref);
+    c.total++; c[n.status]=(c[n.status]||0)+1;
+  };
+  ORG_DOCS.top.forEach(t=>tally(t.ref));
+  ORG_DOCS.families.forEach(f=>{
+    f.items.forEach(it=>tally(it.ref));
+    (f.groups||[]).forEach(g=>g.items.forEach(it=>tally(it.ref)));
+  });
+  c.vehicles=Object.values(BYID).filter(n=>n.type==='vehicle').length;
+  c.families=ORG_DOCS.families.length;
+  return c;
+}
 // donut por família documental (IT/FO/OD)
 const FAM_COLORS=['var(--xd4)','var(--blue)','var(--accent)','var(--ok)'];
 function famCounts(){ return ORG_DOCS.families.map(f=>{
@@ -944,12 +985,12 @@ const ORG_DOCS={
   families:[
     { id:'fam-it', code:'IT', title:'Instruções de Trabalho', icon:'file',
       items:[
-        {label:'Serviço não conforme', code:'IT-OPE-002'},
+        {label:'Serviço não conforme', code:'IT-OPE-002', ref:'doc-servico-nao-conforme'},
         {label:'MGO — Manual Geral de Operações', code:'IT-OPE-003', ref:'mgo'},
-        {label:'Ordem de serviço NR-01', code:'IT-OPE-008'},
-        {label:'Transporte de bateria via modal aéreo', code:''},
-        {label:'Plano de Procedimento Operacional — PTO 2026', code:''},
-        {label:'Manual de Fraseologia — Elios 3', code:''}
+        {label:'Ordem de serviço NR-01', code:'IT-OPE-008', ref:'doc-ordem-servico-nr01'},
+        {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'},
+        {label:'Plano de Procedimento Operacional — PTO 2026', code:'', ref:'doc-pto-2026'},
+        {label:'Manual de Fraseologia — Elios 3', code:'', ref:'elios3-fraseologia'}
       ],
       groups:[
         { label:'Veículos Aéreos', icon:'drone', items:[
@@ -974,18 +1015,18 @@ const ORG_DOCS={
       ]},
     { id:'fam-fo', code:'FO', title:'Formulários', icon:'file',
       items:[
-        {label:'Risk Assessment', code:'FO-OPE-002'},
-        {label:'Ficha de controle de EPI', code:'FO-OPE-005'},
-        {label:'Ordem de Serviço', code:'FO-OPE-006'},
-        {label:'Diário de bordo · Elios 3', code:'FO-OPE-011'},
-        {label:'Diário de manutenção', code:'FO-OPE-017'},
-        {label:'Relatório de Missão', code:'FO-OPE-018'},
-        {label:'Plano de Captura de dados', code:'FO-OPE-020'}
+        {label:'Risk Assessment', code:'FO-OPE-002', ref:'doc-risk-assessment'},
+        {label:'Ficha de controle de EPI', code:'FO-OPE-005', ref:'doc-ficha-epi'},
+        {label:'Ordem de Serviço', code:'FO-OPE-006', ref:'doc-ordem-servico'},
+        {label:'Diário de bordo · Elios 3', code:'FO-OPE-011', ref:'diarios'},
+        {label:'Diário de manutenção', code:'FO-OPE-017', ref:'diarios-manut'},
+        {label:'Relatório de Missão', code:'FO-OPE-018', ref:'doc-relatorio-missao'},
+        {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'doc-plano-captura-dados'}
       ]},
     { id:'fam-od', code:'OD', title:'Outros Documentos', icon:'folder',
       items:[
-        {label:'Tabela de preservação de produtos', code:'OD-OPE-001'},
-        {label:'Certificado de treino introdutório · Op. de Inspeção de Qualidade', code:'OD-OPE-003'}
+        {label:'Tabela de preservação de produtos', code:'OD-OPE-001', ref:'doc-tabela-preservacao'},
+        {label:'Certificado de treino introdutório · Op. de Inspeção de Qualidade', code:'OD-OPE-003', ref:'doc-certificado-treino'}
       ]}
   ]
 };
