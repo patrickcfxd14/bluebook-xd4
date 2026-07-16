@@ -725,9 +725,10 @@ const TREE = [
                     files:[ { label:'Manual do Fabricante — Unitree G1', file:'manuals/g1.pdf' } ] }
                 ]},
               { id:'rover', label:'Rover', icon:'robot', type:'vehicle', status:'ok',
-                vehicle:{ maker:'XD4', cls:'Plataforma sobre Rodas', ready:'warn',
-                  specs:[['Peso','22','kg'],['Autonomia','4','h'],['Carga','20','kg'],['Tração','4x4','']],
-                  maint:[['2026-05-12','Montagem de payload','ok']] },
+                vehicle:{ maker:'FS Racing', cls:'Rover Sniper — Truggy RC 1/10 3S', ready:'warn',
+                  img:'https://www.hearnshobbies.com/cdn/shop/files/FS-53711-BU_1024x.jpg?v=1734701648',
+                  specs:[['Escala','1:10',''],['Motor','Brushless 2500KV',''],['Tração','4WD',''],['Bateria','3S LiPo','']],
+                  maint:[['2026-05-12','Montagem de payload (câmera)','ok']] },
                 children:[
                   { id:'rover-pop', label:'POP — Operação', icon:'file', status:'ok', type:'placeholder', phSections:['Setup','Operação'] },
                   { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
@@ -855,33 +856,42 @@ function routeTo(id){
 }
 
 /* ---------- HOME / DASHBOARD ---------- */
-function countStatus(){
-  const c={ok:0,warn:0,draft:0,crit:0,total:0,vehicles:0,families:0};
-  const seen=new Set();
-  const tally=ref=>{
-    if(!ref||seen.has(ref))return;
-    const n=BYID[ref]; if(!n)return;
-    seen.add(ref);
-    c.total++; c[n.status]=(c[n.status]||0)+1;
-  };
-  ORG_DOCS.top.forEach(t=>tally(t.ref));
-  ORG_DOCS.families.forEach(f=>{
-    f.items.forEach(it=>tally(it.ref));
-    (f.groups||[]).forEach(g=>g.items.forEach(it=>tally(it.ref)));
-  });
-  c.vehicles=Object.values(BYID).filter(n=>n.type==='vehicle').length;
-  c.families=ORG_DOCS.families.length;
-  return c;
-}
-// donut por família documental (IT/FO/OD)
+/* Fonte única de verdade para contagem de documentos: cada documento
+   (ref) só é contado uma vez, mesmo se aparecer em mais de um lugar da
+   Estrutura Documental (ex: MGO aparece no topo E dentro da família IT;
+   a Fraseologia do Elios 3 aparece dentro do grupo de veículos E como
+   item avulso). O card "Documentos" da home e o gráfico de rosca usam
+   exatamente este mesmo cálculo, então nunca podem divergir. */
 const FAM_COLORS=['var(--xd4)','var(--blue)','var(--accent)','var(--ok)'];
-function famCounts(){ return ORG_DOCS.families.map(f=>{
-  const sub=f.groups?f.groups.reduce((a,g)=>a+g.items.length,0):0;
-  return {code:f.code,title:f.title,n:f.items.length+sub}; }); }
+function docStats(){
+  const seen=new Set();
+  const overall={ok:0,warn:0,draft:0,crit:0,total:0};
+  const claim=ref=>{
+    if(!ref||seen.has(ref))return null;
+    const n=BYID[ref]; if(!n)return null;
+    seen.add(ref);
+    overall.total++; overall[n.status]=(overall[n.status]||0)+1;
+    return n;
+  };
+  let topN=0;
+  ORG_DOCS.top.forEach(t=>{ if(claim(t.ref))topN++; });
+  const perFamily=ORG_DOCS.families.map(f=>{
+    let n=0;
+    f.items.forEach(it=>{ if(claim(it.ref))n++; });
+    (f.groups||[]).forEach(g=>g.items.forEach(it=>{ if(claim(it.ref))n++; }));
+    return {code:f.code,title:f.title,n};
+  });
+  const slices=[{code:'GER',title:'Manuais Gerais',n:topN}, ...perFamily].filter(s=>s.n>0);
+  overall.vehicles=Object.values(BYID).filter(n=>n.type==='vehicle').length;
+  overall.families=ORG_DOCS.families.length;
+  return {overall, slices};
+}
+function countStatus(){ return docStats().overall; }
+function famCounts(){ return docStats().slices; }
 function donutFamilies(){
-  const fams=famCounts(); const total=fams.reduce((a,f)=>a+f.n,0)||1;
+  const {overall,slices}=docStats(); const total=overall.total||1;
   const R=54,C=2*Math.PI*R; let off=0,arcs='';
-  fams.forEach((f,i)=>{ const len=C*f.n/total; arcs+=`<circle cx="65" cy="65" r="${R}" fill="none" stroke="${FAM_COLORS[i%FAM_COLORS.length]}" stroke-width="16" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 65 65)"/>`; off+=len; });
+  slices.forEach((f,i)=>{ const len=C*f.n/total; arcs+=`<circle cx="65" cy="65" r="${R}" fill="none" stroke="${FAM_COLORS[i%FAM_COLORS.length]}" stroke-width="16" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 65 65)"/>`; off+=len; });
   return `<svg class="donut" viewBox="0 0 130 130"><circle cx="65" cy="65" r="54" fill="none" stroke="var(--sky-line)" stroke-width="16"/>${arcs}<text x="65" y="61" text-anchor="middle" font-size="26" font-weight="600" fill="var(--ink)" font-family="IBM Plex Mono">${total}</text><text x="65" y="80" text-anchor="middle" font-size="10" fill="var(--ink-3)">documentos</text></svg>`;
 }
 function familyLegend(){ const fams=famCounts();
