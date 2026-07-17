@@ -461,19 +461,40 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .ag-submit:active{transform:translateY(0)}
 .ag-footer{font-size:12px;color:#7C90AB;max-width:420px;margin-top:6px}
 #authGate.hidden{display:none}
-/* ===== DIGITAL LOGBOOK ===== */
-.lb-head{display:flex;align-items:center;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:20px;flex-wrap:wrap}
-.lb-head .lb-ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
-.lb-head .lb-ic svg{width:26px;height:26px}
-.lb-head h1{font-size:21px;color:var(--ink);font-weight:600}
-.lb-head .lb-sub{color:var(--ink-2);font-size:13.5px;margin-top:2px}
-.lb-status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:99px;background:var(--draft-bg);color:var(--draft);transition:.2s}
-.lb-status .d{width:7px;height:7px;border-radius:50%;background:currentColor}
-.lb-status.saved{background:var(--ok-bg);color:var(--ok)}
+/* ===== DIGITAL LOGBOOK — AVIATION TECHNICAL LOG STYLE ===== */
+/* Cabeçalho estilo "Aircraft Technical Log": tarja de identificação,
+   placa de matrícula e faixa XD4, evocando documentação aeronáutica oficial. */
+.lb-head{position:relative;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border:1px solid var(--navy);border-radius:16px;padding:0;box-shadow:0 10px 30px rgba(11,37,69,.22);margin-bottom:22px;overflow:hidden}
+.lb-head::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--xd4) 0,var(--xd4) 34px,transparent 34px,transparent 44px)}
+.lb-head-main{display:flex;align-items:center;gap:18px;padding:22px 26px 20px;flex-wrap:wrap}
+.lb-head .lb-ic{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;backdrop-filter:blur(4px)}
+.lb-head .lb-ic svg{width:27px;height:27px}
+.lb-head h1{font-size:20px;color:#fff;font-weight:700;letter-spacing:.01em}
+.lb-head .lb-sub{color:rgba(226,238,250,.82);font-size:13px;margin-top:3px;max-width:640px}
+.lb-head .lb-docmeta{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.lb-head .lb-chip{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#dceaf7;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:3px 9px;border-radius:6px}
+.lb-head .lb-chip b{color:#fff;font-weight:700}
+.lb-status{margin-left:auto;align-self:flex-start;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2);transition:.2s;white-space:nowrap}
+.lb-status .d{width:7px;height:7px;border-radius:50%;background:#F2C744;box-shadow:0 0 0 3px rgba(242,199,68,.25);animation:lbPulse 2s infinite}
+.lb-status.saved{background:rgba(63,185,138,.22);border-color:rgba(63,185,138,.4)}
+.lb-status.saved .d{background:#3FB98A;box-shadow:0 0 0 3px rgba(63,185,138,.28);animation:none}
+@keyframes lbPulse{0%,100%{opacity:1}50%{opacity:.45}}
+/* Barra de matrícula (tail number strip) */
+.lb-tailstrip{display:flex;align-items:stretch;border-top:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.14)}
+.lb-tailstrip .cell{flex:1;padding:9px 20px;border-right:1px solid rgba(255,255,255,.10);min-width:0}
+.lb-tailstrip .cell:last-child{border-right:none}
+.lb-tailstrip .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:rgba(198,216,235,.72);font-weight:600}
+.lb-tailstrip .v{font-family:'IBM Plex Mono',monospace;font-size:14px;color:#fff;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.lb-section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:18px}
-.lb-section h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.lb-section h3 svg{width:15px;height:15px}
+.lb-section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:0;box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;transition:box-shadow .2s}
+.lb-section:hover{box-shadow:0 6px 22px rgba(11,37,69,.09)}
+.lb-section>h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);font-weight:700;margin:0;display:flex;align-items:center;gap:10px;padding:14px 24px;background:var(--sky);border-bottom:1px solid var(--line);counter-increment:lbsec}
+.lb-section>h3::before{content:counter(lbsec,decimal-leading-zero);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#fff;background:var(--accent);width:26px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.lb-section>h3 svg{width:15px;height:15px;color:var(--accent)}
+.lb-section>*:not(h3){margin-left:24px;margin-right:24px}
+.lb-section>h3+*{margin-top:20px}
+.lb-section>*:last-child{margin-bottom:22px}
+.doc>.lb-section-wrap,.lb-section-wrap{counter-reset:lbsec}
 
 .lb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
 .lb-field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:6px;font-weight:600}
@@ -487,15 +508,18 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .lb-op-card .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--xd4);font-weight:700;margin-bottom:10px}
 .lb-op-card .lb-grid{grid-template-columns:1fr 1fr}
 
-.lb-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+.lb-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);box-shadow:inset 0 1px 3px rgba(11,37,69,.04)}
 table.lb-table{width:100%;border-collapse:collapse;min-width:820px}
-table.lb-table thead th{background:var(--navy);color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:10px 8px;text-align:center;font-weight:600;white-space:nowrap}
-table.lb-table tbody td{padding:6px;border-top:1px solid var(--line);text-align:center;background:var(--paper)}
+table.lb-table thead th{background:linear-gradient(180deg,var(--navy),var(--blue));color:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:11px 8px;text-align:center;font-weight:600;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+table.lb-table thead th:last-child{border-right:none}
+table.lb-table tbody td{padding:5px;border-top:1px solid var(--line);border-right:1px solid var(--line);text-align:center;background:var(--paper)}
+table.lb-table tbody td:last-child{border-right:none}
 table.lb-table tbody tr:nth-child(even) td{background:var(--sky)}
-table.lb-table input,table.lb-table select{width:100%;border:1px solid transparent;background:transparent;text-align:center;padding:7px 4px;border-radius:6px;font-size:13.5px;color:var(--ink);font-family:inherit}
-table.lb-table input:focus,table.lb-table select:focus{outline:none;border-color:var(--xd4);background:var(--sky)}
-table.lb-table input[readonly]{color:var(--ink-2);font-variant-numeric:tabular-nums}
-table.lb-table td.lb-local input{min-width:100px}
+table.lb-table tbody tr:hover td{background:rgba(43,169,224,.06)}
+table.lb-table input,table.lb-table select{width:100%;border:1px solid transparent;background:transparent;text-align:center;padding:7px 4px;border-radius:6px;font-size:13px;color:var(--ink);font-family:'IBM Plex Mono',monospace;transition:.12s}
+table.lb-table input:focus,table.lb-table select:focus{outline:none;border-color:var(--xd4);background:var(--paper);box-shadow:0 0 0 2px rgba(43,169,224,.14)}
+table.lb-table input[readonly]{color:var(--accent);font-variant-numeric:tabular-nums;font-weight:600}
+table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',sans-serif}
 .lb-rowdel{width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-3);transition:.15s}
 .lb-rowdel:hover{background:var(--crit-bg);color:var(--crit)}
 .lb-rowdel svg{width:14px;height:14px}
@@ -505,11 +529,12 @@ table.lb-table td.lb-local input{min-width:100px}
 .lb-addrow{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:13px;font-weight:600;color:var(--xd4);padding:8px 4px}
 .lb-addrow:hover{text-decoration:underline}
 .lb-addrow svg{width:15px;height:15px}
-.lb-tfoot{display:flex;gap:26px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);flex-wrap:wrap}
-.lb-tfoot .item{text-align:left}
-.lb-tfoot .k{font-size:11px;text-transform:uppercase;color:var(--ink-3);letter-spacing:.05em;margin-bottom:3px}
-.lb-tfoot .v{font-size:19px;font-weight:700;color:var(--navy);font-family:'IBM Plex Mono',monospace}
-[data-theme="dark"] .lb-tfoot .v{color:var(--xd4)}
+.lb-tfoot{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.lb-tfoot .item{text-align:center;background:linear-gradient(180deg,var(--navy),var(--blue));border-radius:11px;padding:14px 12px;position:relative;overflow:hidden}
+.lb-tfoot .item::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--xd4)}
+.lb-tfoot .k{font-size:10px;text-transform:uppercase;color:rgba(198,216,235,.8);letter-spacing:.07em;margin-bottom:6px;font-weight:600}
+.lb-tfoot .v{font-size:24px;font-weight:700;color:#fff;font-family:'IBM Plex Mono',monospace;line-height:1;font-variant-numeric:tabular-nums}
+[data-theme="dark"] .lb-tfoot .v{color:#fff}
 
 .lb-occ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--sky);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical}
 .lb-occ textarea:focus{outline:none;border-color:var(--xd4);background:var(--paper)}
@@ -531,7 +556,20 @@ table.lb-table td.lb-local input{min-width:100px}
 @media print{
   .banner,.tree-panel,.crumbs,.lb-actions,.lb-addrow,.lb-rowdel,.mob-tree-btn{display:none!important}
   .content{overflow:visible!important;padding:0!important}
-  .lb-section,.lb-head{box-shadow:none!important;border:1px solid #ccc!important}
+  .lb-section{box-shadow:none!important;border:1px solid #ccc!important;break-inside:avoid}
+  .lb-head{box-shadow:none!important;border:1px solid var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .lb-head::before,.lb-tfoot .item,table.lb-table thead th,.lb-section>h3::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+/* Responsividade — Diários em telas pequenas */
+@media(max-width:720px){
+  .lb-head-main{padding:18px 18px 16px}
+  .lb-head h1{font-size:17px}
+  .lb-status{margin-left:0;order:3}
+  .lb-tailstrip{flex-wrap:wrap}
+  .lb-tailstrip .cell{flex:1 1 45%;border-bottom:1px solid rgba(255,255,255,.10)}
+  .lb-ops{grid-template-columns:1fr}
+  .lb-section>*:not(h3){margin-left:16px;margin-right:16px}
+  .lb-section>h3{padding:12px 16px}
 }
 @media(max-width:680px){
   .lb-ops{grid-template-columns:1fr}
@@ -1411,15 +1449,28 @@ function renderLogbook(n){
   }));
 
   viewDoc.innerHTML = `
-  <div class="doc" style="max-width:1040px">
+  <div class="doc lb-section-wrap" style="max-width:1040px">
     ${crumbsHTML(n.id)}
     <div class="lb-head">
-      <div class="lb-ic">${IC.file}</div>
-      <div>
-        <h1>Diário de Bordo — Registro Digital</h1>
-        <div class="lb-sub">Registro oficial de cada missão de voo — operadores, baterias e voos realizados — em substituição ao preenchimento manual em papel.</div>
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Diário de Bordo — Registro Digital</h1>
+          <div class="lb-sub">Registro oficial de cada missão de voo — operadores, baterias e voos realizados — em substituição ao preenchimento manual em papel.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-011</b></span>
+            <span class="lb-chip">REV <b>02</b></span>
+            <span class="lb-chip">AIRCRAFT TECHNICAL LOG</span>
+          </div>
+        </div>
+        <div class="lb-status" id="lbStatus"><span class="d"></span><span id="lbStatusText">Rascunho não salvo</span></div>
       </div>
-      <div class="lb-status" id="lbStatus"><span class="d"></span><span id="lbStatusText">Rascunho não salvo</span></div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Equipamento</div><div class="v">${LB_STATE.equipamento||'—'}</div></div>
+        <div class="cell"><div class="k">Modelo</div><div class="v">${LB_STATE.modelo||'—'}</div></div>
+        <div class="cell"><div class="k">Fabricante</div><div class="v">${LB_STATE.fabricante||'—'}</div></div>
+        <div class="cell"><div class="k">Data</div><div class="v">${LB_STATE.data||'—'}</div></div>
+      </div>
     </div>
 
     <div class="lb-section">
@@ -1588,15 +1639,28 @@ function renderMaintLog(n){
   }));
 
   viewDoc.innerHTML = `
-  <div class="doc" style="max-width:1080px">
+  <div class="doc lb-section-wrap" style="max-width:1080px">
     ${crumbsHTML(n.id)}
     <div class="lb-head">
-      <div class="lb-ic">${IC.wrench}</div>
-      <div>
-        <h1>Diário de Manutenção — Registro Digital</h1>
-        <div class="lb-sub">Registro oficial de discrepâncias, ações corretivas e liberação do equipamento — em substituição ao preenchimento manual em papel.</div>
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.wrench}</div>
+        <div>
+          <h1>Diário de Manutenção — Registro Digital</h1>
+          <div class="lb-sub">Registro oficial de discrepâncias, ações corretivas e liberação do equipamento — em substituição ao preenchimento manual em papel.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-017</b></span>
+            <span class="lb-chip">REV <b>${MT_STATE.revisao||'00'}</b></span>
+            <span class="lb-chip">MAINTENANCE LOG</span>
+          </div>
+        </div>
+        <div class="lb-status" id="mtStatus"><span class="d"></span><span id="mtStatusText">Rascunho não salvo</span></div>
       </div>
-      <div class="lb-status" id="mtStatus"><span class="d"></span><span id="mtStatusText">Rascunho não salvo</span></div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Equipamento</div><div class="v">${MT_STATE.equipamento||'—'}</div></div>
+        <div class="cell"><div class="k">Modelo</div><div class="v">${MT_STATE.modelo||'—'}</div></div>
+        <div class="cell"><div class="k">Nº Série</div><div class="v">${MT_STATE.numSerie||'—'}</div></div>
+        <div class="cell"><div class="k">Fabricante</div><div class="v">${MT_STATE.fabricante||'—'}</div></div>
+      </div>
     </div>
 
     <div class="lb-section">
