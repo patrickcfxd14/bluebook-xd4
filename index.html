@@ -732,7 +732,7 @@ const TREE = [
                   maint:[['2026-04-11','Substituição de hélices','ok'],['2026-02-08','Revisão geral','ok']] },
                 children:[
                   { id:'elios2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'88 seções', status:'ok', type:'pop-elios2' },
-                  { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-elios2' },
                   { id:'elios2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios2' },
                   { id:'elios2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Elios 2', file:'manuals/elios2.pdf' } ] }
@@ -746,7 +746,7 @@ const TREE = [
                   maint:[['2026-05-30','Ajuste de atuadores','ok'],['2026-04-15','Recebimento e comissionamento','ok']] },
                 children:[
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
-                  { id:'go2-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'go2-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-go2' },
                   { id:'go2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-go2' },
                   { id:'go2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
@@ -757,7 +757,7 @@ const TREE = [
                   maint:[['2026-06-01','Comissionamento inicial','warn']] },
                 children:[
                   { id:'g1-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'62 seções', status:'ok', type:'pop-g1' },
-                  { id:'g1-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'g1-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-g1' },
                   { id:'g1-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-g1' },
                   { id:'g1-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree G1', file:'manuals/g1.pdf' } ] }
@@ -769,7 +769,7 @@ const TREE = [
                   maint:[['2026-05-12','Montagem de payload (câmera)','ok']] },
                 children:[
                   { id:'rover-pop', label:'POP — Operação', icon:'file', code:'POP', status:'ok', type:'pop-rover' },
-                  { id:'rover-top', label:'TOP — Treinamento', icon:'grad', status:'ok', type:'placeholder', phSections:['Teoria','Prática'] },
+                  { id:'rover-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-rover' },
                   { id:'rover-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-rover' },
                   { id:'rover-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Rover', file:'manuals/rover.pdf' } ] }
@@ -880,6 +880,10 @@ function routeTo(id){
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='pop-rover'){ renderPOPRover(); show(viewDoc); return; }
   if(n.type==='pto-elios3'){ renderPTOElios3(); show(viewDoc); return; }
+  if(n.type==='pto-elios2'){ renderPTOElios2(); show(viewDoc); return; }
+  if(n.type==='pto-g1'){ renderPTOG1(); show(viewDoc); return; }
+  if(n.type==='pto-go2'){ renderPTOGO2(); show(viewDoc); return; }
+  if(n.type==='pto-rover'){ renderPTORover(); show(viewDoc); return; }
   if(n.type==='phr-elios3'){ renderPhrElios3(); show(viewDoc); return; }
   if(n.type==='phr-elios2'){ renderPhrElios2(); show(viewDoc); return; }
   if(n.type==='phr-go2'){ renderPhrGO2(); show(viewDoc); return; }
@@ -1294,6 +1298,38 @@ function renderPTOElios3(){
     title:'PTO — Flyability Elios 3', subtitle:'Plano de Treinamento Operacional',
     tag:'Plano de Treinamento Operacional do RPAS Flyability Elios 3 — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
     footer:'PTO Flyability Elios 3'
+  });
+}
+function renderPTOElios2(){
+  renderDocFromKey('pto-elios2', {
+    idPrefix:'ptoelios2', crumbId:'elios2-top', icon:'grad', code:'PTO',
+    title:'PTO — Flyability Elios 2', subtitle:'Plano de Treinamento Operacional',
+    tag:'Plano de Treinamento Operacional do RPAS Flyability Elios 2 — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
+    footer:'PTO Flyability Elios 2'
+  });
+}
+function renderPTOG1(){
+  renderDocFromKey('pto-g1', {
+    idPrefix:'ptog1', crumbId:'g1-top', icon:'grad', code:'PTO',
+    title:'PTO — Robô Unitree G1', subtitle:'Plano de Treinamento Operacional',
+    tag:'Plano de Treinamento Operacional do robô humanoide Unitree G1 — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
+    footer:'PTO Robô Unitree G1'
+  });
+}
+function renderPTOGO2(){
+  renderDocFromKey('pto-go2', {
+    idPrefix:'ptogo2', crumbId:'go2-top', icon:'grad', code:'PTO',
+    title:'PTO — Robô Unitree GO2', subtitle:'Plano de Treinamento Operacional',
+    tag:'Plano de Treinamento Operacional do robô quadrúpede Unitree GO2 — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
+    footer:'PTO Robô Unitree GO2'
+  });
+}
+function renderPTORover(){
+  renderDocFromKey('pto-rover', {
+    idPrefix:'ptorover', crumbId:'rover-top', icon:'grad', code:'PTO',
+    title:'PTO — Rover Sniper', subtitle:'Plano de Treinamento Operacional',
+    tag:'Plano de Treinamento Operacional do Rover Sniper — formação, habilitação e reciclagem de operadores, incluindo conteúdo programático, matriz de competências, progressão por fases e formulários de avaliação.',
+    footer:'PTO Rover Sniper'
   });
 }
 
