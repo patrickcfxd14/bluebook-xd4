@@ -109,7 +109,7 @@ svg{display:block}
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
 .panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .panel h3::before{content:"";width:14px;height:2px;background:var(--accent);border-radius:2px}
-.health{display:flex;align-items:center;gap:24px}
+.health{display:flex;align-items:center;gap:24px;height:210px}
 .donut{width:130px;height:130px;flex-shrink:0}
 .health-legend{flex:1;display:flex;flex-direction:column;gap:10px}
 .hl-row{display:flex;align-items:center;gap:10px;font-size:13.5px;padding:2px 0}
@@ -117,7 +117,11 @@ svg{display:block}
 .hl-row .v{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--ink)}
 .hl-row .lbl{color:var(--ink-2)}
 
-.feed{display:flex;flex-direction:column;gap:2px}
+.feed{display:flex;flex-direction:column;gap:2px;height:210px;overflow-y:auto;padding-right:6px}
+.feed::-webkit-scrollbar{width:6px}
+.feed::-webkit-scrollbar-track{background:transparent}
+.feed::-webkit-scrollbar-thumb{background:var(--sky-line);border-radius:99px}
+.feed::-webkit-scrollbar-thumb:hover{background:var(--ink-3)}
 .feed-row{display:flex;align-items:flex-start;gap:13px;padding:12px 0;border-top:1px solid var(--line)}
 .feed-row:first-child{border-top:none}
 .feed-ic{width:30px;height:30px;border-radius:8px;background:var(--sky);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-size:13px}
@@ -561,7 +565,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .lb-tfoot .v{font-size:24px;font-weight:700;color:#fff;font-family:'IBM Plex Mono',monospace;line-height:1;font-variant-numeric:tabular-nums}
 [data-theme="dark"] .lb-tfoot .v{color:#fff}
 
-.lb-occ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--sky);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical}
+.lb-occ textarea{width:calc(100% - 48px);min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--sky);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical}
 .lb-occ textarea:focus{outline:none;border-color:var(--xd4);background:var(--paper)}
 
 .lb-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
