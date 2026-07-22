@@ -1,0 +1,120 @@
+{
+  "id": "root",
+  "title": "POP Operações",
+  "description": "Procedimento Operacional Padrão — visão geral das frentes de operação.",
+  "category": "Raiz",
+  "icon": "hub",
+  "color": "#2BA9E0",
+  "notes": "",
+  "collapsed": false,
+  "ox": 0,
+  "oy": 0,
+  "children": [
+    {
+      "id": "mineracao",
+      "title": "Mineração",
+      "description": "Ativos e estruturas relacionadas à operação de mineração.",
+      "category": "Setor",
+      "icon": "mountain",
+      "color": "#F2A65A",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "min-barragens", "title": "Barragens", "description": "", "category": "Ativo", "icon": "dam", "color": "#F2A65A", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "min-correias", "title": "Correias", "description": "", "category": "Ativo", "icon": "belt", "color": "#F2A65A", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "min-britadores", "title": "Britadores", "description": "", "category": "Ativo", "icon": "gear", "color": "#F2A65A", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "min-moinhos", "title": "Moinhos", "description": "", "category": "Ativo", "icon": "gear", "color": "#F2A65A", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "min-chutes", "title": "Chutes", "description": "", "category": "Ativo", "icon": "funnel", "color": "#F2A65A", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    },
+    {
+      "id": "petroleo-gas",
+      "title": "Petróleo e Gás",
+      "description": "Ativos e estruturas relacionadas à operação de óleo e gás.",
+      "category": "Setor",
+      "icon": "flame",
+      "color": "#34C795",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "og-fpso", "title": "FPSO", "description": "", "category": "Ativo", "icon": "ship", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-navios", "title": "Navios", "description": "", "category": "Ativo", "icon": "ship", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-plataformas", "title": "Plataformas Offshore", "description": "", "category": "Ativo", "icon": "platform", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-tanques", "title": "Tanques", "description": "", "category": "Ativo", "icon": "tank", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-tubulacoes", "title": "Tubulações", "description": "", "category": "Ativo", "icon": "pipe", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-flare", "title": "Flare", "description": "", "category": "Ativo", "icon": "flame", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "og-vasos", "title": "Vasos", "description": "", "category": "Ativo", "icon": "vessel", "color": "#34C795", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    },
+    {
+      "id": "celulose",
+      "title": "Celulose",
+      "description": "Ativos e estruturas relacionadas à operação de celulose e papel.",
+      "category": "Setor",
+      "icon": "leaf",
+      "color": "#4FD1C5",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "cel-digestores", "title": "Digestores", "description": "", "category": "Ativo", "icon": "flask", "color": "#4FD1C5", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "cel-caldeiras", "title": "Caldeiras", "description": "", "category": "Ativo", "icon": "boiler", "color": "#4FD1C5", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "cel-chamines", "title": "Chaminés", "description": "", "category": "Ativo", "icon": "chimney", "color": "#4FD1C5", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "cel-silos", "title": "Silos", "description": "", "category": "Ativo", "icon": "silo", "color": "#4FD1C5", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    },
+    {
+      "id": "energia",
+      "title": "Energia",
+      "description": "Ativos e estruturas relacionadas à operação de energia.",
+      "category": "Setor",
+      "icon": "bolt",
+      "color": "#F2B84B",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "energ-torres", "title": "Torres", "description": "", "category": "Ativo", "icon": "tower", "color": "#F2B84B", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "energ-subestacoes", "title": "Subestações", "description": "", "category": "Ativo", "icon": "substation", "color": "#F2B84B", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "energ-linhas", "title": "Linhas", "description": "", "category": "Ativo", "icon": "line", "color": "#F2B84B", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "energ-turbinas", "title": "Turbinas", "description": "", "category": "Ativo", "icon": "turbine", "color": "#F2B84B", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    },
+    {
+      "id": "infraestrutura",
+      "title": "Infraestrutura",
+      "description": "Ativos e estruturas civis de infraestrutura.",
+      "category": "Setor",
+      "icon": "bridge",
+      "color": "#7C93FF",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "infra-pontes", "title": "Pontes", "description": "", "category": "Ativo", "icon": "bridge", "color": "#7C93FF", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "infra-tuneis", "title": "Túneis", "description": "", "category": "Ativo", "icon": "tunnel", "color": "#7C93FF", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "infra-galerias", "title": "Galerias", "description": "", "category": "Ativo", "icon": "gallery", "color": "#7C93FF", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "infra-reservatorios", "title": "Reservatórios", "description": "", "category": "Ativo", "icon": "tank", "color": "#7C93FF", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    },
+    {
+      "id": "siderurgia",
+      "title": "Siderurgia",
+      "description": "Ativos e estruturas relacionadas à operação siderúrgica.",
+      "category": "Setor",
+      "icon": "factory",
+      "color": "#F2726C",
+      "notes": "",
+      "collapsed": false,
+      "ox": 0, "oy": 0,
+      "children": [
+        { "id": "sid-altos-fornos", "title": "Altos-Fornos", "description": "", "category": "Ativo", "icon": "furnace", "color": "#F2726C", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "sid-coquerias", "title": "Coquerias", "description": "", "category": "Ativo", "icon": "furnace", "color": "#F2726C", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "sid-convertedores", "title": "Convertedores", "description": "", "category": "Ativo", "icon": "flask", "color": "#F2726C", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] },
+        { "id": "sid-pontes-rolantes", "title": "Pontes Rolantes", "description": "", "category": "Ativo", "icon": "crane", "color": "#F2726C", "notes": "", "collapsed": false, "ox": 0, "oy": 0, "children": [] }
+      ]
+    }
+  ]
+}

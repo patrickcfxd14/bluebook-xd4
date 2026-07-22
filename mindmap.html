@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Mental — XD4 Blue Book</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mindmap.css">
+</head>
+<body>
+
+<div class="mm-app" id="mmApp">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="mm-sidebar" id="mmSidebar">
+    <div class="mm-sidebar-head">
+      <div class="mm-brand">
+        <span class="mm-brand-ic">⌘</span>
+        <div class="mm-brand-tx">
+          <b>Mapa Mental</b>
+          <small>Organograma interativo</small>
+        </div>
+      </div>
+      <button class="mm-icon-btn" id="mmSidebarCollapse" title="Recolher painel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 6 9 12 15 18"/></svg>
+      </button>
+    </div>
+
+    <div class="mm-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+      <input type="text" id="mmSearchInput" placeholder="Pesquisar nó..." autocomplete="off">
+      <span class="mm-search-count" id="mmSearchCount" hidden></span>
+    </div>
+    <div class="mm-search-nav" id="mmSearchNav" hidden>
+      <button id="mmSearchPrev">◂ Anterior</button>
+      <button id="mmSearchNext">Próximo ▸</button>
+      <button id="mmSearchClear" title="Limpar busca">✕</button>
+    </div>
+
+    <div class="mm-sidebar-actions">
+      <button class="mm-btn mm-btn-primary" id="mmBtnNewNode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo nó
+      </button>
+      <div class="mm-btn-row">
+        <button class="mm-btn" id="mmBtnExpandAll" title="Expandir tudo">Expandir tudo</button>
+        <button class="mm-btn" id="mmBtnCollapseAll" title="Recolher tudo">Recolher tudo</button>
+      </div>
+      <button class="mm-btn" id="mmBtnCenter" title="Centralizar mapa (0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+        Centralizar
+      </button>
+    </div>
+
+    <div class="mm-sidebar-label">Estrutura</div>
+    <div class="mm-tree" id="mmTree"></div>
+
+    <div class="mm-sidebar-footer">
+      <div class="mm-sidebar-label" style="margin:0 0 8px">Dados</div>
+      <div class="mm-btn-row">
+        <button class="mm-btn" id="mmBtnExportMenu">Exportar</button>
+        <button class="mm-btn" id="mmBtnImport">Importar</button>
+      </div>
+      <input type="file" id="mmImportInput" accept="application/json" hidden>
+      <p class="mm-autosave" id="mmAutosaveTag">Salvo automaticamente ✓</p>
+    </div>
+  </aside>
+
+  <!-- ===================== CANVAS ===================== -->
+  <div class="mm-canvas-wrap">
+    <header class="mm-toolbar">
+      <button class="mm-icon-btn mm-only-mobile" id="mmToggleSidebar" title="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+      <div class="mm-toolbar-title">
+        <span id="mmSelectedPath">POP Operações</span>
+      </div>
+      <div class="mm-toolbar-actions">
+        <div class="mm-toolgroup">
+          <button class="mm-icon-btn" id="mmBtnUndo" title="Desfazer (Ctrl+Z)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+          </button>
+          <button class="mm-icon-btn" id="mmBtnRedo" title="Refazer (Ctrl+Y)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+          </button>
+        </div>
+        <div class="mm-toolgroup">
+          <button class="mm-icon-btn" id="mmZoomOut" title="Diminuir zoom (-)">−</button>
+          <span class="mm-zoom-lbl" id="mmZoomLbl">100%</span>
+          <button class="mm-icon-btn" id="mmZoomIn" title="Aumentar zoom (+)">+</button>
+        </div>
+        <div class="mm-toolgroup mm-export-wrap">
+          <button class="mm-btn mm-btn-ghost" id="mmBtnExportToggle">Exportar ▾</button>
+          <div class="mm-export-menu" id="mmExportMenu" hidden>
+            <button data-fmt="json">⇩ Exportar JSON</button>
+            <button data-fmt="png">⇩ Exportar PNG</button>
+            <button data-fmt="svg">⇩ Exportar SVG</button>
+            <button data-fmt="pdf">⇩ Exportar PDF</button>
+          </div>
+        </div>
+        <button class="mm-btn mm-btn-primary" id="mmBtnHelp" title="Atalhos de teclado">⌨ Atalhos</button>
+      </div>
+    </header>
+
+    <div class="mm-viewport" id="mmViewport">
+      <div class="mm-world" id="mmWorld">
+        <svg id="mmSvg" class="mm-edges"></svg>
+        <div id="mmNodesLayer" class="mm-nodes"></div>
+      </div>
+      <div class="mm-move-banner" id="mmMoveBanner" hidden>
+        Selecione o nó de destino para mover · <button id="mmMoveCancel">Cancelar (Esc)</button>
+      </div>
+      <div class="mm-empty-hint" id="mmEmptyHint" hidden>Clique com o botão direito no canvas para criar o primeiro nó.</div>
+    </div>
+  </div>
+
+  <!-- ===================== EDITOR LATERAL ===================== -->
+  <aside class="mm-editor" id="mmEditor" hidden>
+    <div class="mm-editor-head">
+      <b>Editar nó</b>
+      <button class="mm-icon-btn" id="mmEditorClose">✕</button>
+    </div>
+    <div class="mm-editor-body">
+      <label class="mm-field">
+        <span>Nome</span>
+        <input type="text" id="mmFieldTitle" maxlength="120">
+      </label>
+      <label class="mm-field">
+        <span>Categoria</span>
+        <input type="text" id="mmFieldCategory" maxlength="60" placeholder="Ex: Setor, Ativo, Procedimento...">
+      </label>
+      <label class="mm-field">
+        <span>Descrição</span>
+        <textarea id="mmFieldDescription" rows="3" placeholder="Descrição breve do nó"></textarea>
+      </label>
+      <div class="mm-field">
+        <span>Ícone</span>
+        <div class="mm-icon-grid" id="mmIconGrid"></div>
+      </div>
+      <div class="mm-field">
+        <span>Cor</span>
+        <div class="mm-color-grid" id="mmColorGrid"></div>
+      </div>
+      <label class="mm-field">
+        <span>Observações</span>
+        <textarea id="mmFieldNotes" rows="4" placeholder="Notas internas, links, referências..."></textarea>
+      </label>
+      <div class="mm-field-meta">
+        <span id="mmFieldId"></span>
+        <span id="mmFieldChildCount"></span>
+      </div>
+    </div>
+    <div class="mm-editor-foot">
+      <button class="mm-btn" id="mmEditorDuplicate">Duplicar</button>
+      <button class="mm-btn mm-btn-danger" id="mmEditorDelete">Excluir</button>
+    </div>
+  </aside>
+
+  <!-- ===================== MENU DE CONTEXTO ===================== -->
+  <div class="mm-ctxmenu" id="mmCtxMenu" hidden></div>
+
+  <!-- ===================== MODAL DE ATALHOS ===================== -->
+  <div class="mm-modal-backdrop" id="mmHelpBackdrop" hidden>
+    <div class="mm-modal">
+      <div class="mm-modal-head"><b>Atalhos de teclado</b><button class="mm-icon-btn" id="mmHelpClose">✕</button></div>
+      <div class="mm-modal-body">
+        <div class="mm-shortcut-row"><kbd>Tab</kbd><span>Adicionar filho ao nó selecionado</span></div>
+        <div class="mm-shortcut-row"><kbd>Enter</kbd><span>Adicionar irmão ao nó selecionado</span></div>
+        <div class="mm-shortcut-row"><kbd>F2</kbd><span>Renomear nó selecionado</span></div>
+        <div class="mm-shortcut-row"><kbd>Delete</kbd><span>Excluir nó selecionado</span></div>
+        <div class="mm-shortcut-row"><kbd>Ctrl</kbd>+<kbd>D</kbd><span>Duplicar nó selecionado</span></div>
+        <div class="mm-shortcut-row"><kbd>Ctrl</kbd>+<kbd>Z</kbd><span>Desfazer</span></div>
+        <div class="mm-shortcut-row"><kbd>Ctrl</kbd>+<kbd>Y</kbd><span>Refazer</span></div>
+        <div class="mm-shortcut-row"><kbd>Ctrl</kbd>+<kbd>F</kbd><span>Pesquisar</span></div>
+        <div class="mm-shortcut-row"><kbd>+</kbd> / <kbd>−</kbd><span>Zoom in / out</span></div>
+        <div class="mm-shortcut-row"><kbd>0</kbd><span>Centralizar mapa</span></div>
+        <div class="mm-shortcut-row"><kbd>Scroll</kbd><span>Zoom no canvas</span></div>
+        <div class="mm-shortcut-row"><kbd>Arrastar canvas</kbd><span>Mover a visualização (pan)</span></div>
+        <div class="mm-shortcut-row"><kbd>Esc</kbd><span>Fechar painéis / cancelar ação</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mm-toast" id="mmToast" hidden></div>
+</div>
+
+<!-- Bibliotecas externas usadas apenas nos exports PNG/PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="mindmap.js" defer></script>
+</body>
+</html>
