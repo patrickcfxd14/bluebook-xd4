@@ -29,6 +29,12 @@
 }
 
 *{box-sizing:border-box}
+/* Correção crítica: vários painéis (modal, editor, barra de busca, etc.)
+   usam display:flex explícito, o que sobrescreve o atributo HTML `hidden`
+   (que por padrão aplica display:none). Sem esta regra, esses painéis
+   ficam visíveis mesmo "escondidos" e não é possível fechá-los. */
+[hidden]{display:none!important}
+
 .mm-app{
   --sbw:300px;
   position:relative;
