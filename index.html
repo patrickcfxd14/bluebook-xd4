@@ -249,13 +249,6 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 
 /* PLACEHOLDER DOC */
 .ph{max-width:760px;margin:0 auto;padding:48px 40px}
-.mm-embed{display:flex;flex-direction:column;height:calc(100vh - 62px)}
-.mm-embed-head{position:relative;padding:16px 24px 12px;flex-shrink:0}
-.mm-embed-head .ph-head{margin-bottom:0}
-.mm-embed-open{position:absolute;top:16px;right:24px;background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow-sm);color:var(--ink-2)!important}
-.mm-embed-open:hover{background:var(--sky)!important;color:var(--ink)!important}
-.mm-embed-frame-wrap{flex:1;min-height:0;padding:0 16px 16px}
-.mm-embed-frame-wrap iframe{width:100%;height:100%;border:1px solid var(--line);border-radius:14px;display:block;background:#0A0F1A;box-shadow:var(--shadow)}
 .ph-head{text-align:center;margin-bottom:32px}
 .ph-ic{width:76px;height:76px;border-radius:18px;margin:0 auto 18px;background:var(--sky);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;color:var(--accent)}
 .ph-ic svg{width:36px;height:36px}
@@ -848,7 +841,6 @@ const TREE = [
                 ]}
             ]}
     ] },
-  { id:'mindmap', label:'<b>Mapa Mental</b> — Organograma Interativo', icon:'org', badge:'Novo', status:'ok', type:'mindmap', root:true },
   { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
   { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
@@ -949,7 +941,6 @@ function routeTo(id){
   const n=BYID[id]; if(!n) return;
   if(n.type==='home'){ renderHome(); show(viewHome); toggleSpy(false); return; }
   if(n.type==='org'){ renderOrg(); show(viewDoc); toggleSpy(false); return; }
-  if(n.type==='mindmap'){ renderMindmap(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='mgo'){ renderMGO(); show(viewDoc); return; }
   if(n.type==='pop-elios2'){ renderPOPElios2(); show(viewDoc); return; }
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
@@ -2032,31 +2023,6 @@ function renderPlaceholder(n){
 }
 
 /* ---------- PDF (fallback estático, sem arquivo vinculado) ---------- */
-/* ---------- MAPA MENTAL (módulo externo embutido via iframe) ----------
-   O módulo vive em mindmap/mindmap.html (HTML/CSS/JS puros, dados em
-   mindmap/mindmap-data.json) e é totalmente independente deste portal.
-   Basta manter a pasta mindmap/ ao lado deste index.html no repositório. */
-function renderMindmap(n){
-  viewDoc.innerHTML=`
-  <div class="mm-embed">
-    <div class="mm-embed-head">
-      ${crumbsHTML(n.id)}
-      <div class="ph-head">
-        <div class="ph-ic">${IC.org}</div>
-        <h1>${stripHTML(n.label)}</h1>
-        <div class="code">Organograma interativo · drag &amp; drop</div>
-        <div class="ph-status" style="background:var(--ok-bg);color:var(--ok)"><span class="d" style="background:var(--ok)"></span>Disponível</div>
-      </div>
-      <a href="mindmap/mindmap.html" target="_blank" rel="noopener" class="icon-btn mm-embed-open" title="Abrir em nova aba">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-      </a>
-    </div>
-    <div class="mm-embed-frame-wrap">
-      <iframe src="mindmap/mindmap.html" title="Mapa Mental — Organograma Interativo" loading="lazy"></iframe>
-    </div>
-  </div>`;
-}
-
 function renderPDF(n){
   viewDoc.innerHTML=`
   <div class="ph">
