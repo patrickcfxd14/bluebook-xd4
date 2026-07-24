@@ -1844,14 +1844,14 @@ function renderPhrRover(){
    ============================================================ */
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbymY63xOk2kcp0e2Ci51oGmsEe8G-TsqFu-zp7XaMTSOpBo4U_-P_XC1-Ry13zHCXmxjw/exec";
 
-async function sendToDrive(kind, payload){
+async function sendToDrive(kind, payload, extra){
   if(!GAS_ENDPOINT){ return {ok:false, reason:'not_configured'}; }
   const fetchPromise = (async () => {
     const res = await fetch(GAS_ENDPOINT, {
       method:'POST',
       redirect:'follow',
       headers:{'Content-Type':'text/plain;charset=utf-8'}, // evita preflight OPTIONS, que o Apps Script não trata
-      body: JSON.stringify({ kind, savedAt: new Date().toISOString(), payload })
+      body: JSON.stringify(Object.assign({ kind, savedAt: new Date().toISOString(), payload }, extra||{}))
     });
     const text = await res.text();
     let json = null;
@@ -2108,7 +2108,13 @@ async function lbSave(){
   const s = document.getElementById('lbStatus');
   s.classList.add('saved');
   document.getElementById('lbStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const r = await sendToDrive('diario_bordo', LB_STATE);
+
+  const rel = lbBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+  if(!pdfBlob){ console.warn('PDF idêntico não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
+
+  const r = await sendToDrive('diario_bordo', LB_STATE, extra);
   if(r.reason==='timeout_assumed_ok'){
     lbToast('Diário enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)');
   } else if(r.ok){
@@ -2119,7 +2125,7 @@ async function lbSave(){
   else { console.error('Detalhe do erro de envio:', r); lbToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
 }
 
-function lbExportReport(){
+function lbBuildReport(){
   lbGatherFields();
   let acum=0;
   const rows = LB_STATE.voos.map((v,i)=>{
@@ -2186,7 +2192,12 @@ function lbExportReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-011 · Diário de Bordo</span></div>`;
 
-  rpOpenWindow(rpShell('Diário de Bordo — '+(raEsc(LB_STATE.cliente)||'sem cliente'), headHtml, bodyHtml));
+  return { headHtml, bodyHtml, title:'Diário de Bordo — '+(raEsc(LB_STATE.cliente)||'sem cliente'), filename:'Diario_Bordo_'+(raEsc(LB_STATE.cliente)||'sem_cliente').replace(/\s+/g,'_') };
+}
+
+function lbExportReport(){
+  const r = lbBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
 }
 
 const MAINTLOG_SEED = {
@@ -2391,7 +2402,13 @@ async function mtSave(){
   const s = document.getElementById('mtStatus');
   s.classList.add('saved');
   document.getElementById('mtStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const r = await sendToDrive('diario_manutencao', MT_STATE);
+
+  const rel = mtBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+  if(!pdfBlob){ console.warn('PDF idêntico não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
+
+  const r = await sendToDrive('diario_manutencao', MT_STATE, extra);
   if(r.reason==='timeout_assumed_ok'){
     mtToast('Diário enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)');
   } else if(r.ok){
@@ -2402,7 +2419,7 @@ async function mtSave(){
   else { console.error('Detalhe do erro de envio:', r); mtToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
 }
 
-function mtExportReport(){
+function mtBuildReport(){
   mtGatherFields();
   const discRows = MT_STATE.discrepancias.map(d=>`<tr>
       <td>${raEsc(d.etapa)}</td><td>${raEsc(d.descDisc)}</td><td>${raEsc(d.descInter)}</td>
@@ -2475,7 +2492,12 @@ function mtExportReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-017 · Diário de Manutenção</span></div>`;
 
-  rpOpenWindow(rpShell('Diário de Manutenção — '+(raEsc(MT_STATE.equipamento)||'sem equipamento'), headHtml, bodyHtml));
+  return { headHtml, bodyHtml, title:'Diário de Manutenção — '+(raEsc(MT_STATE.equipamento)||'sem equipamento'), filename:'Diario_Manutencao_'+(raEsc(MT_STATE.numDoc)||'SN').replace(/\W+/g,'-') };
+}
+
+function mtExportReport(){
+  const r = mtBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
 }
 
 /* ================================================================
@@ -2915,7 +2937,64 @@ function rpSigCell(val){
   return '<span class="chk">&#10003;</span>';
 }
 
-function raExportReport(){
+/* ================================================================
+   PDF IDÊNTICO NO DRIVE — gera o PDF no próprio navegador (html2pdf.js),
+   a partir do MESMO HTML da pré-visualização, e envia pronto pro Drive.
+   Assim o Apps Script só salva os bytes, sem precisar "redesenhar" nada
+   no Google Docs — o resultado é visualmente idêntico ao exportado aqui.
+   ================================================================ */
+let HTML2PDF_LOADING = null;
+function ensureHtml2Pdf(){
+  if(window.html2pdf) return Promise.resolve();
+  if(HTML2PDF_LOADING) return HTML2PDF_LOADING;
+  HTML2PDF_LOADING = new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('Falha ao carregar html2pdf.js'));
+    document.head.appendChild(s);
+  });
+  return HTML2PDF_LOADING;
+}
+function blobToBase64(blob){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onloadend = ()=>{ resolve(String(reader.result).split(',')[1]); };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+/* Renderiza headHtml+bodyHtml (o mesmo conteúdo usado na pré-visualização) num
+   container fora da tela e converte em PDF. Retorna um Blob de PDF, ou null
+   se falhar (nesse caso quem chamou deve seguir sem pdfBase64, como fallback). */
+async function gerarPdfBlob(headHtml, bodyHtml){
+  try{ await ensureHtml2Pdf(); }catch(e){ console.error('html2pdf.js não carregou:', e); return null; }
+
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;background:#fff';
+  holder.innerHTML = `<style>${rpStyles()}</style><div class="rp-page" style="margin:0;box-shadow:none;border-radius:0">${headHtml}${bodyHtml}</div>`;
+  document.body.appendChild(holder);
+
+  try{
+    const el = holder.querySelector('.rp-page');
+    const opt = {
+      margin: 0,
+      image: { type:'jpeg', quality:0.95 },
+      html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff', windowWidth:el.scrollWidth },
+      jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
+      pagebreak: { mode:['css','avoid-all'] }
+    };
+    const blob = await window.html2pdf().set(opt).from(el).outputPdf('blob');
+    return blob;
+  }catch(e){
+    console.error('Falha ao gerar PDF com html2pdf.js:', e);
+    return null;
+  }finally{
+    document.body.removeChild(holder);
+  }
+}
+
+function raBuildReport(){
   const risk = raComputeRisk();
   const clienteNome = raEsc(RA_STATE.cliente || 'sem cliente');
 
@@ -2981,7 +3060,12 @@ function raExportReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-002 · Risk Assessment</span></div>`;
 
-  rpOpenWindow(rpShell('Risk Assessment — '+clienteNome, headHtml, bodyHtml));
+  return { headHtml, bodyHtml, title:'Risk Assessment — '+clienteNome, filename:'Risk_Assessment_'+clienteNome.replace(/\s+/g,'_') };
+}
+
+function raExportReport(){
+  const r = raBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
 }
 
 function raUpdateTailstrip(){
@@ -3029,7 +3113,13 @@ async function raSave(){
   const s = document.getElementById('raStatus');
   s.classList.add('saved');
   document.getElementById('raStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const r = await sendToDrive('risk_assessment', RA_STATE);
+
+  const rel = raBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+  if(!pdfBlob){ console.warn('PDF idêntico não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
+
+  const r = await sendToDrive('risk_assessment', RA_STATE, extra);
   if(r.reason==='timeout_assumed_ok'){
     raToast('Risk Assessment enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)');
   } else if(r.ok){
