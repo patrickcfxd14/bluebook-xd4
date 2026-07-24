@@ -2970,8 +2970,10 @@ function blobToBase64(blob){
 async function gerarPdfBlob(headHtml, bodyHtml){
   try{ await ensureHtml2Pdf(); }catch(e){ console.error('html2pdf.js não carregou:', e); return null; }
 
+  // Importante: deixar left:0 (só sobe pra fora da tela verticalmente) — um left
+  // muito negativo bagunça a medição de largura do html2canvas e corta o conteúdo.
   const holder = document.createElement('div');
-  holder.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;background:#fff';
+  holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:210mm;background:#fff;z-index:-1';
   holder.innerHTML = `<style>${rpStyles()}</style><div class="rp-page" style="margin:0;box-shadow:none;border-radius:0">${headHtml}${bodyHtml}</div>`;
   document.body.appendChild(holder);
 
@@ -2980,9 +2982,9 @@ async function gerarPdfBlob(headHtml, bodyHtml){
     const opt = {
       margin: 0,
       image: { type:'jpeg', quality:0.95 },
-      html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff', windowWidth:el.scrollWidth },
+      html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
       jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
-      pagebreak: { mode:['css','avoid-all'] }
+      pagebreak: { mode:'css' }
     };
     const blob = await window.html2pdf().set(opt).from(el).outputPdf('blob');
     return blob;
