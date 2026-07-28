@@ -577,6 +577,8 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .lb-field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:6px;font-weight:600}
 .lb-field input,.lb-field select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--sky);color:var(--ink);font-size:14px;font-family:inherit;transition:.15s}
 .lb-field input:focus,.lb-field select:focus{outline:none;border-color:var(--xd4);background:var(--paper);box-shadow:0 0 0 3px rgba(43,169,224,.12)}
+.lb-field textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--sky);color:var(--ink);font-size:14px;line-height:1.55;font-family:inherit;transition:.15s;resize:vertical;min-height:78px}
+.lb-field textarea:focus{outline:none;border-color:var(--xd4);background:var(--paper);box-shadow:0 0 0 3px rgba(43,169,224,.12)}
 .lb-field input[readonly]{color:var(--ink-2);background:var(--sky);cursor:default}
 .lb-field.ro .static{padding:9px 11px;background:var(--sky);border-radius:9px;font-size:14px;color:var(--ink);font-weight:600;border:1px solid var(--line)}
 
@@ -719,7 +721,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;box-shadow:none!important}
   body{background:#fff!important}
-  .banner,.tree-panel,.crumbs,.lb-actions,.lb-addrow,.lb-rowdel,.mob-tree-btn,.lb-status,.lb-toast,.sig-modal-overlay,.ra-sig-redo,.lb-hint{display:none!important}
+  .banner,.tree-panel,.crumbs,.lb-actions,.lb-addrow,.lb-rowdel,.mob-tree-btn,.lb-status,.lb-toast,.sig-modal-overlay,.ra-sig-redo,.lb-hint,.imgzone .imgbtn.danger,.imgzone .imgbtn.draw,.gallery-item .gdel,.tbl-rowdel,.tbl-addrow,.etapa-del,.diag-overlay{display:none!important}
   .content{overflow:visible!important;padding:0!important}
   .lb-section-wrap{max-width:100%!important}
   .lb-section{border:1px solid #ccc!important;break-inside:avoid;margin-bottom:10px!important}
@@ -819,6 +821,117 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .chat-hint{margin-top:12px;font-size:11.5px;color:var(--ink-3);text-align:center}
 .chat-hint code{font-family:'IBM Plex Mono',monospace;background:var(--sky);padding:2px 6px;border-radius:5px}
 
+
+/* ===== PLANO DE CAPTURA (módulo embutido, igual Diário de Bordo/Manutenção) ===== */
+.fase-select-row{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:8px}
+.fase-select-row label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:rgba(226,238,250,.82)}
+.fase-select-row select{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:6px 30px 6px 12px;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;background-size:13px}
+.fase-select-row select:hover{border-color:rgba(255,255,255,.5)}
+.fase-select-row select:focus{outline:none;border-color:var(--xd4);box-shadow:0 0 0 3px rgba(43,169,224,.3)}
+.fase-select-row select option{color:var(--ink);background:#fff}
+.fase-select-row .fase-hint{font-size:11px;color:rgba(226,238,250,.65);flex-basis:100%}
+@media (min-width:640px){
+.fase-select-row .fase-hint{flex-basis:auto;width:100%}
+}
+.fase-approve-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(63,185,138,.2);border:1px solid rgba(63,185,138,.45);color:#eafff5;font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
+.fase-approve-btn:hover{background:rgba(63,185,138,.32);border-color:rgba(63,185,138,.6)}
+.fase-approve-btn.is-final{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.8)}
+.fase-approve-btn.is-final:hover{background:rgba(255,255,255,.16)}
+.fase-approved-badge{display:none;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#eafff5;background:rgba(63,185,138,.16);border:1px solid rgba(63,185,138,.35);padding:6px 11px;border-radius:99px;white-space:nowrap}
+.fase-approved-badge svg{width:12px;height:12px;flex-shrink:0}
+.lb-section>h3 .htitle{flex:1}
+.lb-section>h3 .subhint{font-size:10.5px;text-transform:none;letter-spacing:0;color:var(--ink-3);font-weight:500}
+.lb-field .hint{display:block;font-size:11px;color:var(--ink-3);margin-top:5px;font-weight:400;text-transform:none;letter-spacing:0}
+.lb-field textarea.tall{min-height:210px}
+.lb-field.full{grid-column:1 / -1}
+.lb-2col{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.lb-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:start}
+@media (max-width:760px){
+.lb-2col,.lb-3col{grid-template-columns:1fr}
+}
+.lb-2col>.lb-field textarea:not(.tall),.lb-3col>.lb-field textarea:not(.tall){min-height:120px}
+.lb-colstack{display:flex;flex-direction:column}
+.lb-colstack .imgzone{min-height:150px;display:flex;flex-direction:column;justify-content:center}
+.lb-colstack .imgzone.has-img{justify-content:flex-start;min-height:0}
+.imgzone{border:1.5px dashed var(--sky-line);border-radius:12px;background:var(--sky);padding:18px;text-align:center;cursor:pointer;transition:.15s;position:relative}
+.imgzone:hover{border-color:var(--xd4);background:rgba(43,169,224,.05)}
+.imgzone .ph{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink-3)}
+.imgzone .ph svg{width:24px;height:24px}
+.imgzone .ph .t{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.imgzone .ph .s{font-size:11px}
+.imgzone.has-img{padding:0;cursor:default;border-style:solid}
+.imgzone img{width:100%;max-height:300px;object-fit:contain;border-radius:10px;display:block;background:#fff}
+.imgzone .imgbar{display:flex;justify-content:flex-end;gap:8px;padding:8px}
+.imgzone .imgbtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;background:var(--paper);border:1px solid var(--line);color:var(--ink-2)}
+.imgzone .imgbtn:hover{color:var(--ink);border-color:var(--accent)}
+.imgzone .imgbtn.danger:hover{color:var(--crit);border-color:var(--crit)}
+.imgzone .imgbtn svg{width:13px;height:13px}
+.imgzone input[type=file]{display:none}
+.imgzone .imgbtn.draw{color:var(--xd4);border-color:rgba(43,169,224,.35)}
+.imgzone .imgbtn.draw:hover{border-color:var(--xd4);background:rgba(43,169,224,.06)}
+.imgzone .imgbtn.standalone{display:inline-flex;margin-top:12px;background:var(--paper)}
+.etapa-block{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+@media (max-width:760px){
+.etapa-block{grid-template-columns:1fr}
+}
+.etapa-prefix{white-space:nowrap;color:var(--ink-2);flex-shrink:0}
+.etapa-title-input{flex:1;min-width:60px;background:transparent;border:1px solid transparent;border-radius:6px;font:inherit;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;font-size:12px;padding:4px 7px;transition:.15s}
+.etapa-title-input:hover{background:rgba(11,37,69,.04);border-color:var(--sky-line)}
+.etapa-title-input:focus{outline:none;background:var(--paper);border-color:var(--xd4);box-shadow:0 0 0 3px rgba(43,169,224,.12)}
+.etapa-del{width:26px;height:26px;border-radius:7px;color:var(--ink-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.etapa-del:hover{color:var(--crit);background:var(--crit-bg)}
+.etapa-del svg{width:13px;height:13px}
+.etapas-addbar{display:flex;justify-content:center;margin:4px 0 16px}
+.etapas-addbar .tbl-addrow{background:var(--paper);border:1.5px dashed var(--sky-line);border-radius:12px;padding:12px 18px;justify-content:center;flex:1;max-width:100%}
+.etapas-addbar .tbl-addrow:hover{border-color:var(--xd4);text-decoration:none;background:rgba(43,169,224,.05)}
+.declare-box{background:var(--sky);border:1px solid var(--sky-line);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--ink-2);line-height:1.65;white-space:pre-wrap}
+.agree-row{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);cursor:pointer;transition:.15s;margin-top:14px;user-select:none}
+.agree-row:hover{border-color:var(--accent)}
+.agree-row.on{background:var(--ok-bg);border-color:var(--ok)}
+.agree-row .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;color:transparent;background:var(--sky);flex-shrink:0;transition:.15s}
+.agree-row.on .box{background:var(--ok);border-color:var(--ok);color:#fff}
+.agree-row .box svg{width:12px;height:12px}
+.agree-row span{font-size:13.5px;font-weight:600;color:var(--ink)}
+.card{background:var(--sky);border:1px solid var(--sky-line);border-radius:12px;padding:16px}
+.card .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--xd4);font-weight:700;margin-bottom:12px}
+.tbl-addrow{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:13px;font-weight:600;color:var(--xd4);padding:6px 2px}
+.tbl-addrow:hover{text-decoration:underline}
+.tbl-addrow svg{width:14px;height:14px}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.gallery-item{border:1px solid var(--sky-line);border-radius:12px;padding:14px;background:var(--sky);position:relative}
+.gallery-item input.gtitle{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font-size:13px;font-weight:600;margin-bottom:10px;font-family:inherit}
+.gallery-item .gdel{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:7px;background:var(--paper);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-3)}
+.gallery-item .gdel:hover{color:var(--crit);border-color:var(--crit)}
+.gallery-item .gdel svg{width:12px;height:12px}
+.lb-reset{display:inline-flex;align-items:center;gap:8px;color:var(--ink-3);border:1px solid transparent;border-radius:10px;padding:12px 10px;font-size:13px;font-weight:600}
+.lb-reset:hover{color:var(--crit)}
+.lb-reset svg{width:14px;height:14px}
+.diag-overlay{position:fixed;inset:0;background:rgba(11,20,35,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:900;opacity:0;pointer-events:none;transition:.2s;padding:20px}
+.diag-overlay.show{opacity:1;pointer-events:auto}
+.diag-modal{background:#fff;border-radius:16px;width:min(760px,96vw);box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;max-height:92vh}
+.diag-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);flex-shrink:0}
+.diag-head h4{font-size:14.5px;font-weight:700}
+.diag-close{width:28px;height:28px;border-radius:8px;font-size:20px;color:var(--ink-3);display:flex;align-items:center;justify-content:center}
+.diag-close:hover{background:var(--sky);color:var(--ink)}
+.diag-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--line);background:var(--sky);flex-shrink:0}
+.diag-tool{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:8px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-2);font-size:12.5px;font-weight:600}
+.diag-tool svg{width:14px;height:14px}
+.diag-tool:hover{border-color:var(--accent);color:var(--ink)}
+.diag-tool.on{background:rgba(43,169,224,.12);border-color:var(--xd4);color:var(--ink)}
+.diag-sep{width:1px;align-self:stretch;background:var(--line);margin:0 2px}
+.diag-colors{display:flex;align-items:center;gap:6px}
+.diag-color{width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--line);cursor:pointer}
+.diag-color.on{box-shadow:0 0 0 2px var(--ink)}
+.diag-canvas-wrap{position:relative;background:repeating-conic-gradient(#f3f6fa 0% 25%,#fff 0% 50%) 0 0/18px 18px;overflow:hidden;flex:1;min-height:340px;max-height:56vh}
+.diag-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.diag-hint{padding:8px 18px 0;font-size:11.5px;color:var(--ink-3);flex-shrink:0}
+.diag-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;flex-shrink:0}
+.diag-actions .left{display:flex;gap:8px}
+.diag-btn{padding:9px 14px;border-radius:9px;font-size:12.5px;font-weight:600}
+.diag-btn.ghost{background:var(--sky);color:var(--ink-2);border:1px solid var(--line)}
+.diag-btn.ghost:hover{color:var(--ink);border-color:var(--accent)}
+.diag-btn.primary{background:linear-gradient(135deg,var(--xd4),var(--blue));color:#fff;display:inline-flex;align-items:center;gap:7px}
+.diag-btn.primary svg{width:14px;height:14px}
 </style>
 </head>
 <body>
@@ -1195,6 +1308,7 @@ const TREE = [
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
   { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
   { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true },
+  { id:'plano-captura', label:'<b>Plano de Captura</b> — Digital', icon:'shield', code:'PC', badge:'Novo', status:'ok', type:'planocaptura', root:true },
   { id:'risk-assessment', label:'<b>Risk Assessment</b> — Digital', icon:'shield', code:'FO-OPE-002', badge:'Novo', status:'ok', type:'riskassessment', root:true },
   { id:'docs-gerais', label:'Documentos Gerais', icon:'folder', type:'group', status:'ok', hidden:true,
     children:[
@@ -1319,6 +1433,7 @@ function routeTo(id){
   if(n.type==='phr-rover'){ renderPhrRover(); show(viewDoc); return; }
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
   if(n.type==='maintlog'){ renderMaintLog(n); show(viewDoc); return; }
+  if(n.type==='planocaptura'){ renderPlanoCaptura(n); show(viewDoc); return; }
   if(n.type==='riskassessment'){ renderRiskAssessment(n); show(viewDoc); return; }
   if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
@@ -3643,6 +3758,937 @@ renderTree();
   const initId=location.hash.slice(1);
   if(initId && BYID[initId]){ activateNode(initId); }
   else { location.hash='home'; }
+})();
+
+
+/* ================================================================
+   PLANO DE CAPTURA — Registro Digital (módulo embutido)
+   Mesmo padrão do Diário de Bordo / Diário de Manutenção: view
+   renderizada dentro de #viewDoc pelo router (routeTo -> type
+   'planocaptura' -> renderPlanoCaptura(n)). Todo o estado, ícones e
+   lógica ficam isolados numa IIFE para não colidir com o restante
+   do painel; só as funções chamadas via onclick="" e o ponto de
+   entrada renderPlanoCaptura são expostos em window.
+   ================================================================ */
+(function(){
+  const ICOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+  const IC_DRONE='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M5 5l4.5 4.5M19 5l-4.5 4.5M5 19l4.5-4.5M19 19l-4.5-4.5"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>';
+  const IC_DOG='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8L4 4M17 8l3-4"/><circle cx="12" cy="13" r="6"/><circle cx="9.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="16" rx="1.6" ry="1.1" fill="currentColor" stroke="none"/></svg>';
+  const IC_PERSON='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8.5v6.5M6.5 11h11M12 15l-5 6M12 15l5 6"/></svg>';
+  const IC_CAR='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-4.5A2 2 0 016.4 7h11.2a2 2 0 011.9 1.5L21 13"/><rect x="2.5" y="13" width="19" height="4" rx="1"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>';
+  const IC_IMG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+  const IC_TRASH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/></svg>';
+  const IC_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>';
+  const IC_DRAW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>';
+
+  const STORAGE_KEY='xd4_plano_captura_v1';
+
+  const EQUIP_ITEMS=[
+    {key:'elios3', label:'Elios 3'},
+    {key:'elios2', label:'Elios 2'},
+    {key:'go2', label:'GO2'},
+    {key:'g1', label:'G1'},
+    {key:'rover', label:'Rover'}
+  ];
+
+  /* Para estes equipamentos, ao selecioná-los é exibido um seletor de variante */
+  const EQUIP_VARIANTS={ go2:['EDU','Wheels'] };
+
+  /* Preenchimento automático de "Informações do Equipamento" ao selecionar
+     um item (e sua variante, quando houver). */
+  const EQUIP_PRESETS={
+    elios3:{fabricante:'Flyability', modelo:'Elios 3', numeroSerie:'N/A', sisantAnac:'N/A', pesoMaximo:'2,5 kg', frequencias:'2.4 GHz', cameraPrincipal:'4K Res.', cameraTermal:'Lepton 3.5 FLIR', iluminacao:'LED 16K lumens/oblíqua'},
+    elios2:{fabricante:'Flyability', modelo:'Elios 2', numeroSerie:'N/A', sisantAnac:'N/A', pesoMaximo:'1,45 kg', frequencias:'2.4 GHz', cameraPrincipal:'Full HD (1920x1080)', cameraTermal:'Opcional (FLIR)', iluminacao:'LED'},
+    go2_edu:{fabricante:'Unitree', modelo:'Go2 EDU', numeroSerie:'N/A', sisantAnac:'N/A (equipamento terrestre)', pesoMaximo:'≈15 kg (carga útil até 12 kg)', frequencias:'Wi-Fi 6 / Bluetooth 5.2', cameraPrincipal:'Câmera frontal HD + LiDAR 4D L1 (360°x90°)', cameraTermal:'Opcional', iluminacao:'LED frontal'},
+    go2_wheels:{fabricante:'Unitree', modelo:'Go2-W (Wheels)', numeroSerie:'N/A', sisantAnac:'N/A (equipamento terrestre)', pesoMaximo:'≈18 kg (carga útil ≈8 kg, máx. 12 kg)', frequencias:'Wi-Fi 6 / Bluetooth 5.2', cameraPrincipal:'Câmera frontal HD + LiDAR 3D', cameraTermal:'Opcional', iluminacao:'LED frontal'},
+    g1:{fabricante:'Unitree', modelo:'G1', numeroSerie:'N/A', sisantAnac:'N/A (equipamento terrestre)', pesoMaximo:'≈35 kg (robô, com bateria)', frequencias:'Wi-Fi 6 / Bluetooth 5.2', cameraPrincipal:'Câmera de profundidade 3D / LiDAR', cameraTermal:'N/A', iluminacao:'N/A'},
+    rover:{fabricante:'A definir', modelo:'Rover', numeroSerie:'N/A', sisantAnac:'N/A (equipamento terrestre)', pesoMaximo:'A definir', frequencias:'A definir', cameraPrincipal:'A definir', cameraTermal:'A definir', iluminacao:'A definir'}
+  };
+
+  const ETAPAS_PADRAO=[
+    {titulo:'Deslocamento + Voo de Teste e Reconhecimento',
+     desc:`- O primeiro voo tem como objetivo realizar o reconhecimento operacional da área e validar as condições reais do cenário em relação ao planejamento da missão.
+- Durante esta etapa serão avaliados fatores como condições de acesso, interferências ambientais ou eletromagnéticas, estabilidade da comunicação, desempenho dos sensores, autonomia da aeronave e demais aspectos que possam impactar a operação.
+- Após a validação inicial, será realizado um voo conforme o plano de captura, permitindo verificar a qualidade dos dados coletados e o comportamento do equipamento nas condições reais de operação.
+- Ao término dos voos, o equipamento retornará ao ponto de operação para realização de um novo checklist e validação dos dados obtidos antes da continuidade da missão.
+- Esta etapa possui duração aproximada de 30 minutos, considerando o tempo de voo e as verificações em solo, podendo variar conforme a complexidade da atividade.`},
+    {titulo:'Voo de Inspeção Visual do Contraventamento Inferior',
+     desc:`- O equipamento será deslocado do Ponto "0", até os pontos de inspeção sob a estrutura, percorrendo toda ela, ou conforme o "Standard Inspection Procedure" determinado pelo "Certified Representative" do "Formal Inspection Body", designado pelo cliente;
+- Será mantida distância entre 400 e 2000mm, com face angulada a aprox. 45° com o costado para aprimoramento por iluminação oblíqua e -/+ 30° para "tilt down/up" quando necessário, percorrendo os vãos programados;
+- Após o voo, o equipamento será retornado ao Ponto 0, onde serão verificados o detalhamento e qualidade das imagens capturadas, assim como as condições do equipamento, quando será realizada a troca de bateria e manutenção entre voos;
+- Esta etapa consiste em aproximadamente 2 voos de 10' cobrindo os ~10 vãos do trecho-piloto, totalizando aproximadamente 1h00 (60 minutos);
+- *Poderá haver pontos adicionais de deslocamento e inspeção, de acordo com as características reais internas do ativo, a confirmar no voo de reconhecimento.`},
+    {titulo:'Voo de Inspeção Visual das Cruzetas do Vão Interno',
+     desc:`- O equipamento será deslocado do Ponto "0" até o interior do vão em caixa, entre as longarinas, de onde será realizado o voo de inspeção das cruzetas internas ou conforme o "Standard Inspection Procedure" determinado pelo "Formal Inspection Body", designado pelo cliente;
+- Será mantida distância entre 400 e 2000mm da estrutura, com 1 ponto de captura por cruzeta, percorrendo os vãos programados para o dia;
+- Após o voo, o equipamento será retornado ao Ponto 0, onde serão verificados o detalhamento e qualidade das imagens capturadas, assim como as condições do equipamento, quando será realizada a troca de bateria e manutenção entre voos;
+- Esta etapa consiste em aproximadamente 3 voos de 10' cobrindo os ~10 vãos do trecho-piloto, totalizando aproximadamente 1h30 (90 minutos);
+- *Poderá haver pontos adicionais de deslocamento e inspeção, de acordo com as características reais internas do ativo, a confirmar no voo de reconhecimento.`},
+    {titulo:'Voo de Inspeção Visual das Vigas/Longarinas Externas (Lado A e B)',
+     desc:`- O equipamento será deslocado do Ponto "0" até a face externa das longarinas, realizando varredura contínua ao longo do trecho programado, no lado A e, em seguida, no lado B da estrutura, ou conforme o "Standard Inspection Procedure" determinado pelo "Formal Inspection Body", designado pelo cliente;
+- Será mantida distância entre 400 e 2000mm, com face angulada a aprox. 45° com o costado para aprimoramento por iluminação oblíqua e -/+ 30° para "tilt down/up" quando necessário;
+- Após o voo, o equipamento será retornado ao Ponto 0, onde serão verificados o detalhamento e qualidade das imagens capturadas, assim como as condições do equipamento, quando será realizada a troca de bateria e manutenção entre voos;
+- Esta etapa consiste em aproximadamente 4 voos de 10' (2 por lado) cobrindo os ~10 vãos do trecho-piloto, totalizando aproximadamente 2h00 (120 minutos);
+- *Poderá haver pontos adicionais de deslocamento e inspeção, de acordo com as características reais internas do ativo, a confirmar no voo de reconhecimento.`},
+    {titulo:'Voo de Inspeção Visual dos Pilares e Mesoestrutura',
+     desc:`- O equipamento será deslocado do Ponto "0" até cada pilar do trecho programado, realizando inspeção vertical do bloco de coroamento ao fuste, limitada à área de respingo na linha d'água — não há voo ou captura submersa;
+- Será mantida distância entre 400 e 2000mm da face do pilar, percorrendo verticalmente os pontos de interesse (bloco de coroamento, fuste e área de respingo);
+- Após o voo, o equipamento será retornado ao Ponto 0, onde serão verificados o detalhamento e qualidade das imagens capturadas, assim como as condições do equipamento, quando será realizada a troca de bateria e manutenção entre voos;
+- Esta etapa consiste em aproximadamente 4 voos de 10' cobrindo os ~11 pilares do trecho-piloto, totalizando aproximadamente 2h00 (120 minutos);
+- *Atenção especial à variação de maré durante a execução, que pode alterar a posição da área de respingo entre um voo e outro.`}
+  ];
+
+  function defaultState(){
+    return {
+      meta:{empresa:'', estrutura:'', ativosDescricoes:'', data:new Date().toISOString().slice(0,10), referencia:'N/A', proposta:'A definir'},
+      time:{operador1:'A definir', operador2:'A definir', tipoServico:'Captura de Imagem RGB e Térmica para Inspeção Visual Estrutural'},
+      equip:{elios3:true, elios2:false, go2:false, go2Variante:'EDU', g1:false, rover:false},
+      objetivo:`- Captura de dados utilizando o drone Elios 3 em... (descreva as características do ativo)
+- Pilotagem realizada a partir... (descreva onde a equipe poderá operar o drone)
+- O desempenho de campo observado neste trecho-piloto servirá de referência para o planejamento das próximas etapas da inspeção.`,
+      localidadeImg:null,
+      coordenadas:'',
+      entregaveis:`- Dados capturados na inspeção do trecho-piloto (imagens RGB e térmicas);
+- Registro fotográfico organizado por vão/pilar.`,
+      seguranca:{
+        procedimentos:`- A equipe deverá operar a partir de um local previamente definido no planejamento da missão, garantindo condições seguras para execução da atividade.
+- Antes do início da operação, será realizado o Risk Assessment com o representante do cliente, contemplando os riscos da atividade, condições ambientais e liberações necessárias.
+- Quando houver interferências operacionais ou atividades simultâneas, deverá ser realizada coordenação prévia com os responsáveis pela área, assegurando a adoção das medidas de controle aplicáveis.
+- Todos os integrantes da equipe deverão utilizar os EPIs exigidos e cumprir os procedimentos de segurança aplicáveis à operação.`,
+        produtoQuimico:'N/A — Estrutura metálica, sem armazenamento de produtos químicos.'
+      },
+      escopo:{
+        descricao:`- Serão realizados voos de reconhecimento para verificação de riscos potenciais, condições de acesso pelo tabuleiro, interferências eletromagnéticas e alcance do equipamento, elevando este Plano de Inspeção de fase "Preliminar" para "Final".
+- Em seguida, serão realizados voos planejados em um trecho-piloto de aproximadamente 200 m (~10 vãos), cobrindo o contraventamento inferior, as cruzetas do vão interno, as vigas/longarinas externas (lado A e lado B) e os pilares/mesoestrutura, com deslocamento horizontal contínuo vão a vão.
+- A cada etapa, os dados capturados serão verificados e, caso necessário, realizadas correções no perfil de voo ou inserção de POI's (Pontos de Interesse) julgados relevantes pelo "Inspection Body".
+- Ao término do serviço, os dados serão armazenados e disponibilizados ao "Certified Representative"/Cliente, por meio de pendrive/SD card e/ou link em nuvem.`,
+        pontosInteresse:'Costados\nCorrosões',
+        fase:'preliminar'
+      },
+      aprovacao:{aprovado:false, data:null},
+      drone:{fabricante:'Flyability', modelo:'Elios 3', numeroSerie:'N/A', sisantAnac:'N/A', pesoMaximo:'2,5 kg', frequencias:'2.4 MHz', cameraPrincipal:'4K Res.', cameraTermal:'Lepton 3.5 FLIR', iluminacao:'LED 16K lumens/oblíqua'},
+      ativoCaracteristicas:'',
+      galeria:[{titulo:'', img:null},{titulo:'', img:null}],
+      tempo:{horas:'', previsao:''},
+      etapas: ETAPAS_PADRAO.map((d,i)=>({id:'e'+(i+1), titulo:d.titulo, desc:d.desc, img:null})),
+      contingencia:{
+        texto:`- Como os voos serão realizados sobre lâmina d'água, próximos à estrutura, o objetivo em caso de falha do equipamento é manter/pousar o drone o mais próximo possível do tabuleiro ou da estrutura, em local seguro, evitando a queda sobre a água;
+- Os voos serão realizados dentro da visada do operador, o que facilita a execução da atividade e a contenção em caso de pane do equipamento;
+- Recomenda-se a disponibilização de embarcação de apoio próxima à área de voo, para eventual tentativa de resgate em caso de queda sobre a lâmina d'água — ressalta-se que o Elios 3 não possui flutuação, sendo a perda total do equipamento um risco residual nesse cenário;
+- Na execução desta fase, como desde o início, o local deverá, ainda, ser mantido isolado, restrito a pessoas não envolvidas neste Plano de Contingência, devendo ter o acompanhamento do "Certified Representative" do "Formal Inspection Body" designado pelo cliente.`,
+        agree:false
+      },
+      responsaveis:{operador1:'A definir', operador2:'A definir', postProcessing:'A definir'},
+      contato:{nome:'Pierre Verardi Ramos', cargo:'Chief Operating Officer', telefone:'+55 (27) 99236-8364', email:'pierreverardi@xd4solutions.com.br'},
+      savedAt:null
+    };
+  }
+
+  let STATE=null;
+  let DIRTY=false;
+  let CURRENT_NODE=null;
+
+  function getPath(obj, path){ return path.split('.').reduce((o,k)=> (o==null?undefined:o[k]), obj); }
+  function setPath(obj, path, val){
+    const parts=path.split('.'); let o=obj;
+    for(let i=0;i<parts.length-1;i++){ o=o[parts[i]]; }
+    o[parts[parts.length-1]]=val;
+  }
+  function deepMerge(base, extra){
+    if(Array.isArray(base)) return extra!==undefined ? extra : base;
+    if(typeof base==='object' && base!==null){
+      const out=Object.assign({}, base);
+      if(extra && typeof extra==='object'){
+        Object.keys(base).forEach(k=>{ out[k]=deepMerge(base[k], extra[k]); });
+      }
+      return out;
+    }
+    return extra!==undefined ? extra : base;
+  }
+
+  /* Garante que STATE.etapas seja sempre um array válido, mesmo vindo de
+     um rascunho salvo em formato antigo. */
+  function normalizeEtapas(etapas){
+    if(Array.isArray(etapas) && etapas.length){
+      return etapas.map((e,i)=>({
+        id: (e && e.id) ? e.id : 'e'+(i+1),
+        titulo: (e && e.titulo) ? e.titulo : (ETAPAS_PADRAO[i] ? ETAPAS_PADRAO[i].titulo : ('Etapa '+(i+1))),
+        desc: (e && e.desc!==undefined) ? e.desc : (ETAPAS_PADRAO[i] ? ETAPAS_PADRAO[i].desc : ''),
+        img: (e && e.img) ? e.img : null
+      }));
+    }
+    return ETAPAS_PADRAO.map((d,i)=>{
+      const key='e'+(i+1);
+      const old = (etapas && typeof etapas==='object') ? etapas[key] : null;
+      return { id:key, titulo:d.titulo, desc:(old && old.desc!==undefined) ? old.desc : d.desc, img:(old && old.img) ? old.img : null };
+    });
+  }
+
+  /* ---------- template ---------- */
+  function templatePlanoCaptura(n){
+    return `
+    <div class="doc lb-section-wrap" style="max-width:1040px">
+      ${crumbsHTML(n.id)}
+      <div class="lb-head">
+        <div class="lb-head-main">
+          <div class="lb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div>
+            <div class="fase-select-row">
+              <label for="pcFaseSelect">Fase deste Plano de Inspeção</label>
+              <select data-path="escopo.fase" id="pcFaseSelect">
+                <option value="preliminar">Preliminar</option>
+                <option value="final">Final</option>
+              </select>
+              <button class="fase-approve-btn" id="pcBtnAprovar" type="button" onclick="approvePlan()">Aprovar Plano como Final</button>
+              <span class="fase-approved-badge" id="pcAprovBadge"></span>
+              <span class="fase-hint">Após a visualização do ativo em campo, use "Aprovar Plano como Final" para elevar este plano de "Preliminar" para "Final".</span>
+            </div>
+            <h1 id="pcMainTitle">Plano de Captura Preliminar</h1>
+            <div class="lb-sub">Planejamento padrão de missão de captura de dados com robô/drone — objetivo, segurança, escopo, etapas de voo e plano de contingência.</div>
+            <div class="lb-docmeta">
+              <span class="lb-chip">PLANO DE CAPTURA</span>
+              <span class="lb-chip">PADRÃO</span>
+              <span class="lb-chip" id="pcFaseChip">FASE <b>PRELIMINAR</b></span>
+            </div>
+          </div>
+          <div class="lb-status" id="pcStatus"><span class="d"></span><span id="pcStatusText">Rascunho não salvo</span></div>
+        </div>
+        <div class="lb-tailstrip">
+          <div class="cell"><div class="k">Empresa</div><div class="v" id="pcTailEmpresa">—</div></div>
+          <div class="cell"><div class="k">Estrutura</div><div class="v" id="pcTailEstrutura">—</div></div>
+          <div class="cell"><div class="k">Data</div><div class="v" id="pcTailData">—</div></div>
+          <div class="cell"><div class="k">Equipamento</div><div class="v" id="pcTailEquip">—</div></div>
+        </div>
+      </div>
+
+      <!-- INFORMAÇÕES -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg><span class="htitle">Informações</span></h3>
+        <div class="lb-grid">
+          <div class="lb-field"><label>Empresa</label><input data-path="meta.empresa" placeholder="Nome do cliente"></div>
+          <div class="lb-field"><label>Estrutura</label><input data-path="meta.estrutura" placeholder="Ex.: Ponte ferroviária…"></div>
+          <div class="lb-field full"><label>Ativos — Descrições</label><input data-path="meta.ativosDescricoes" placeholder="Descrição resumida dos ativos a inspecionar"></div>
+          <div class="lb-field"><label>Data</label><input data-path="meta.data" type="date"></div>
+          <div class="lb-field"><label>Referência</label><input data-path="meta.referencia" placeholder="N/A"></div>
+          <div class="lb-field"><label>Proposta</label><input data-path="meta.proposta" placeholder="A definir"></div>
+        </div>
+      </div>
+
+      <!-- TIME DE CAMPO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="8" r="2.6"/><path d="M15.5 14.3c2.9.5 5 2.6 5 5.7"/></svg><span class="htitle">Time de Campo</span></h3>
+        <div class="lb-grid">
+          <div class="lb-field"><label>Operador de Inspeção de Qualidade 01</label><input data-path="time.operador1" placeholder="A definir"></div>
+          <div class="lb-field"><label>Operador de Inspeção de Qualidade 02</label><input data-path="time.operador2" placeholder="A definir"></div>
+          <div class="lb-field full"><label>Tipo de Serviço</label><input data-path="time.tipoServico"></div>
+        </div>
+        <div class="lb-field" style="margin-top:16px"><label>Equipamento a ser Utilizado</label><span class="hint">Ao selecionar um equipamento conhecido, os campos abaixo são preenchidos automaticamente (podem ser editados).</span></div>
+        <div class="ra-chipgrid" id="pcEquipBody"></div>
+
+        <h4>Informações do Equipamento</h4>
+        <div class="lb-grid">
+          <div class="lb-field"><label>Fabricante</label><input data-path="drone.fabricante"></div>
+          <div class="lb-field"><label>Modelo</label><input data-path="drone.modelo"></div>
+          <div class="lb-field"><label>Número de Série</label><input data-path="drone.numeroSerie"></div>
+          <div class="lb-field"><label>SISANT ANAC</label><input data-path="drone.sisantAnac"></div>
+          <div class="lb-field"><label>Peso Máximo de Decolagem</label><input data-path="drone.pesoMaximo"></div>
+          <div class="lb-field"><label>Frequências</label><input data-path="drone.frequencias"></div>
+          <div class="lb-field"><label>Câmera Principal</label><input data-path="drone.cameraPrincipal"></div>
+          <div class="lb-field"><label>Câmera Termal</label><input data-path="drone.cameraTermal"></div>
+          <div class="lb-field"><label>Iluminação</label><input data-path="drone.iluminacao"></div>
+        </div>
+      </div>
+
+      <!-- OBJETIVO / LOCALIDADE / ENTREGÁVEIS -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span class="htitle">Objetivo, Localidade e Entregáveis</span></h3>
+        <div class="lb-2col">
+          <div class="lb-field"><label>Objetivo</label><textarea class="tall" data-path="objetivo"></textarea></div>
+          <div class="lb-colstack">
+            <div class="lb-field" style="margin-bottom:14px"><label>Localidade</label></div>
+            <div id="pcZoneLocalidade"></div>
+            <div class="lb-field" style="margin-top:12px"><label>Coordenadas de Referência</label><input data-path="coordenadas" placeholder="Lat, Long"></div>
+          </div>
+        </div>
+        <div class="lb-field full" style="margin-top:14px"><label>Entregáveis</label><textarea data-path="entregaveis"></textarea></div>
+      </div>
+
+      <!-- SEGURANÇA -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/></svg><span class="htitle">Segurança</span></h3>
+        <div class="lb-2col">
+          <div class="lb-field"><label>Procedimentos Iniciais</label><textarea class="tall" data-path="seguranca.procedimentos"></textarea></div>
+          <div class="lb-field"><label>Informação do Produto Químico</label><textarea data-path="seguranca.produtoQuimico"></textarea></div>
+        </div>
+      </div>
+
+      <!-- ESCOPO DA INSPEÇÃO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="htitle">Escopo da Inspeção</span></h3>
+        <div class="lb-2col">
+          <div class="lb-field"><label>Descrição</label><textarea class="tall" data-path="escopo.descricao"></textarea></div>
+          <div>
+            <div class="lb-field"><label>Pontos de Interesse</label><textarea data-path="escopo.pontosInteresse"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARACTERÍSTICAS DO ATIVO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4-8 4-8-4z"/><path d="M4 10l8 4 8-4M4 15l8 4 8-4"/></svg><span class="htitle">Características do Ativo</span></h3>
+        <div class="lb-field full"><label>Ativo e Características</label><textarea data-path="ativoCaracteristicas" placeholder="Descreva a estrutura, o que armazena ou transporta, qual tipo de líquido pode conter na parte interna, etc…" style="min-height:100px"></textarea></div>
+      </div>
+
+      <!-- IMAGENS DE REFERÊNCIA DA ESTRUTURA -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span class="htitle">Imagens de Referência da Estrutura</span><span class="subhint">fornecidas pelo cliente</span></h3>
+        <div class="gallery-grid" id="pcGalleryBody"></div>
+        <button class="tbl-addrow" onclick="addGalleryItem()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar imagem</button>
+      </div>
+
+      <!-- TEMPO DE INSPEÇÃO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span class="htitle">Tempo de Inspeção</span></h3>
+        <div class="lb-2col">
+          <div class="lb-field"><label>Tempo Estimado (horas)</label><input data-path="tempo.horas" type="number" min="0" step="0.5" placeholder="0"></div>
+          <div class="lb-field"><label>Previsão / Observações</label><textarea data-path="tempo.previsao" placeholder="Descreva a previsão inicial, dias de campo, etc."></textarea></div>
+        </div>
+      </div>
+
+      <!-- ETAPAS -->
+      <div id="pcEtapasWrap"></div>
+
+      <!-- PLANO DE CONTINGÊNCIA -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span class="htitle">Plano de Contingência</span></h3>
+        <div class="lb-field full"><textarea class="tall" data-path="contingencia.texto"></textarea></div>
+        <div class="agree-row" id="pcContAgree"><div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><span>Declaro que o Plano de Contingência acima foi apresentado e está compreendido pela equipe de campo</span></div>
+      </div>
+
+      <!-- RESPONSÁVEL PELA ELABORAÇÃO DO ESCOPO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg><span class="htitle">Responsável pela Elaboração do Escopo</span></h3>
+        <div class="lb-3col">
+          <div class="lb-field"><label>Operador 01</label><input data-path="responsaveis.operador1" placeholder="A definir"></div>
+          <div class="lb-field"><label>Operador 02</label><input data-path="responsaveis.operador2" placeholder="A definir"></div>
+          <div class="lb-field"><label>Post Processing</label><input data-path="responsaveis.postProcessing" placeholder="A definir"></div>
+        </div>
+      </div>
+
+      <!-- CONTATO -->
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.4a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2.2z"/></svg><span class="htitle">Contato</span></h3>
+        <div class="lb-grid">
+          <div class="lb-field"><label>Nome</label><input data-path="contato.nome"></div>
+          <div class="lb-field"><label>Cargo</label><input data-path="contato.cargo"></div>
+          <div class="lb-field"><label>Telefone</label><input data-path="contato.telefone"></div>
+          <div class="lb-field"><label>E-mail</label><input data-path="contato.email"></div>
+        </div>
+      </div>
+
+      <div class="lb-section">
+        <div class="lb-actions">
+          <button class="lb-save" onclick="pcSave(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Plano</button>
+          <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Exportar / Imprimir PDF</button>
+          <button class="lb-reset" onclick="pcReset()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Novo plano</button>
+          <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Os dados ficam salvos neste navegador. Use "Exportar / Imprimir PDF" para gerar o documento final.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-toast" id="pcToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="pcToastText">Salvo</span></div>
+
+    <div class="diag-overlay" id="pcDiagOverlay">
+      <div class="diag-modal">
+        <div class="diag-head"><h4>Desenho / Diagrama Ilustrativo</h4><button class="diag-close" onclick="closeDiagram()" type="button">&times;</button></div>
+        <div class="diag-toolbar">
+          <button class="diag-tool on" data-tool="arrow" onclick="setDiagTool('arrow')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19L19 5M19 5H10M19 5v9"/></svg>Seta</button>
+          <button class="diag-tool" data-tool="line" onclick="setDiagTool('line')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20L20 4"/></svg>Linha</button>
+          <button class="diag-tool" data-tool="dashed" onclick="setDiagTool('dashed')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 20L6.5 16.5M10 13L13.5 9.5M17 6L20.5 2.5"/></svg>Linha Pontilhada</button>
+          <button class="diag-tool" data-tool="drone" onclick="setDiagTool('drone')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M5 5l4.5 4.5M19 5l-4.5 4.5M5 19l4.5-4.5M19 19l-4.5-4.5"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>Drone</button>
+          <button class="diag-tool" data-tool="person" onclick="setDiagTool('person')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8.5v6.5M6.5 11h11M12 15l-5 6M12 15l5 6"/></svg>Boneco</button>
+          <button class="diag-tool" data-tool="dog" onclick="setDiagTool('dog')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8L4 4M17 8l3-4"/><circle cx="12" cy="13" r="6"/><circle cx="9.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="16" rx="1.6" ry="1.1" fill="currentColor" stroke="none"/></svg>Cachorro</button>
+          <button class="diag-tool" data-tool="car" onclick="setDiagTool('car')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-4.5A2 2 0 016.4 7h11.2a2 2 0 011.9 1.5L21 13"/><rect x="2.5" y="13" width="19" height="4" rx="1"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Carrinho</button>
+          <button class="diag-tool" data-tool="dot" onclick="setDiagTool('dot')" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>Ponto</button>
+          <button class="diag-tool" data-tool="text" onclick="setDiagTool('text')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Texto</button>
+          <div class="diag-sep"></div>
+          <div class="diag-colors" id="pcDiagColors"></div>
+          <div class="diag-sep"></div>
+          <button class="diag-tool" onclick="undoDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Desfazer</button>
+          <button class="diag-tool" onclick="clearDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/></svg>Limpar</button>
+        </div>
+        <div class="diag-hint">Arraste para desenhar setas, linhas ou linhas pontilhadas. Clique para carimbar drone/boneco/cachorro/carrinho/ponto ou adicionar texto.</div>
+        <div class="diag-canvas-wrap"><canvas id="pcDiagCanvas"></canvas></div>
+        <div class="diag-actions">
+          <div class="left">
+            <label class="diag-btn ghost" style="cursor:pointer">Carregar imagem de fundo<input type="file" accept="image/*" id="pcDiagBgInput" style="display:none"></label>
+          </div>
+          <div class="left">
+            <button class="diag-btn ghost" onclick="closeDiagram()" type="button">Cancelar</button>
+            <button class="diag-btn primary" onclick="saveDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Salvar Desenho</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ---------- entry point (chamado pelo router) ---------- */
+  function renderPlanoCaptura(n){
+    CURRENT_NODE = n;
+    let saved=null;
+    try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
+    STATE = saved ? deepMerge(defaultState(), saved) : defaultState();
+    STATE.etapas = normalizeEtapas(STATE.etapas);
+
+    viewDoc.innerHTML = templatePlanoCaptura(n);
+
+    bindSimpleFields();
+    renderEquip();
+    renderZone('localidade', document.getElementById('pcZoneLocalidade'), STATE.localidadeImg, v=>{STATE.localidadeImg=v;});
+    renderGallery();
+    renderEtapas();
+    renderAgree();
+    updateTailstrip();
+    updateTitle();
+    renderApproval();
+    updateProgress();
+    markStatus(!!STATE.savedAt);
+
+    document.getElementById('pcContAgree').addEventListener('click', ()=>{
+      STATE.contingencia.agree=!STATE.contingencia.agree; renderAgree(); markDirty(); updateProgress();
+    });
+    document.getElementById('pcFaseSelect').addEventListener('change', ()=>{
+      if(STATE.escopo.fase==='final'){
+        if(!STATE.aprovacao || !STATE.aprovacao.aprovado) STATE.aprovacao={aprovado:true, data:new Date().toISOString()};
+      } else {
+        STATE.aprovacao={aprovado:false, data:null};
+      }
+      updateTailstrip(); updateTitle(); renderApproval();
+    });
+
+    const diagBgInput=document.getElementById('pcDiagBgInput');
+    if(diagBgInput){
+      diagBgInput.addEventListener('change', ev=>{
+        const f=ev.target.files[0]; if(!f) return;
+        const r=new FileReader();
+        r.onload=()=>{
+          const img=new Image();
+          img.onload=()=>{
+            const rect=diagCanvas.getBoundingClientRect();
+            const cw=rect.width, ch=rect.height;
+            const scale=Math.min(cw/img.width, ch/img.height);
+            const dw=img.width*scale, dh=img.height*scale;
+            const dx=(cw-dw)/2, dy=(ch-dh)/2;
+            diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,cw,ch);
+            diagCtx.drawImage(img, dx,dy,dw,dh);
+            pushDiagHist();
+          };
+          img.src=r.result;
+        };
+        r.readAsDataURL(f);
+        diagBgInput.value='';
+      });
+    }
+  }
+
+  function bindSimpleFields(){
+    document.querySelectorAll('#viewDoc [data-path]').forEach(el=>{
+      const val=getPath(STATE, el.dataset.path);
+      el.value = (val===undefined || val===null) ? '' : val;
+      el.addEventListener('input', ()=>{
+        setPath(STATE, el.dataset.path, el.value);
+        markDirty(); updateTailstrip(); updateProgress();
+      });
+    });
+  }
+
+  function markDirty(){ DIRTY=true; markStatus(false); }
+  function markStatus(saved){
+    const box=document.getElementById('pcStatus');
+    const txt=document.getElementById('pcStatusText');
+    if(!box || !txt) return;
+    if(saved){ box.classList.add('saved'); txt.textContent='Salvo neste navegador'; }
+    else { box.classList.remove('saved'); txt.textContent='Rascunho não salvo'; }
+  }
+
+  function updateTailstrip(){
+    const e1=document.getElementById('pcTailEmpresa'); if(!e1) return;
+    e1.textContent = STATE.meta.empresa || '—';
+    document.getElementById('pcTailEstrutura').textContent = STATE.meta.estrutura || '—';
+    document.getElementById('pcTailData').textContent = STATE.meta.data || '—';
+    const eq=[]; if(STATE.equip.elios3) eq.push('Elios 3'); if(STATE.equip.elios2) eq.push('Elios 2'); if(STATE.equip.go2) eq.push('GO2'+(STATE.equip.go2Variante?' ('+STATE.equip.go2Variante+')':'')); if(STATE.equip.g1) eq.push('G1'); if(STATE.equip.rover) eq.push('Rover');
+    document.getElementById('pcTailEquip').textContent = eq.length? eq.join(', ') : '—';
+    document.getElementById('pcFaseChip').innerHTML = 'FASE <b>'+(STATE.escopo.fase==='final'?'FINAL':'PRELIMINAR')+'</b>';
+  }
+
+  function updateTitle(){
+    const el=document.getElementById('pcMainTitle'); if(!el) return;
+    const label = STATE.escopo.fase==='final' ? 'Final' : 'Preliminar';
+    el.textContent = 'Plano de Captura ' + label;
+  }
+
+  /* ---------- aprovação do plano (preliminar -> final) ---------- */
+  function approvePlan(){
+    if(STATE.escopo.fase==='final'){
+      if(!confirm('Reverter este plano para a fase "Preliminar"? Isso desfaz a aprovação como Final.')) return;
+      STATE.escopo.fase='preliminar';
+      STATE.aprovacao={aprovado:false, data:null};
+    } else {
+      if(!confirm('Confirma a aprovação deste Plano de Captura como FINAL, após a visualização do ativo em campo?\n\nA fase será alterada de "Preliminar" para "Final".')) return;
+      STATE.escopo.fase='final';
+      STATE.aprovacao={aprovado:true, data:new Date().toISOString()};
+    }
+    document.getElementById('pcFaseSelect').value = STATE.escopo.fase;
+    updateTailstrip();
+    updateTitle();
+    renderApproval();
+    markDirty();
+    updateProgress();
+  }
+
+  function renderApproval(){
+    const btn=document.getElementById('pcBtnAprovar');
+    const badge=document.getElementById('pcAprovBadge');
+    if(!btn || !badge) return;
+    const isFinal = STATE.escopo.fase==='final';
+    btn.textContent = isFinal ? 'Reverter para Preliminar' : 'Aprovar Plano como Final';
+    btn.classList.toggle('is-final', isFinal);
+    if(STATE.aprovacao && STATE.aprovacao.aprovado){
+      const d = STATE.aprovacao.data ? new Date(STATE.aprovacao.data) : null;
+      badge.style.display='inline-flex';
+      badge.innerHTML = ICOK + '<span>Aprovado como Final' + (d ? (' em '+d.toLocaleDateString('pt-BR')) : '') + '</span>';
+    } else {
+      badge.style.display='none';
+      badge.innerHTML='';
+    }
+  }
+
+  /* ---------- equipamento ---------- */
+  const EQUIP_ICONS={ elios3:IC_DRONE, elios2:IC_DRONE, go2:IC_DOG, g1:IC_PERSON, rover:IC_CAR };
+  function renderEquip(){
+    const box=document.getElementById('pcEquipBody');
+    box.innerHTML = EQUIP_ITEMS.map(it=>{
+      const on=STATE.equip[it.key];
+      let qual='';
+      if(on && EQUIP_VARIANTS[it.key]){
+        const varKey=it.key+'Variante';
+        const current = STATE.equip[varKey] || EQUIP_VARIANTS[it.key][0];
+        qual = `<select class="ra-qual" onclick="event.stopPropagation()" onchange="setEquipVariante('${it.key}', this.value)">`
+          + EQUIP_VARIANTS[it.key].map(v=>`<option value="${v}" ${v===current?'selected':''}>${v}</option>`).join('')
+          + `</select>`;
+      }
+      const icon = EQUIP_ICONS[it.key] || IC_DRONE;
+      return `<div class="ra-chip ${on?'on':''}" onclick="toggleEquip('${it.key}')"><span class="box">${ICOK}</span>${icon}<span class="lbl">${it.label}</span></div>${qual}`;
+    }).join('');
+  }
+  function toggleEquip(key){
+    STATE.equip[key]=!STATE.equip[key];
+    if(STATE.equip[key]){
+      if(EQUIP_VARIANTS[key] && !STATE.equip[key+'Variante']) STATE.equip[key+'Variante']=EQUIP_VARIANTS[key][0];
+      applyEquipPreset(key);
+    }
+    renderEquip(); markDirty(); updateTailstrip(); updateProgress();
+  }
+  function setEquipVariante(key, value){
+    STATE.equip[key+'Variante']=value;
+    applyEquipPreset(key);
+    markDirty(); updateTailstrip(); updateProgress();
+  }
+  function applyEquipPreset(key){
+    let presetKey=key;
+    if(EQUIP_VARIANTS[key]){
+      const variant=(STATE.equip[key+'Variante']||EQUIP_VARIANTS[key][0]).toLowerCase();
+      presetKey=key+'_'+variant;
+    }
+    const preset=EQUIP_PRESETS[presetKey];
+    if(!preset) return;
+    STATE.drone = Object.assign({}, STATE.drone, preset);
+    syncDroneFieldsToUI();
+  }
+  function syncDroneFieldsToUI(){
+    document.querySelectorAll('#viewDoc [data-path^="drone."]').forEach(el=>{
+      const val=getPath(STATE, el.dataset.path);
+      el.value = (val===undefined || val===null) ? '' : val;
+    });
+  }
+
+  /* ---------- image zone (genérica) ---------- */
+  function renderZone(id, box, val, setter){
+    if(!box) return;
+    if(val){
+      box.className='imgzone has-img';
+      box.innerHTML = `<img src="${val}" alt="anexo">
+        <div class="imgbar">
+          <button class="imgbtn draw" type="button">${IC_DRAW}Desenhar / Anotar</button>
+          <label class="imgbtn">${IC_EDIT}Substituir<input type="file" accept="image/*"></label>
+          <button class="imgbtn danger" type="button">${IC_TRASH}Remover</button>
+        </div>`;
+      box.querySelector('input[type=file]').addEventListener('change', ev=>{
+        const f=ev.target.files[0]; if(!f) return;
+        const r=new FileReader(); r.onload=()=>{ setter(r.result); renderZone(id, box, r.result, setter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
+      });
+      box.querySelector('.imgbtn.danger').addEventListener('click', ()=>{ setter(null); renderZone(id, box, null, setter); markDirty(); updateProgress(); });
+      box.querySelector('.imgbtn.draw').addEventListener('click', ()=>{
+        openDiagramEditor(val, out=>{ setter(out); renderZone(id, box, out, setter); markDirty(); updateProgress(); });
+      });
+    } else {
+      box.className='imgzone';
+      box.innerHTML = `<label class="ph" style="cursor:pointer">
+          ${IC_IMG}
+          <span class="t">Clique para anexar imagem</span>
+          <span class="s">PNG, JPG</span>
+          <input type="file" accept="image/*">
+        </label>
+        <button class="imgbtn draw standalone" type="button">${IC_DRAW}Ou criar desenho / diagrama</button>`;
+      box.querySelector('input[type=file]').addEventListener('change', ev=>{
+        const f=ev.target.files[0]; if(!f) return;
+        const r=new FileReader(); r.onload=()=>{ setter(r.result); renderZone(id, box, r.result, setter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
+      });
+      box.querySelector('.imgbtn.draw').addEventListener('click', (ev)=>{
+        ev.stopPropagation();
+        openDiagramEditor(null, out=>{ setter(out); renderZone(id, box, out, setter); markDirty(); updateProgress(); });
+      });
+    }
+  }
+
+  /* ---------- editor de desenho / diagrama ---------- */
+  let diagCanvas=null, diagCtx=null, diagDpr=1;
+  let diagTool='arrow', diagColor='#134074';
+  let diagHist=[], diagDrawing=false, diagStart=null, diagCallback=null;
+  const DIAG_COLORS=['#134074','#B42318','#1E7B4F','#B5820A','#0B2545','#000000'];
+
+  function renderDiagColors(){
+    const box=document.getElementById('pcDiagColors');
+    box.innerHTML = DIAG_COLORS.map(c=>`<span class="diag-color ${c===diagColor?'on':''}" style="background:${c}" onclick="setDiagColor('${c}')"></span>`).join('');
+  }
+  function setDiagColor(c){ diagColor=c; renderDiagColors(); }
+  function setDiagTool(t){
+    diagTool=t;
+    document.querySelectorAll('#pcDiagOverlay .diag-tool[data-tool]').forEach(b=> b.classList.toggle('on', b.dataset.tool===t));
+  }
+  function pushDiagHist(){
+    if(!diagCtx) return;
+    diagHist.push(diagCtx.getImageData(0,0,diagCanvas.width,diagCanvas.height));
+    if(diagHist.length>40) diagHist.shift();
+  }
+  function restoreLastDiagHist(){
+    if(diagHist.length) diagCtx.putImageData(diagHist[diagHist.length-1],0,0);
+  }
+
+  function openDiagramEditor(existingSrc, callback){
+    diagCallback=callback;
+    document.getElementById('pcDiagOverlay').classList.add('show');
+    const wrap=document.querySelector('#pcDiagOverlay .diag-canvas-wrap');
+    requestAnimationFrame(()=>{
+      const rect=wrap.getBoundingClientRect();
+      diagDpr=window.devicePixelRatio||1;
+      diagCanvas=document.getElementById('pcDiagCanvas');
+      diagCanvas.width=Math.round(rect.width*diagDpr);
+      diagCanvas.height=Math.round(rect.height*diagDpr);
+      diagCtx=diagCanvas.getContext('2d');
+      diagCtx.setTransform(diagDpr,0,0,diagDpr,0,0);
+      diagCtx.fillStyle='#ffffff';
+      diagCtx.fillRect(0,0,rect.width,rect.height);
+      diagHist=[];
+      if(existingSrc){
+        const img=new Image();
+        img.onload=()=>{
+          const cw=rect.width, ch=rect.height;
+          const scale=Math.min(cw/img.width, ch/img.height);
+          const dw=img.width*scale, dh=img.height*scale;
+          const dx=(cw-dw)/2, dy=(ch-dh)/2;
+          diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,cw,ch);
+          diagCtx.drawImage(img, dx,dy,dw,dh);
+          pushDiagHist();
+        };
+        img.src=existingSrc;
+      } else {
+        pushDiagHist();
+      }
+      setDiagTool('arrow'); renderDiagColors();
+      setupDiagPointerEvents();
+    });
+  }
+  function setupDiagPointerEvents(){
+    const canvas=diagCanvas;
+    function pos(e){ const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top}; }
+    canvas.onpointerdown=(e)=>{
+      e.preventDefault();
+      const p=pos(e);
+      if(diagTool==='drone'){ drawDroneStamp(p.x,p.y); pushDiagHist(); return; }
+      if(diagTool==='person'){ drawPersonStamp(p.x,p.y); pushDiagHist(); return; }
+      if(diagTool==='dog'){ drawDogStamp(p.x,p.y); pushDiagHist(); return; }
+      if(diagTool==='car'){ drawCarStamp(p.x,p.y); pushDiagHist(); return; }
+      if(diagTool==='dot'){ drawDot(p.x,p.y); pushDiagHist(); return; }
+      if(diagTool==='text'){
+        const txt=window.prompt('Texto do rótulo:');
+        if(txt){ drawLabel(p.x,p.y,txt); pushDiagHist(); }
+        return;
+      }
+      diagDrawing=true; diagStart=p;
+      try{canvas.setPointerCapture(e.pointerId);}catch(_){}
+    };
+    canvas.onpointermove=(e)=>{
+      if(!diagDrawing) return;
+      const p=pos(e);
+      restoreLastDiagHist();
+      if(diagTool==='arrow') drawArrow(diagStart.x,diagStart.y,p.x,p.y);
+      else if(diagTool==='line') drawLine(diagStart.x,diagStart.y,p.x,p.y);
+      else if(diagTool==='dashed') drawDashedLine(diagStart.x,diagStart.y,p.x,p.y);
+    };
+    canvas.onpointerup=(e)=>{
+      if(!diagDrawing) return;
+      diagDrawing=false;
+      const p=pos(e);
+      restoreLastDiagHist();
+      if(diagTool==='arrow') drawArrow(diagStart.x,diagStart.y,p.x,p.y);
+      else if(diagTool==='line') drawLine(diagStart.x,diagStart.y,p.x,p.y);
+      else if(diagTool==='dashed') drawDashedLine(diagStart.x,diagStart.y,p.x,p.y);
+      pushDiagHist();
+    };
+  }
+  function drawArrow(x1,y1,x2,y2){
+    const ctx=diagCtx;
+    const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy);
+    if(len<2) return;
+    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    const angle=Math.atan2(dy,dx), headLen=Math.min(16,len*0.5);
+    ctx.beginPath(); ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-headLen*Math.cos(angle-Math.PI/7), y2-headLen*Math.sin(angle-Math.PI/7));
+    ctx.lineTo(x2-headLen*Math.cos(angle+Math.PI/7), y2-headLen*Math.sin(angle+Math.PI/7));
+    ctx.closePath(); ctx.fill();
+  }
+  function drawLine(x1,y1,x2,y2){
+    const ctx=diagCtx;
+    ctx.strokeStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  }
+  function drawDashedLine(x1,y1,x2,y2){
+    const ctx=diagCtx;
+    ctx.save();
+    ctx.strokeStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.setLineDash([11,9]);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.restore();
+  }
+  function drawPersonStamp(x,y){
+    const ctx=diagCtx;
+    ctx.save(); ctx.translate(x,y);
+    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.4; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); ctx.arc(0,-11,3.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0,-7.6); ctx.lineTo(0,4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-7,-2.5); ctx.lineTo(7,-2.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,4); ctx.lineTo(-6.5,13); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,4); ctx.lineTo(6.5,13); ctx.stroke();
+    ctx.restore();
+  }
+  function drawDogStamp(x,y){
+    const ctx=diagCtx;
+    ctx.save(); ctx.translate(x,y);
+    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); ctx.moveTo(-4,-5); ctx.lineTo(-8,-12); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4,-5); ctx.lineTo(8,-12); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0,6,3.4,2.2,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(-3,-2,1,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(3,-2,1,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+  function drawCarStamp(x,y){
+    const ctx=diagCtx;
+    ctx.save(); ctx.translate(x,y);
+    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(-10,3); ctx.lineTo(-8,-3); ctx.lineTo(-4,-6); ctx.lineTo(4,-6); ctx.lineTo(8,-3); ctx.lineTo(10,3);
+    ctx.closePath(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-11,3); ctx.lineTo(11,3); ctx.stroke();
+    ctx.beginPath(); ctx.arc(-5,5.5,2.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(5,5.5,2.4,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+  function drawDot(x,y){
+    const ctx=diagCtx;
+    ctx.fillStyle=diagColor;
+    ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+  }
+  function drawDroneStamp(x,y){
+    const ctx=diagCtx;
+    ctx.save(); ctx.translate(x,y);
+    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(0,0,3.5,0,Math.PI*2); ctx.fill();
+    [[-9,-9],[9,-9],[-9,9],[9,9]].forEach(([ax,ay])=>{
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(ax,ay); ctx.stroke();
+      ctx.beginPath(); ctx.arc(ax,ay,3.5,0,Math.PI*2); ctx.stroke();
+    });
+    ctx.restore();
+  }
+  function drawLabel(x,y,text){
+    const ctx=diagCtx;
+    ctx.font='600 13px "IBM Plex Sans", sans-serif';
+    ctx.textBaseline='middle';
+    const padX=6; const w=ctx.measureText(text).width;
+    ctx.fillStyle='rgba(255,255,255,.92)';
+    ctx.fillRect(x-padX, y-11, w+padX*2, 22);
+    ctx.fillStyle=diagColor;
+    ctx.fillText(text, x, y);
+  }
+  function undoDiagram(){ if(diagHist.length>1){ diagHist.pop(); restoreLastDiagHist(); } }
+  function clearDiagram(){
+    const rect=diagCanvas.getBoundingClientRect();
+    diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,rect.width,rect.height);
+    pushDiagHist();
+  }
+  function closeDiagram(){ document.getElementById('pcDiagOverlay').classList.remove('show'); diagCallback=null; }
+  function saveDiagram(){
+    if(!diagCanvas || !diagCallback){ closeDiagram(); return; }
+    const out=diagCanvas.toDataURL('image/png');
+    const cb=diagCallback;
+    closeDiagram();
+    cb(out);
+  }
+
+  /* ---------- galeria ---------- */
+  function renderGallery(){
+    const box=document.getElementById('pcGalleryBody');
+    box.innerHTML='';
+    STATE.galeria.forEach((item,i)=>{
+      const cell=document.createElement('div');
+      cell.className='gallery-item';
+      cell.innerHTML=`<button class="gdel" type="button">${IC_TRASH}</button>
+        <input class="gtitle" placeholder="Título" value="${item.titulo||''}">
+        <div class="gzone"></div>`;
+      cell.querySelector('.gtitle').addEventListener('input', e=>{ STATE.galeria[i].titulo=e.target.value; markDirty(); });
+      cell.querySelector('.gdel').addEventListener('click', ()=>{ STATE.galeria.splice(i,1); renderGallery(); markDirty(); updateProgress(); });
+      box.appendChild(cell);
+      renderZone('g'+i, cell.querySelector('.gzone'), item.img, v=>{ STATE.galeria[i].img=v; });
+    });
+  }
+  function addGalleryItem(){ STATE.galeria.push({titulo:'', img:null}); renderGallery(); markDirty(); }
+
+  /* ---------- etapas ---------- */
+  function escapeAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function renderEtapas(){
+    const wrap=document.getElementById('pcEtapasWrap');
+    wrap.innerHTML = STATE.etapas.map((item,i)=>{
+      const num=String(i+1).padStart(2,'0');
+      return `
+      <div class="lb-section">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h6l2-8 4 16 2-8h6"/></svg><span class="etapa-prefix">Etapa ${num} —</span><input class="etapa-title-input" data-id="${item.id}" placeholder="Título da etapa" value="${escapeAttr(item.titulo)}"><button class="etapa-del" type="button" data-id="${item.id}" title="Remover etapa">${IC_TRASH}</button></h3>
+        <div class="etapa-block">
+          <div class="lb-field"><label>Descrição</label><textarea class="tall" id="pcEtapa_${item.id}"></textarea></div>
+          <div>
+            <div class="lb-field"><label>Diagrama Ilustrativo</label></div>
+            <div id="pcZoneEtapa_${item.id}"></div>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + `<div class="etapas-addbar"><button class="tbl-addrow" id="pcAddEtapaBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar etapa</button></div>`;
+
+    STATE.etapas.forEach(item=>{
+      const ta=document.getElementById('pcEtapa_'+item.id);
+      ta.value = item.desc || '';
+      ta.addEventListener('input', ()=>{ item.desc=ta.value; markDirty(); updateProgress(); });
+      renderZone('etapa_'+item.id, document.getElementById('pcZoneEtapa_'+item.id), item.img, v=>{ item.img=v; });
+    });
+
+    wrap.querySelectorAll('.etapa-title-input').forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        const it=STATE.etapas.find(e=>e.id===inp.dataset.id);
+        if(it){ it.titulo=inp.value; markDirty(); }
+      });
+    });
+
+    wrap.querySelectorAll('.etapa-del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(STATE.etapas.length<=1){ toast('É necessário manter ao menos 1 etapa'); return; }
+        if(!confirm('Remover esta etapa? Esta ação não pode ser desfeita.')) return;
+        STATE.etapas = STATE.etapas.filter(e=>e.id!==btn.dataset.id);
+        renderEtapas(); markDirty(); updateProgress();
+      });
+    });
+
+    document.getElementById('pcAddEtapaBtn').addEventListener('click', addEtapa);
+  }
+
+  function addEtapa(){
+    const id='e'+Date.now().toString(36)+Math.floor(Math.random()*1000);
+    STATE.etapas.push({id, titulo:'Nova etapa', desc:'', img:null});
+    renderEtapas(); markDirty(); updateProgress();
+    const wrap=document.getElementById('pcEtapasWrap');
+    const newInput=wrap.querySelector(`.etapa-title-input[data-id="${id}"]`);
+    if(newInput){ newInput.scrollIntoView({behavior:'smooth', block:'center'}); newInput.focus(); }
+  }
+
+  /* ---------- contingência agree ---------- */
+  function renderAgree(){
+    const el=document.getElementById('pcContAgree'); if(!el) return;
+    el.classList.toggle('on', !!STATE.contingencia.agree);
+  }
+
+  /* ---------- progresso ---------- */
+  function updateProgress(){
+    const checks=[
+      STATE.meta.empresa, STATE.meta.estrutura, STATE.meta.ativosDescricoes, STATE.meta.data,
+      STATE.time.operador1, STATE.time.tipoServico,
+      (STATE.equip.elios3||STATE.equip.elios2||STATE.equip.go2||STATE.equip.g1||STATE.equip.rover),
+      STATE.objetivo, STATE.localidadeImg, STATE.coordenadas, STATE.entregaveis,
+      STATE.seguranca.procedimentos,
+      STATE.escopo.descricao, STATE.escopo.pontosInteresse,
+      STATE.ativoCaracteristicas,
+      STATE.tempo.previsao,
+    ];
+    STATE.etapas.forEach(e=>{ checks.push(e.titulo, e.desc, e.img); });
+    checks.push(
+      STATE.contingencia.agree,
+      STATE.responsaveis.operador1!=='' && STATE.responsaveis.operador1!=='A definir',
+      STATE.responsaveis.operador2!=='' && STATE.responsaveis.operador2!=='A definir'
+    );
+    // (percentual calculado, mas sem indicador visual dedicado — o cabeçalho
+    // já mostra "Rascunho não salvo"/"Salvo neste navegador", igual aos outros diários)
+  }
+
+  /* ---------- salvar / novo plano / toast ---------- */
+  function pcSave(showToast){
+    if(!STATE) return;
+    STATE.savedAt=new Date().toISOString();
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); }catch(e){ console.error(e); }
+    markStatus(true); DIRTY=false;
+    if(showToast) toast('Plano salvo neste navegador');
+  }
+  function pcReset(){
+    if(!confirm('Isso vai limpar todos os campos preenchidos neste navegador e restaurar os textos-padrão. Deseja continuar?')) return;
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE);
+  }
+  let toastTimer=null;
+  function toast(msg){
+    const el=document.getElementById('pcToast');
+    if(!el) return;
+    document.getElementById('pcToastText').textContent=msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>el.classList.remove('show'), 2600);
+  }
+
+  window.addEventListener('beforeunload', ()=>{ if(DIRTY && STATE) pcSave(false); });
+
+  /* ---------- exposição global (necessária para os onclick="" do HTML) ---------- */
+  window.renderPlanoCaptura = renderPlanoCaptura;
+  window.approvePlan = approvePlan;
+  window.toggleEquip = toggleEquip;
+  window.setEquipVariante = setEquipVariante;
+  window.addGalleryItem = addGalleryItem;
+  window.setDiagTool = setDiagTool;
+  window.setDiagColor = setDiagColor;
+  window.undoDiagram = undoDiagram;
+  window.clearDiagram = clearDiagram;
+  window.closeDiagram = closeDiagram;
+  window.saveDiagram = saveDiagram;
+  window.pcSave = pcSave;
+  window.pcReset = pcReset;
 })();
 
 /* ---------- AUTH GATE ---------- */
