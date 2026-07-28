@@ -1023,6 +1023,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>/* ============================================================
    XD4 BLUE BOOK  ·  app.js
    Blocos: ICONS · DADOS · ÁRVORE · HOME · LEITOR · PLACEHOLDER
@@ -1959,6 +1960,40 @@ function renderPhrRover(){
    ============================================================ */
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbymY63xOk2kcp0e2Ci51oGmsEe8G-TsqFu-zp7XaMTSOpBo4U_-P_XC1-Ry13zHCXmxjw/exec";
 
+/* ============================================================
+   INTEGRAÇÃO COM SUPABASE (banco de dados na nuvem)
+   1) Crie um projeto em https://supabase.com (gratuito)
+   2) No SQL Editor do projeto, rode o script "supabase_schema.sql"
+      (entregue junto com este arquivo) para criar as tabelas
+   3) Em Project Settings > API, copie a "Project URL" e a chave
+      "anon public" e cole abaixo entre aspas
+   Enquanto SUPABASE_URL/SUPABASE_ANON_KEY estiverem vazias, o
+   autopreenchimento e o salvamento na nuvem ficam desativados e
+   tudo continua funcionando como hoje (rascunho local + Drive).
+   ============================================================ */
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+const sb = (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+if(!sb) console.warn('[XD4] Supabase não configurado ainda — preencha SUPABASE_URL e SUPABASE_ANON_KEY em index.html para ativar nuvem/autopreenchimento.');
+
+/* Grava um snapshot do documento numa tabela do Supabase.
+   Cada "Salvar" cria um novo registro (histórico de versões),
+   igual ao que já acontece hoje no Google Drive. Não bloqueia
+   nem interfere no fluxo existente do Drive se falhar. */
+async function sbSaveSnapshot(table, payload){
+  if(!sb) return {ok:false, reason:'not_configured'};
+  try{
+    const { data, error } = await sb.from(table).insert(payload).select('id').single();
+    if(error) throw error;
+    return {ok:true, id:data.id};
+  }catch(err){
+    console.error('Supabase '+table+':', err);
+    return {ok:false, reason: err.message||'erro'};
+  }
+}
+
 async function sendToDrive(kind, payload, extra){
   if(!GAS_ENDPOINT){ return {ok:false, reason:'not_configured'}; }
   const fetchPromise = (async () => {
@@ -2238,6 +2273,11 @@ async function lbSave(){
   }
   else if(r.reason==='not_configured'){ lbToast('Diário salvo localmente (Google Drive não configurado)'); }
   else { console.error('Detalhe do erro de envio:', r); lbToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('diarios_bordo', {
+    equipamento: LB_STATE.equipamento||null, modelo: LB_STATE.modelo||null,
+    fabricante: LB_STATE.fabricante||null, data: LB_STATE.data||null, state: LB_STATE
+  });
 }
 
 function lbBuildReport(){
@@ -2532,6 +2572,10 @@ async function mtSave(){
   }
   else if(r.reason==='not_configured'){ mtToast('Diário salvo localmente (Google Drive não configurado)'); }
   else { console.error('Detalhe do erro de envio:', r); mtToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('diarios_manutencao', {
+    equipamento: MT_STATE.equipamento||null, data: MT_STATE.respData||null, state: MT_STATE
+  });
 }
 
 function mtBuildReport(){
@@ -3880,7 +3924,8 @@ renderTree();
       },
       responsaveis:{operador1:'A definir', operador2:'A definir', postProcessing:'A definir'},
       contato:{nome:'Pierre Verardi Ramos', cargo:'Chief Operating Officer', telefone:'+55 (27) 99236-8364', email:'pierreverardi@xd4solutions.com.br'},
-      savedAt:null
+      savedAt:null,
+      cloudId:null
     };
   }
 
@@ -3965,7 +4010,7 @@ renderTree();
       <div class="lb-section">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg><span class="htitle">Informações</span></h3>
         <div class="lb-grid">
-          <div class="lb-field"><label>Empresa</label><input data-path="meta.empresa" placeholder="Nome do cliente"></div>
+          <div class="lb-field"><label>Empresa</label><input data-path="meta.empresa" id="pcEmpresaInput" list="pcEmpresaList" placeholder="Nome do cliente" autocomplete="off"><datalist id="pcEmpresaList"></datalist></div>
           <div class="lb-field"><label>Estrutura</label><input data-path="meta.estrutura" placeholder="Ex.: Ponte ferroviária…"></div>
           <div class="lb-field full"><label>Ativos — Descrições</label><input data-path="meta.ativosDescricoes" placeholder="Descrição resumida dos ativos a inspecionar"></div>
           <div class="lb-field"><label>Data</label><input data-path="meta.data" type="date"></div>
@@ -4086,12 +4131,24 @@ renderTree();
         </div>
       </div>
 
+      <div class="lb-section" id="pcCloudSection">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg><span class="htitle">Planos salvos na nuvem</span></h3>
+        <div class="lb-field full" id="pcCloudStatusWrap">
+          <span class="hint" id="pcCloudStatus">Conectando…</span>
+        </div>
+        <div class="lb-field full" id="pcCloudListWrap" style="display:none">
+          <label>Carregar um plano já salvo</label>
+          <select id="pcCloudList"><option value="">Selecione…</option></select>
+        </div>
+      </div>
+
       <div class="lb-section">
         <div class="lb-actions">
           <button class="lb-save" onclick="pcSave(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Plano</button>
+          <button class="lb-save" id="pcCloudSaveBtn" onclick="pcSaveCloud()" style="background:linear-gradient(135deg,#3FB98A,#1E7B4F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Salvar na Nuvem</button>
           <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Exportar / Imprimir PDF</button>
           <button class="lb-reset" onclick="pcReset()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Novo plano</button>
-          <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Os dados ficam salvos neste navegador. Use "Exportar / Imprimir PDF" para gerar o documento final.</span>
+          <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Os dados ficam salvos neste navegador. "Salvar na Nuvem" grava no banco (Supabase) para acesso de qualquer computador. Use "Exportar / Imprimir PDF" para gerar o documento final.</span>
         </div>
       </div>
     </div>
@@ -4188,6 +4245,164 @@ renderTree();
         r.readAsDataURL(f);
         diagBgInput.value='';
       });
+    }
+
+    initCloud();
+    const empresaInput=document.getElementById('pcEmpresaInput');
+    if(empresaInput){
+      empresaInput.addEventListener('change', ()=>{ autofillFromEmpresa(empresaInput.value); });
+    }
+  }
+
+  /* ---------- integração com Supabase (nuvem) ---------- */
+  let CLOUD_EMPRESAS=[]; // cache local: [{id,nome,cnpj,endereco}]
+
+  async function initCloud(){
+    const statusEl=document.getElementById('pcCloudStatus');
+    if(!sb){
+      if(statusEl) statusEl.textContent='Nuvem não configurada ainda (fala com o time de TI para ativar o Supabase). Os dados continuam salvos neste navegador normalmente.';
+      return;
+    }
+    if(statusEl) statusEl.textContent='Conectando à nuvem…';
+    try{
+      const { data: empresas, error: errEmp } = await sb.from('empresas').select('id,nome,cnpj,endereco').order('nome');
+      if(errEmp) throw errEmp;
+      CLOUD_EMPRESAS = empresas || [];
+      const list=document.getElementById('pcEmpresaList');
+      if(list) list.innerHTML = CLOUD_EMPRESAS.map(e=>`<option value="${escapeAttr(e.nome)}">`).join('');
+
+      const { data: planos, error: errPlanos } = await sb.from('planos_captura')
+        .select('id,empresa_nome,estrutura_nome,fase,data,updated_at')
+        .order('updated_at', {ascending:false}).limit(30);
+      if(errPlanos) throw errPlanos;
+      const wrap=document.getElementById('pcCloudListWrap');
+      const sel=document.getElementById('pcCloudList');
+      if(planos && planos.length && sel){
+        sel.innerHTML = '<option value="">Selecione…</option>' + planos.map(p=>{
+          const label = `${p.empresa_nome||'Sem empresa'} — ${p.estrutura_nome||'Sem estrutura'} (${p.fase||'preliminar'}${p.data? ', '+p.data:''})`;
+          return `<option value="${p.id}">${escapeAttr(label)}</option>`;
+        }).join('');
+        if(wrap) wrap.style.display='';
+        sel.onchange = ()=>{ if(sel.value) pcLoadCloud(sel.value); };
+      }
+      if(statusEl) statusEl.textContent = 'Conectado. ' + CLOUD_EMPRESAS.length + ' empresa(s) cadastrada(s) — comece a digitar o nome no campo "Empresa" para autopreencher.';
+    }catch(err){
+      console.error('Supabase:', err);
+      if(statusEl) statusEl.textContent='Não consegui conectar à nuvem agora. Verifique a URL/chave do Supabase ou tente novamente mais tarde.';
+    }
+  }
+
+  async function autofillFromEmpresa(nome){
+    if(!sb || !nome) return;
+    const match = CLOUD_EMPRESAS.find(e=> e.nome.toLowerCase()===nome.trim().toLowerCase());
+    if(!match) return;
+    try{
+      const { data: estruturas } = await sb.from('estruturas').select('*').eq('empresa_id', match.id).order('created_at', {ascending:false}).limit(1);
+      const { data: contatos } = await sb.from('contatos').select('*').eq('empresa_id', match.id).order('created_at', {ascending:false}).limit(1);
+      let changed=false;
+      if(estruturas && estruturas[0]){
+        const e=estruturas[0];
+        if(!STATE.meta.estrutura){ STATE.meta.estrutura=e.nome||''; changed=true; }
+        if(!STATE.meta.ativosDescricoes && e.ativos_descricoes){ STATE.meta.ativosDescricoes=e.ativos_descricoes; changed=true; }
+        if(!STATE.ativoCaracteristicas && e.ativo_caracteristicas){ STATE.ativoCaracteristicas=e.ativo_caracteristicas; changed=true; }
+        if(e.pontos_interesse){ STATE.escopo.pontosInteresse=e.pontos_interesse; changed=true; }
+      }
+      if(contatos && contatos[0]){
+        const c=contatos[0];
+        STATE.contato.nome=c.nome||STATE.contato.nome;
+        STATE.contato.cargo=c.cargo||STATE.contato.cargo;
+        STATE.contato.telefone=c.telefone||STATE.contato.telefone;
+        STATE.contato.email=c.email||STATE.contato.email;
+        changed=true;
+      }
+      if(changed){
+        bindSimpleFields();
+        toast('Campos preenchidos automaticamente a partir do cadastro de "'+match.nome+'"');
+        markDirty(); updateProgress();
+      }
+    }catch(err){ console.error('autofillFromEmpresa:', err); }
+  }
+
+  async function findOrCreateEmpresa(nome){
+    if(!nome) return null;
+    const existing = CLOUD_EMPRESAS.find(e=> e.nome.toLowerCase()===nome.trim().toLowerCase());
+    if(existing) return existing.id;
+    const { data, error } = await sb.from('empresas').insert({nome: nome.trim()}).select('id').single();
+    if(error){ console.error(error); return null; }
+    CLOUD_EMPRESAS.push({id:data.id, nome:nome.trim()});
+    return data.id;
+  }
+  async function findOrCreateEstrutura(empresaId, nome){
+    if(!nome) return null;
+    const { data: found } = await sb.from('estruturas').select('id').eq('empresa_id', empresaId).eq('nome', nome.trim()).limit(1);
+    if(found && found[0]) return found[0].id;
+    const { data, error } = await sb.from('estruturas').insert({
+      empresa_id: empresaId, nome: nome.trim(),
+      ativos_descricoes: STATE.meta.ativosDescricoes||null,
+      ativo_caracteristicas: STATE.ativoCaracteristicas||null,
+      pontos_interesse: STATE.escopo.pontosInteresse||null
+    }).select('id').single();
+    if(error){ console.error(error); return null; }
+    return data.id;
+  }
+  async function findOrCreateContato(empresaId){
+    const c=STATE.contato;
+    if(!c || !c.nome) return null;
+    const { data: found } = await sb.from('contatos').select('id').eq('empresa_id', empresaId).eq('nome', c.nome).limit(1);
+    if(found && found[0]) return found[0].id;
+    const { data, error } = await sb.from('contatos').insert({
+      empresa_id: empresaId, nome:c.nome, cargo:c.cargo||null, telefone:c.telefone||null, email:c.email||null
+    }).select('id').single();
+    if(error){ console.error(error); return null; }
+    return data.id;
+  }
+
+  async function pcSaveCloud(){
+    if(!sb){ toast('Nuvem ainda não configurada — peça ao time de TI para ativar o Supabase.'); return; }
+    const btn=document.getElementById('pcCloudSaveBtn');
+    if(btn) btn.disabled=true;
+    try{
+      const empresaId = await findOrCreateEmpresa(STATE.meta.empresa);
+      const estruturaId = empresaId ? await findOrCreateEstrutura(empresaId, STATE.meta.estrutura) : null;
+      const contatoId = empresaId ? await findOrCreateContato(empresaId) : null;
+      const payload = {
+        empresa_id: empresaId, estrutura_id: estruturaId, contato_id: contatoId,
+        empresa_nome: STATE.meta.empresa||null, estrutura_nome: STATE.meta.estrutura||null,
+        fase: STATE.escopo.fase, data: STATE.meta.data||null,
+        state: STATE
+      };
+      let resp;
+      if(STATE.cloudId){
+        resp = await sb.from('planos_captura').update(payload).eq('id', STATE.cloudId).select('id').single();
+      } else {
+        resp = await sb.from('planos_captura').insert(payload).select('id').single();
+      }
+      if(resp.error) throw resp.error;
+      STATE.cloudId = resp.data.id;
+      pcSave(false);
+      toast('Plano salvo na nuvem');
+      initCloud();
+    }catch(err){
+      console.error('pcSaveCloud:', err);
+      toast('Não consegui salvar na nuvem agora. Tente novamente em instantes.');
+    }finally{
+      if(btn) btn.disabled=false;
+    }
+  }
+
+  async function pcLoadCloud(id){
+    if(!sb) return;
+    try{
+      const { data, error } = await sb.from('planos_captura').select('state').eq('id', id).single();
+      if(error) throw error;
+      STATE = deepMerge(defaultState(), data.state);
+      STATE.etapas = normalizeEtapas(STATE.etapas);
+      STATE.cloudId = id;
+      if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE);
+      toast('Plano carregado da nuvem');
+    }catch(err){
+      console.error('pcLoadCloud:', err);
+      toast('Não consegui carregar esse plano agora.');
     }
   }
 
@@ -4688,6 +4903,7 @@ renderTree();
   window.closeDiagram = closeDiagram;
   window.saveDiagram = saveDiagram;
   window.pcSave = pcSave;
+  window.pcSaveCloud = pcSaveCloud;
   window.pcReset = pcReset;
 })();
 
