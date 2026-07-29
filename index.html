@@ -3937,6 +3937,18 @@ renderTree();
   let STATE=null;
   let DIRTY=false;
   let CURRENT_NODE=null;
+  let CLOUD_SESSION_ID=null; // só existe em memória (não é salvo em localStorage);
+  // controla se "Salvar na Nuvem" deve ATUALIZAR um registro ou CRIAR um novo.
+  // só fica setada quando o usuário carrega um plano existente da nuvem, ou
+  // depois de um salvamento bem-sucedido dentro desta mesma sessão de edição —
+  // assim, abrir a página de novo (ou editar pra outro cliente sem clicar em
+  // "Novo plano") sempre cria um registro novo, em vez de sobrescrever o anterior.
+  let CLOUD_SESSION_KEY=null; // "empresa||ativo" no momento em que CLOUD_SESSION_ID foi definida;
+  // se Empresa ou Ativo mudarem depois disso, entendemos que virou outro
+  // relatório e forçamos a criação de um registro novo, mesmo sem apertar "Novo plano".
+  function planoCloudKey(){
+    return (STATE.meta.empresa||'').trim().toLowerCase()+'||'+(STATE.meta.estrutura||'').trim().toLowerCase();
+  }
 
   function getPath(obj, path){ return path.split('.').reduce((o,k)=> (o==null?undefined:o[k]), obj); }
   function setPath(obj, path, val){
@@ -4195,8 +4207,9 @@ renderTree();
   }
 
   /* ---------- entry point (chamado pelo router) ---------- */
-  function renderPlanoCaptura(n){
+  function renderPlanoCaptura(n, preserveCloudSession){
     CURRENT_NODE = n;
+    if(!preserveCloudSession) CLOUD_SESSION_ID = null;
     let saved=null;
     try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
     STATE = saved ? deepMerge(defaultState(), saved) : defaultState();
@@ -4449,13 +4462,20 @@ renderTree();
         fase: STATE.escopo.fase, data: STATE.meta.data||null,
         state: STATE
       };
+      // se a dupla Empresa+Ativo mudou desde o último salvamento nesta sessão,
+      // trata como um relatório diferente e força a criação de um registro novo
+      if(CLOUD_SESSION_ID && CLOUD_SESSION_KEY !== planoCloudKey()){
+        CLOUD_SESSION_ID = null;
+      }
       let resp;
-      if(STATE.cloudId){
-        resp = await sb.from('planos_captura').update(payload).eq('id', STATE.cloudId).select('id').single();
+      if(CLOUD_SESSION_ID){
+        resp = await sb.from('planos_captura').update(payload).eq('id', CLOUD_SESSION_ID).select('id').single();
       } else {
         resp = await sb.from('planos_captura').insert(payload).select('id').single();
       }
       if(resp.error) throw resp.error;
+      CLOUD_SESSION_ID = resp.data.id;
+      CLOUD_SESSION_KEY = planoCloudKey();
       STATE.cloudId = resp.data.id;
       pcSave(false);
       toast('Plano salvo na nuvem');
@@ -4477,7 +4497,9 @@ renderTree();
       STATE = deepMerge(defaultState(), data.state);
       STATE.etapas = normalizeEtapas(STATE.etapas);
       STATE.cloudId = id;
-      if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE);
+      CLOUD_SESSION_ID = id;
+      CLOUD_SESSION_KEY = planoCloudKey();
+      if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE, true);
       toast('Plano carregado da nuvem');
     }catch(err){
       console.error('pcLoadCloud:', err);
