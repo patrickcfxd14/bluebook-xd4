@@ -958,6 +958,10 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .doc.locked .lb-actions .lb-save,
 .doc.locked .lb-actions #pcCloudSaveBtn
 { display:none }
+.user-chip{display:flex;align-items:center;gap:7px;background:var(--sky);border:1px solid var(--line);border-radius:99px;padding:5px 6px 5px 11px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.user-chip svg{width:15px;height:15px;color:var(--ink-3);flex-shrink:0}
+.user-chip button{background:transparent;border:none;color:var(--accent);font-weight:700;font-size:12px;padding:5px 9px;border-radius:99px;cursor:pointer}
+.user-chip button:hover{background:rgba(0,0,0,.06)}
 </style>
 </head>
 <body>
@@ -974,16 +978,21 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
     <p class="ag-subtitle">Sistema de Gestão Operacional &middot; Portal de Acesso Restrito</p>
 
     <form class="ag-card" id="agForm" autocomplete="off">
-      <label class="ag-label" for="agPass">Senha de acesso</label>
+      <label class="ag-label" for="agUser">Usuário</label>
+      <div class="ag-inputrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <input type="text" id="agUser" placeholder="ex.: patrick.xd4" autofocus autocapitalize="off" autocorrect="off" spellcheck="false">
+      </div>
+      <label class="ag-label" for="agPass" style="margin-top:12px">Senha de acesso</label>
       <div class="ag-inputrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-        <input type="password" id="agPass" placeholder="Digite a senha" autofocus>
+        <input type="password" id="agPass" placeholder="Digite a senha">
         <button type="button" class="ag-eye" id="agEye" aria-label="Mostrar senha">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
-      <div class="ag-error" id="agError">Senha incorreta. Tente novamente.</div>
-      <button type="submit" class="ag-submit">Entrar no portal</button>
+      <div class="ag-error" id="agError">Usuário ou senha incorretos. Tente novamente.</div>
+      <button type="submit" class="ag-submit" id="agSubmitBtn">Entrar no portal</button>
     </form>
 
     <p class="ag-footer">Acesso restrito a colaboradores e parceiros autorizados da XD4Solutions</p>
@@ -1011,6 +1020,11 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
       <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
     </button>
     <div class="clock" id="clock"><b>--:--</b><span>--</span></div>
+    <div class="user-chip" id="userChip" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span id="userChipName">—</span>
+      <button id="userLogoutBtn" title="Sair">Sair</button>
+    </div>
   </div>
 </div>
 
@@ -5354,41 +5368,104 @@ renderTree();
 
 /* ---------- AUTH GATE ---------- */
 (function(){
+  // Login individual via Supabase Auth (usuário + senha reais, verificados no
+  // servidor). Como o Supabase Auth pede um e-mail, convertemos o usuário
+  // digitado (ex.: "patrick.xd4") num e-mail interno fixo — o usuário nunca
+  // vê nem digita esse e-mail, só o "usuário" mesmo.
+  const EMAIL_DOMAIN = 'xd4solutions.internal';
+  function usernameToEmail(u){ return (u||'').trim().toLowerCase().replace(/[^a-z0-9._-]/g,'') + '@' + EMAIL_DOMAIN; }
+  function emailToUsername(email){ return (email||'').split('@')[0]; }
+
+  // Fallback (só usado se o Supabase ainda não estiver configurado nesta
+  // cópia do painel — mantém o portal acessível com a senha única de antes).
   const AG_PASSWORD = 'xd4solutions';
   const AG_SESSION_KEY = 'xd4_bluebook_authed';
+
   const gate = document.getElementById('authGate');
   const logoImg = document.getElementById('agLogoSym');
   if(logoImg) logoImg.src = XD4_SYMBOL;
 
-  function openApp(){ gate.classList.add('hidden'); }
-
-  let authed = false;
-  try { authed = sessionStorage.getItem(AG_SESSION_KEY) === '1'; } catch(e){}
-  if(authed){ openApp(); }
-
   const form = document.getElementById('agForm');
-  const input = document.getElementById('agPass');
+  const userInput = document.getElementById('agUser');
+  const passInput = document.getElementById('agPass');
   const errorEl = document.getElementById('agError');
   const card = document.querySelector('.ag-card');
   const eyeBtn = document.getElementById('agEye');
+  const submitBtn = document.getElementById('agSubmitBtn');
+  const userChip = document.getElementById('userChip');
+  const userChipName = document.getElementById('userChipName');
+  const logoutBtn = document.getElementById('userLogoutBtn');
+
+  function openApp(displayName){
+    gate.classList.add('hidden');
+    if(displayName && userChip){
+      userChipName.textContent = displayName;
+      userChip.style.display = '';
+    }
+  }
+  function showError(msg){
+    if(errorEl){ errorEl.textContent = msg; errorEl.classList.add('show'); }
+    card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+  }
 
   eyeBtn.addEventListener('click', ()=>{
-    input.type = input.type === 'password' ? 'text' : 'password';
+    passInput.type = passInput.type === 'password' ? 'text' : 'password';
   });
 
-  form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const val = (input.value||'').trim().toLowerCase();
-    if(val === AG_PASSWORD){
+  if(logoutBtn){
+    logoutBtn.addEventListener('click', async ()=>{
+      try{ if(sb) await sb.auth.signOut(); }catch(e){}
+      try{ sessionStorage.removeItem(AG_SESSION_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  if(sb){
+    // Supabase configurado: login individual de verdade.
+    sb.auth.getSession().then(({data})=>{
+      if(data && data.session && data.session.user){
+        openApp(emailToUsername(data.session.user.email));
+      }
+    });
+
+    form.addEventListener('submit', async e=>{
+      e.preventDefault();
+      const username = (userInput.value||'').trim();
+      const password = passInput.value||'';
+      if(!username || !password){ showError('Preencha usuário e senha.'); return; }
       errorEl.classList.remove('show');
-      try { sessionStorage.setItem(AG_SESSION_KEY,'1'); } catch(e){}
-      openApp();
-    } else {
-      errorEl.classList.add('show');
-      card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
-      input.value=''; input.focus();
-    }
-  });
+      submitBtn.disabled = true; submitBtn.textContent = 'Entrando…';
+      try{
+        const { data, error } = await sb.auth.signInWithPassword({ email: usernameToEmail(username), password });
+        if(error) throw error;
+        openApp(emailToUsername(data.user.email));
+      }catch(err){
+        console.error('Login:', err);
+        showError('Usuário ou senha incorretos. Tente novamente.');
+        passInput.value=''; passInput.focus();
+      }finally{
+        submitBtn.disabled = false; submitBtn.textContent = 'Entrar no portal';
+      }
+    });
+  } else {
+    // Nuvem ainda não configurada nesta cópia: mantém a senha única de antes.
+    let authed = false;
+    try { authed = sessionStorage.getItem(AG_SESSION_KEY) === '1'; } catch(e){}
+    if(authed){ openApp(); }
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const val = (passInput.value||'').trim().toLowerCase();
+      if(val === AG_PASSWORD){
+        errorEl.classList.remove('show');
+        try { sessionStorage.setItem(AG_SESSION_KEY,'1'); } catch(e){}
+        openApp();
+      } else {
+        showError('Senha incorreta. Tente novamente.');
+        passInput.value=''; passInput.focus();
+      }
+    });
+  }
 })();
 </script>
 </body>
