@@ -1994,6 +1994,80 @@ async function sbSaveSnapshot(table, payload){
   }
 }
 
+/* Preenche o <select> de "salvos na nuvem" de um documento simples
+   (Diário de Bordo, Diário de Manutenção, Risk Assessment — nenhum
+   deles tem autopreenchimento/edição em grupo, é só listar e reabrir). */
+async function sbFillCloudList(table, cols, labelFn, statusElId, wrapId, selId, onPick){
+  const statusEl=document.getElementById(statusElId);
+  if(!sb){
+    if(statusEl) statusEl.textContent='Nuvem não configurada ainda (fala com o time de TI para ativar o Supabase). O salvamento continua indo pro Google Drive normalmente.';
+    return;
+  }
+  if(statusEl) statusEl.textContent='Conectando à nuvem…';
+  try{
+    const { data, error } = await sb.from(table).select(cols).order('created_at', {ascending:false}).limit(30);
+    if(error) throw error;
+    const wrap=document.getElementById(wrapId);
+    const sel=document.getElementById(selId);
+    if(data && data.length && sel){
+      sel.innerHTML = '<option value="">Selecione…</option>' + data.map(row=>
+        `<option value="${row.id}">${escapeAttrGlobal(labelFn(row))}</option>`
+      ).join('');
+      if(wrap) wrap.style.display='';
+      sel.onchange = ()=>{ if(sel.value) onPick(sel.value); };
+    }
+    if(statusEl) statusEl.textContent = data && data.length
+      ? ('Conectado. ' + data.length + ' registro(s) encontrados nesta lista.')
+      : 'Conectado. Nenhum registro salvo na nuvem ainda — clique em "Salvar" para começar.';
+  }catch(err){
+    console.error('Supabase '+table+':', err);
+    if(statusEl) statusEl.textContent='Não consegui conectar à nuvem agora. Verifique a URL/chave do Supabase ou tente novamente mais tarde.';
+  }
+}
+function escapeAttrGlobal(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function lbInitCloud(){
+  sbFillCloudList('diarios_bordo', 'id,equipamento,modelo,data,created_at',
+    r => `${r.equipamento||'Sem equipamento'}${r.modelo? ' — '+r.modelo:''}${r.data? ' ('+r.data+')':''}`,
+    'lbCloudStatus', 'lbCloudListWrap', 'lbCloudList', lbLoadCloud);
+}
+async function lbLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('diarios_bordo').select('state').eq('id', id).single();
+    if(error) throw error;
+    if(LB_NODE) renderLogbook(LB_NODE, data.state);
+    lbToast('Diário carregado da nuvem');
+  }catch(err){ console.error('lbLoadCloud:', err); }
+}
+
+function mtInitCloud(){
+  sbFillCloudList('diarios_manutencao', 'id,equipamento,data,created_at',
+    r => `${r.equipamento||'Sem equipamento'}${r.data? ' ('+r.data+')':''}`,
+    'mtCloudStatus', 'mtCloudListWrap', 'mtCloudList', mtLoadCloud);
+}
+async function mtLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('diarios_manutencao').select('state').eq('id', id).single();
+    if(error) throw error;
+    if(MT_NODE) renderMaintLog(MT_NODE, data.state);
+    mtToast('Diário carregado da nuvem');
+  }catch(err){ console.error('mtLoadCloud:', err); }
+}
+
+function raInitCloud(){
+  sbFillCloudList('risk_assessments', 'id,cliente,local_ativo,data,created_at',
+    r => `${r.cliente||'Sem cliente'}${r.local_ativo? ' — '+r.local_ativo:''}${r.data? ' ('+r.data+')':''}`,
+    'raCloudStatus', 'raCloudListWrap', 'raCloudList', raLoadCloud);
+}
+async function raLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('risk_assessments').select('state').eq('id', id).single();
+    if(error) throw error;
+    if(RA_NODE) renderRiskAssessment(RA_NODE, data.state);
+    raToast('Avaliação carregada da nuvem');
+  }catch(err){ console.error('raLoadCloud:', err); }
+}
+
 async function sendToDrive(kind, payload, extra){
   if(!GAS_ENDPOINT){ return {ok:false, reason:'not_configured'}; }
   const fetchPromise = (async () => {
@@ -2086,8 +2160,9 @@ function exportarPDF(nodeId, fallbackPrint){
   }
 }
 
-function renderLogbook(n){
-  LB_STATE = JSON.parse(JSON.stringify(LOGBOOK_SEED[n.id] || {
+function renderLogbook(n, overrideState){
+  LB_NODE = n;
+  LB_STATE = overrideState || JSON.parse(JSON.stringify(LOGBOOK_SEED[n.id] || {
     equipamento:'', modelo:'', fabricante:'', cliente:'', data:new Date().toISOString().slice(0,10),
     horasAnterior:'', horasDia:'', horasTotal:'', op1:{nome:'',sisant:''}, op2:{nome:'',sisant:''}, voos:[], ocorrencias:''
   }));
@@ -2176,6 +2251,15 @@ function renderLogbook(n){
       <textarea id="lbOcorrencias" placeholder="Descreva aqui qualquer ocorrência, anormalidade ou observação relevante da missão…">${LB_STATE.ocorrencias}</textarea>
     </div>
 
+    <div class="lb-section" id="lbCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Diários salvos na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="lbCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="lbCloudListWrap" style="display:none">
+        <label>Abrir um diário já salvo</label>
+        <select id="lbCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
     <div class="lb-section">
       <div class="lb-actions">
         <button class="lb-save" onclick="lbSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Bordo</button>
@@ -2187,6 +2271,7 @@ function renderLogbook(n){
   <div class="lb-toast" id="lbToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="lbToastText">Diário salvo</span></div>
   `;
   lbRenderVoos();
+  lbInitCloud();
 }
 
 function lbRenderVoos(){
@@ -2369,9 +2454,11 @@ const MAINTLOG_SEED = {
 };
 
 let MT_STATE = null;
+let MT_NODE = null;
 
-function renderMaintLog(n){
-  MT_STATE = JSON.parse(JSON.stringify(MAINTLOG_SEED[n.id] || {
+function renderMaintLog(n, overrideState){
+  MT_NODE = n;
+  MT_STATE = overrideState || JSON.parse(JSON.stringify(MAINTLOG_SEED[n.id] || {
     equipamento:'', modelo:'', numSerie:'', fabricante:'', operador:'', numDoc:'', revisao:'00', horasManutencao:'',
     discrepancias:[], outros:[], respNome:'', respData:new Date().toISOString().slice(0,10), respRub:false, inspecao:''
   }));
@@ -2458,6 +2545,15 @@ function renderMaintLog(n){
       <textarea id="mtInspecao" placeholder="Descreva o resultado da inspeção pré-voo…">${MT_STATE.inspecao}</textarea>
     </div>
 
+    <div class="lb-section" id="mtCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Diários salvos na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="mtCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="mtCloudListWrap" style="display:none">
+        <label>Abrir um diário já salvo</label>
+        <select id="mtCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
     <div class="lb-section">
       <div class="lb-actions">
         <button class="lb-save" onclick="mtSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Diário de Manutenção</button>
@@ -2470,6 +2566,7 @@ function renderMaintLog(n){
   `;
   mtRenderDisc();
   mtRenderOutros();
+  mtInitCloud();
 }
 
 function mtRenderDisc(){
@@ -2733,10 +2830,12 @@ function raDefaultState(){
   };
 }
 let RA_STATE = null;
+let RA_NODE = null;
 const RA_ICOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
 
-function renderRiskAssessment(n){
-  RA_STATE = raDefaultState();
+function renderRiskAssessment(n, overrideState){
+  RA_NODE = n;
+  RA_STATE = overrideState || raDefaultState();
 
   viewDoc.innerHTML = `
   <div class="doc lb-section-wrap" style="max-width:1080px">
@@ -2847,6 +2946,15 @@ function renderRiskAssessment(n){
       </div>
     </div>
 
+    <div class="lb-section" id="raCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Avaliações salvas na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="raCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="raCloudListWrap" style="display:none">
+        <label>Abrir uma avaliação já salva</label>
+        <select id="raCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
     <div class="lb-section">
       <div class="lb-actions">
         <button class="lb-save" onclick="raSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Risk Assessment</button>
@@ -2866,6 +2974,7 @@ function renderRiskAssessment(n){
   raRenderRecuperacao();
   raRenderSigPad();
   raUpdateRiskMeter();
+  raInitCloud();
 }
 
 function raChipHTML(group, item, checked, qualVal, hazardStyle){
