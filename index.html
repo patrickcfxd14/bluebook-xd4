@@ -3289,6 +3289,11 @@ async function raSave(){
   }
   else if(r.reason==='not_configured'){ raToast('Risk Assessment salvo localmente (Google Drive não configurado)'); }
   else { console.error('Detalhe do erro de envio:', r); raToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('risk_assessments', {
+    cliente: RA_STATE.cliente||null, local_ativo: RA_STATE.localAtivo||null,
+    data: RA_STATE.dataMissao||null, state: RA_STATE
+  });
 }
 
 function titleCase(s){
@@ -4011,7 +4016,7 @@ renderTree();
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg><span class="htitle">Informações</span></h3>
         <div class="lb-grid">
           <div class="lb-field"><label>Empresa</label><input data-path="meta.empresa" id="pcEmpresaInput" list="pcEmpresaList" placeholder="Nome do cliente" autocomplete="off"><datalist id="pcEmpresaList"></datalist></div>
-          <div class="lb-field"><label>Estrutura</label><input data-path="meta.estrutura" placeholder="Ex.: Ponte ferroviária…"></div>
+          <div class="lb-field"><label>Estrutura</label><input data-path="meta.estrutura" id="pcEstruturaInput" list="pcEstruturaList" placeholder="Ex.: Ponte ferroviária…" autocomplete="off"><datalist id="pcEstruturaList"></datalist></div>
           <div class="lb-field full"><label>Ativos — Descrições</label><input data-path="meta.ativosDescricoes" placeholder="Descrição resumida dos ativos a inspecionar"></div>
           <div class="lb-field"><label>Data</label><input data-path="meta.data" type="date"></div>
           <div class="lb-field"><label>Referência</label><input data-path="meta.referencia" placeholder="N/A"></div>
@@ -4250,12 +4255,17 @@ renderTree();
     initCloud();
     const empresaInput=document.getElementById('pcEmpresaInput');
     if(empresaInput){
-      empresaInput.addEventListener('change', ()=>{ autofillFromEmpresa(empresaInput.value); });
+      empresaInput.addEventListener('change', ()=>{ onEmpresaChange(empresaInput.value); });
+    }
+    const estruturaInput=document.getElementById('pcEstruturaInput');
+    if(estruturaInput){
+      estruturaInput.addEventListener('change', ()=>{ autofillFromEstrutura(estruturaInput.value); });
     }
   }
 
   /* ---------- integração com Supabase (nuvem) ---------- */
   let CLOUD_EMPRESAS=[]; // cache local: [{id,nome,cnpj,endereco}]
+  let CLOUD_ESTRUTURAS=[]; // cache local das estruturas/ativos da empresa selecionada no momento
 
   async function initCloud(){
     const statusEl=document.getElementById('pcCloudStatus');
@@ -4285,42 +4295,62 @@ renderTree();
         if(wrap) wrap.style.display='';
         sel.onchange = ()=>{ if(sel.value) pcLoadCloud(sel.value); };
       }
-      if(statusEl) statusEl.textContent = 'Conectado. ' + CLOUD_EMPRESAS.length + ' empresa(s) cadastrada(s) — comece a digitar o nome no campo "Empresa" para autopreencher.';
+      if(statusEl) statusEl.textContent = 'Conectado. ' + CLOUD_EMPRESAS.length + ' empresa(s) cadastrada(s) — digite a Empresa e depois o Ativo/Estrutura para autopreencher.';
     }catch(err){
       console.error('Supabase:', err);
       if(statusEl) statusEl.textContent='Não consegui conectar à nuvem agora. Verifique a URL/chave do Supabase ou tente novamente mais tarde.';
     }
   }
 
-  async function autofillFromEmpresa(nome){
+  /* Passo 1: ao reconhecer a Empresa, carrega a lista de Ativos/Estruturas
+     já cadastrados para ELA (autocomplete do campo Estrutura) e preenche o
+     Contato (que é por empresa, não por ativo). Os dados do ativo em si só
+     são preenchidos no passo 2, quando a dupla Empresa+Ativo é reconhecida. */
+  async function onEmpresaChange(nome){
+    CLOUD_ESTRUTURAS = [];
+    const estList=document.getElementById('pcEstruturaList');
+    if(estList) estList.innerHTML='';
     if(!sb || !nome) return;
     const match = CLOUD_EMPRESAS.find(e=> e.nome.toLowerCase()===nome.trim().toLowerCase());
     if(!match) return;
     try{
-      const { data: estruturas } = await sb.from('estruturas').select('*').eq('empresa_id', match.id).order('created_at', {ascending:false}).limit(1);
+      const { data: estruturas } = await sb.from('estruturas').select('*').eq('empresa_id', match.id).order('nome');
+      CLOUD_ESTRUTURAS = estruturas || [];
+      if(estList) estList.innerHTML = CLOUD_ESTRUTURAS.map(e=>`<option value="${escapeAttr(e.nome)}">`).join('');
+
       const { data: contatos } = await sb.from('contatos').select('*').eq('empresa_id', match.id).order('created_at', {ascending:false}).limit(1);
-      let changed=false;
-      if(estruturas && estruturas[0]){
-        const e=estruturas[0];
-        if(!STATE.meta.estrutura){ STATE.meta.estrutura=e.nome||''; changed=true; }
-        if(!STATE.meta.ativosDescricoes && e.ativos_descricoes){ STATE.meta.ativosDescricoes=e.ativos_descricoes; changed=true; }
-        if(!STATE.ativoCaracteristicas && e.ativo_caracteristicas){ STATE.ativoCaracteristicas=e.ativo_caracteristicas; changed=true; }
-        if(e.pontos_interesse){ STATE.escopo.pontosInteresse=e.pontos_interesse; changed=true; }
-      }
       if(contatos && contatos[0]){
         const c=contatos[0];
         STATE.contato.nome=c.nome||STATE.contato.nome;
         STATE.contato.cargo=c.cargo||STATE.contato.cargo;
         STATE.contato.telefone=c.telefone||STATE.contato.telefone;
         STATE.contato.email=c.email||STATE.contato.email;
-        changed=true;
-      }
-      if(changed){
         bindSimpleFields();
-        toast('Campos preenchidos automaticamente a partir do cadastro de "'+match.nome+'"');
+        toast('Contato preenchido a partir do cadastro de "'+match.nome+'"');
         markDirty(); updateProgress();
       }
-    }catch(err){ console.error('autofillFromEmpresa:', err); }
+      // se o campo Estrutura já tiver algo digitado (ex.: veio de um autofill anterior), tenta casar na hora
+      const estruturaAtual=document.getElementById('pcEstruturaInput');
+      if(estruturaAtual && estruturaAtual.value) autofillFromEstrutura(estruturaAtual.value);
+    }catch(err){ console.error('onEmpresaChange:', err); }
+  }
+
+  /* Passo 2: com Empresa já reconhecida e o Ativo/Estrutura digitado,
+     busca o registro exato daquela dupla Empresa+Ativo e preenche
+     Ativos-Descrições, Características do Ativo e Pontos de Interesse. */
+  function autofillFromEstrutura(nome){
+    if(!nome || !CLOUD_ESTRUTURAS.length) return;
+    const e = CLOUD_ESTRUTURAS.find(x=> x.nome.toLowerCase()===nome.trim().toLowerCase());
+    if(!e) return;
+    let changed=false;
+    if(e.ativos_descricoes){ STATE.meta.ativosDescricoes=e.ativos_descricoes; changed=true; }
+    if(e.ativo_caracteristicas){ STATE.ativoCaracteristicas=e.ativo_caracteristicas; changed=true; }
+    if(e.pontos_interesse){ STATE.escopo.pontosInteresse=e.pontos_interesse; changed=true; }
+    if(changed){
+      bindSimpleFields();
+      toast('Dados do ativo "'+e.nome+'" preenchidos automaticamente');
+      markDirty(); updateProgress();
+    }
   }
 
   async function findOrCreateEmpresa(nome){
@@ -4357,11 +4387,59 @@ renderTree();
     return data.id;
   }
 
+  const STORAGE_BUCKET = 'plano-captura-imagens';
+
+  function dataUrlToBlob(dataUrl){
+    const [meta, b64] = dataUrl.split(',');
+    const mime = (meta.match(/data:(.*?);base64/)||[])[1] || 'image/png';
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    return new Blob([arr], {type:mime});
+  }
+
+  /* Sobe uma imagem em base64 para o Storage do Supabase (se ainda não
+     estiver lá) e devolve a URL pública, no lugar do texto base64 —
+     isso evita encher a cota de banco de dados (500MB) com fotos,
+     usando a cota de arquivos (1GB) que é feita pra isso. */
+  async function uploadImageIfNeeded(dataUrl, pathHint){
+    if(!dataUrl || !dataUrl.startsWith('data:')) return dataUrl; // já é URL ou está vazio
+    try{
+      const blob = dataUrlToBlob(dataUrl);
+      const ext = (blob.type.split('/')[1]||'png').split('+')[0];
+      const path = `${STATE.cloudId||'rascunho'}/${pathHint}-${Date.now()}.${ext}`;
+      const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, blob, {contentType: blob.type, upsert:true});
+      if(error) throw error;
+      const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      return data.publicUrl;
+    }catch(err){
+      console.error('uploadImageIfNeeded('+pathHint+'):', err);
+      return dataUrl; // se der erro, mantém o base64 em vez de perder a imagem
+    }
+  }
+
+  /* Percorre todas as imagens do plano (localidade, galeria, etapas) e
+     troca base64 por URL do Storage. Atualiza o próprio STATE, então o
+     rascunho local também passa a referenciar a URL a partir daqui. */
+  async function uploadAllImages(){
+    STATE.localidadeImg = await uploadImageIfNeeded(STATE.localidadeImg, 'localidade');
+    for(let i=0;i<STATE.galeria.length;i++){
+      STATE.galeria[i].img = await uploadImageIfNeeded(STATE.galeria[i].img, 'galeria-'+i);
+    }
+    for(const etapa of STATE.etapas){
+      etapa.img = await uploadImageIfNeeded(etapa.img, 'etapa-'+etapa.id);
+    }
+  }
+
   async function pcSaveCloud(){
     if(!sb){ toast('Nuvem ainda não configurada — peça ao time de TI para ativar o Supabase.'); return; }
     const btn=document.getElementById('pcCloudSaveBtn');
     if(btn) btn.disabled=true;
+    const statusEl=document.getElementById('pcCloudStatus');
+    const statusBefore = statusEl ? statusEl.textContent : '';
+    if(statusEl) statusEl.textContent='Enviando imagens e salvando na nuvem…';
     try{
+      await uploadAllImages();
       const empresaId = await findOrCreateEmpresa(STATE.meta.empresa);
       const estruturaId = empresaId ? await findOrCreateEstrutura(empresaId, STATE.meta.estrutura) : null;
       const contatoId = empresaId ? await findOrCreateContato(empresaId) : null;
@@ -4385,6 +4463,7 @@ renderTree();
     }catch(err){
       console.error('pcSaveCloud:', err);
       toast('Não consegui salvar na nuvem agora. Tente novamente em instantes.');
+      if(statusEl) statusEl.textContent=statusBefore;
     }finally{
       if(btn) btn.disabled=false;
     }
