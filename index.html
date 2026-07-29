@@ -5372,7 +5372,7 @@ renderTree();
   // servidor). Como o Supabase Auth pede um e-mail, convertemos o usuário
   // digitado (ex.: "patrick.xd4") num e-mail interno fixo — o usuário nunca
   // vê nem digita esse e-mail, só o "usuário" mesmo.
-  const EMAIL_DOMAIN = 'xd4solutions.internal';
+  const EMAIL_DOMAIN = 'xd4solutions.com.br';
   function usernameToEmail(u){ return (u||'').trim().toLowerCase().replace(/[^a-z0-9._-]/g,'') + '@' + EMAIL_DOMAIN; }
   function emailToUsername(email){ return (email||'').split('@')[0]; }
 
@@ -5441,7 +5441,12 @@ renderTree();
         openApp(emailToUsername(data.user.email));
       }catch(err){
         console.error('Login:', err);
-        showError('Usuário ou senha incorretos. Tente novamente.');
+        const msg = (err && err.message || '').toLowerCase();
+        if(msg.includes('confirm')){
+          showError('Este usuário foi criado sem marcar "Auto Confirm User" no Supabase. Peça pro time de TI editar o usuário lá e marcar essa opção.');
+        } else {
+          showError('Usuário ou senha incorretos. Tente novamente.');
+        }
         passInput.value=''; passInput.focus();
       }finally{
         submitBtn.disabled = false; submitBtn.textContent = 'Entrar no portal';
