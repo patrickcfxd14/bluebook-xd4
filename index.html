@@ -932,6 +932,32 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .diag-btn.ghost:hover{color:var(--ink);border-color:var(--accent)}
 .diag-btn.primary{background:linear-gradient(135deg,var(--xd4),var(--blue));color:#fff;display:inline-flex;align-items:center;gap:7px}
 .diag-btn.primary svg{width:14px;height:14px}
+.lock-banner{background:linear-gradient(135deg,#FEF6DC,#FCEBB6);border:1.5px solid #E8B93A;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.lock-banner svg{width:24px;height:24px;color:#92660A;flex-shrink:0}
+.lock-banner .txt{flex:1;font-size:13px;color:#5A4008;line-height:1.5}
+.lock-banner .txt b{display:block;font-size:14.5px;margin-bottom:2px;color:#3F2C05}
+.lock-banner button{background:#fff;border:1.5px solid #E8B93A;color:#5A4008;font-weight:700;font-size:12.5px;padding:9px 15px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:.15s}
+.lock-banner button:hover{background:#FFFBEB;border-color:#C99616}
+.doc.locked .lb-section:not(.lock-banner-section) input,
+.doc.locked .lb-section:not(.lock-banner-section) textarea,
+.doc.locked .lb-section:not(.lock-banner-section) select,
+.doc.locked .lb-section:not(.lock-banner-section) .ra-chip,
+.doc.locked .lb-section:not(.lock-banner-section) .imgzone,
+.doc.locked .lb-section:not(.lock-banner-section) .lb-sig,
+.doc.locked .lb-section:not(.lock-banner-section) .ra-agree,
+.doc.locked .lb-section:not(.lock-banner-section) .agree-row,
+.doc.locked .lb-section:not(.lock-banner-section) .etapa-title-input,
+.doc.locked .lb-section:not(.lock-banner-section) .etapa-del,
+.doc.locked .lb-section:not(.lock-banner-section) .tbl-addrow,
+.doc.locked .lb-section:not(.lock-banner-section) .tbl-rowdel,
+.doc.locked .lb-section:not(.lock-banner-section) .etapas-addbar,
+.doc.locked .lb-section:not(.lock-banner-section) .fase-approve-btn,
+.doc.locked .lb-section:not(.lock-banner-section) .gdel,
+.doc.locked .lb-section:not(.lock-banner-section) .gallery-grid + .tbl-addrow
+{ pointer-events:none!important; opacity:.62; filter:grayscale(.15) }
+.doc.locked .lb-actions .lb-save,
+.doc.locked .lb-actions #pcCloudSaveBtn
+{ display:none }
 </style>
 </head>
 <body>
@@ -2033,11 +2059,15 @@ function lbInitCloud(){
 }
 async function lbLoadCloud(id){
   try{
-    const { data, error } = await sb.from('diarios_bordo').select('state').eq('id', id).single();
+    const { data, error } = await sb.from('diarios_bordo').select('state,created_at').eq('id', id).single();
     if(error) throw error;
-    if(LB_NODE) renderLogbook(LB_NODE, data.state);
+    if(LB_NODE) renderLogbook(LB_NODE, data.state, data.created_at);
     lbToast('Diário carregado da nuvem');
   }catch(err){ console.error('lbLoadCloud:', err); }
+}
+function lbUnlockCopy(){
+  if(LB_NODE) renderLogbook(LB_NODE, LB_STATE);
+  lbToast('Cópia liberada para edição — salve pra criar um novo registro');
 }
 
 function mtInitCloud(){
@@ -2047,11 +2077,15 @@ function mtInitCloud(){
 }
 async function mtLoadCloud(id){
   try{
-    const { data, error } = await sb.from('diarios_manutencao').select('state').eq('id', id).single();
+    const { data, error } = await sb.from('diarios_manutencao').select('state,created_at').eq('id', id).single();
     if(error) throw error;
-    if(MT_NODE) renderMaintLog(MT_NODE, data.state);
+    if(MT_NODE) renderMaintLog(MT_NODE, data.state, data.created_at);
     mtToast('Diário carregado da nuvem');
   }catch(err){ console.error('mtLoadCloud:', err); }
+}
+function mtUnlockCopy(){
+  if(MT_NODE) renderMaintLog(MT_NODE, MT_STATE);
+  mtToast('Cópia liberada para edição — salve pra criar um novo registro');
 }
 
 function raInitCloud(){
@@ -2061,11 +2095,34 @@ function raInitCloud(){
 }
 async function raLoadCloud(id){
   try{
-    const { data, error } = await sb.from('risk_assessments').select('state').eq('id', id).single();
+    const { data, error } = await sb.from('risk_assessments').select('state,created_at').eq('id', id).single();
     if(error) throw error;
-    if(RA_NODE) renderRiskAssessment(RA_NODE, data.state);
+    if(RA_NODE) renderRiskAssessment(RA_NODE, data.state, data.created_at);
     raToast('Avaliação carregada da nuvem');
   }catch(err){ console.error('raLoadCloud:', err); }
+}
+function raUnlockCopy(){
+  if(RA_NODE) renderRiskAssessment(RA_NODE, RA_STATE);
+  raToast('Cópia liberada para edição — salve pra criar um novo registro');
+}
+
+/* ---------- bloqueio de documentos carregados da nuvem ---------- */
+function fmtCriadoEm(iso){
+  if(!iso) return null;
+  try{
+    return new Date(iso).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  }catch(e){ return null; }
+}
+const LOCK_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>';
+function lockBannerHtml(createdAtIso, unlockFnName){
+  const quando = fmtCriadoEm(createdAtIso) || 'data não registrada';
+  return `<div class="lb-section lock-banner-section" style="background:none;border:none;box-shadow:none;padding:0">
+    <div class="lock-banner">
+      ${LOCK_IC}
+      <div class="txt"><b>Documento carregado da nuvem — bloqueado para edição</b>Os dados exibidos são exatamente os que foram salvos em <b>${quando}</b>. Para alterar algo, crie uma cópia editável.</div>
+      <button type="button" onclick="${unlockFnName}()">Duplicar para editar</button>
+    </div>
+  </div>`;
 }
 
 async function sendToDrive(kind, payload, extra){
@@ -2147,6 +2204,7 @@ function lbMinDiff(a,b){
 function lbFmt(mins){ if(mins==null) return '--:--'; const h=Math.floor(mins/60), m=mins%60; return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'); }
 
 let LB_STATE = null;
+let LB_LOCKED_AT = null; // se setado, o diário foi carregado da nuvem e está travado pra edição
 
 const LAST_PDF_URL = {}; // guarda o link do PDF gerado no Drive por diário, na última vez que foi salvo nesta sessão
 
@@ -2160,15 +2218,17 @@ function exportarPDF(nodeId, fallbackPrint){
   }
 }
 
-function renderLogbook(n, overrideState){
+function renderLogbook(n, overrideState, lockedAtIso){
   LB_NODE = n;
+  LB_LOCKED_AT = lockedAtIso || null;
   LB_STATE = overrideState || JSON.parse(JSON.stringify(LOGBOOK_SEED[n.id] || {
     equipamento:'', modelo:'', fabricante:'', cliente:'', data:new Date().toISOString().slice(0,10),
     horasAnterior:'', horasDia:'', horasTotal:'', op1:{nome:'',sisant:''}, op2:{nome:'',sisant:''}, voos:[], ocorrencias:''
   }));
 
   viewDoc.innerHTML = `
-  <div class="doc lb-section-wrap" style="max-width:1040px">
+  <div class="doc lb-section-wrap${LB_LOCKED_AT?' locked':''}" style="max-width:1040px">
+    ${LB_LOCKED_AT ? lockBannerHtml(LB_LOCKED_AT, 'lbUnlockCopy') : ''}
     ${crumbsHTML(n.id)}
     <div class="lb-head">
       <div class="lb-head-main">
@@ -2388,6 +2448,7 @@ function lbBuildReport(){
       <div class="rp-meta">
         <span class="rp-chip">DOC FO-OPE-011</span>
         <span class="rp-chip">REV 02</span>
+        ${LB_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(LB_LOCKED_AT)}</span>` : ''}
         <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
       </div>
     </div>
@@ -2455,16 +2516,19 @@ const MAINTLOG_SEED = {
 
 let MT_STATE = null;
 let MT_NODE = null;
+let MT_LOCKED_AT = null;
 
-function renderMaintLog(n, overrideState){
+function renderMaintLog(n, overrideState, lockedAtIso){
   MT_NODE = n;
+  MT_LOCKED_AT = lockedAtIso || null;
   MT_STATE = overrideState || JSON.parse(JSON.stringify(MAINTLOG_SEED[n.id] || {
     equipamento:'', modelo:'', numSerie:'', fabricante:'', operador:'', numDoc:'', revisao:'00', horasManutencao:'',
     discrepancias:[], outros:[], respNome:'', respData:new Date().toISOString().slice(0,10), respRub:false, inspecao:''
   }));
 
   viewDoc.innerHTML = `
-  <div class="doc lb-section-wrap" style="max-width:1080px">
+  <div class="doc lb-section-wrap${MT_LOCKED_AT?' locked':''}" style="max-width:1080px">
+    ${MT_LOCKED_AT ? lockBannerHtml(MT_LOCKED_AT, 'mtUnlockCopy') : ''}
     ${crumbsHTML(n.id)}
     <div class="lb-head">
       <div class="lb-head-main">
@@ -2696,6 +2760,7 @@ function mtBuildReport(){
       <div class="rp-meta">
         <span class="rp-chip">DOC FO-OPE-017</span>
         <span class="rp-chip">REV ${raEsc(MT_STATE.revisao)||'00'}</span>
+        ${MT_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(MT_LOCKED_AT)}</span>` : ''}
         <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
       </div>
     </div>
@@ -2831,14 +2896,17 @@ function raDefaultState(){
 }
 let RA_STATE = null;
 let RA_NODE = null;
+let RA_LOCKED_AT = null;
 const RA_ICOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
 
-function renderRiskAssessment(n, overrideState){
+function renderRiskAssessment(n, overrideState, lockedAtIso){
   RA_NODE = n;
+  RA_LOCKED_AT = lockedAtIso || null;
   RA_STATE = overrideState || raDefaultState();
 
   viewDoc.innerHTML = `
-  <div class="doc lb-section-wrap" style="max-width:1080px">
+  <div class="doc lb-section-wrap${RA_LOCKED_AT?' locked':''}" style="max-width:1080px">
+    ${RA_LOCKED_AT ? lockBannerHtml(RA_LOCKED_AT, 'raUnlockCopy') : ''}
     ${crumbsHTML(n.id)}
     <div class="lb-head">
       <div class="lb-head-main">
@@ -3277,6 +3345,7 @@ function raBuildReport(){
       <div class="rp-meta">
         <span class="rp-chip">DOC FO-OPE-002</span>
         <span class="rp-chip">REV 01</span>
+        ${RA_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(RA_LOCKED_AT)}</span>` : ''}
         <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
       </div>
     </div>
@@ -4058,6 +4127,7 @@ renderTree();
   function planoCloudKey(){
     return (STATE.meta.empresa||'').trim().toLowerCase()+'||'+(STATE.meta.estrutura||'').trim().toLowerCase();
   }
+  let PC_LOCKED_AT=null; // se setado, o plano foi carregado da nuvem e está travado pra edição
 
   function getPath(obj, path){ return path.split('.').reduce((o,k)=> (o==null?undefined:o[k]), obj); }
   function setPath(obj, path, val){
@@ -4098,7 +4168,8 @@ renderTree();
   /* ---------- template ---------- */
   function templatePlanoCaptura(n){
     return `
-    <div class="doc lb-section-wrap" style="max-width:1040px">
+    <div class="doc lb-section-wrap${PC_LOCKED_AT?' locked':''}" style="max-width:1040px">
+      ${PC_LOCKED_AT ? lockBannerHtml(PC_LOCKED_AT, 'pcUnlockCopy') : ''}
       ${crumbsHTML(n.id)}
       <div class="lb-head">
         <div class="lb-head-main">
@@ -4272,7 +4343,7 @@ renderTree();
         <div class="lb-actions">
           <button class="lb-save" onclick="pcSave(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Plano</button>
           <button class="lb-save" id="pcCloudSaveBtn" onclick="pcSaveCloud()" style="background:linear-gradient(135deg,#3FB98A,#1E7B4F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Salvar na Nuvem</button>
-          <button class="lb-print" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Exportar / Imprimir PDF</button>
+          <button class="lb-print" onclick="pcExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Exportar / Imprimir PDF</button>
           <button class="lb-reset" onclick="pcReset()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Novo plano</button>
           <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Os dados ficam salvos neste navegador. "Salvar na Nuvem" grava no banco (Supabase) para acesso de qualquer computador. Use "Exportar / Imprimir PDF" para gerar o documento final.</span>
         </div>
@@ -4316,12 +4387,17 @@ renderTree();
   }
 
   /* ---------- entry point (chamado pelo router) ---------- */
-  function renderPlanoCaptura(n, preserveCloudSession){
+  function renderPlanoCaptura(n, preserveCloudSession, overrideState, lockedAtIso){
     CURRENT_NODE = n;
     if(!preserveCloudSession) CLOUD_SESSION_ID = null;
-    let saved=null;
-    try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
-    STATE = saved ? deepMerge(defaultState(), saved) : defaultState();
+    PC_LOCKED_AT = lockedAtIso || null;
+    if(overrideState){
+      STATE = deepMerge(defaultState(), overrideState);
+    } else {
+      let saved=null;
+      try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
+      STATE = saved ? deepMerge(defaultState(), saved) : defaultState();
+    }
     STATE.etapas = normalizeEtapas(STATE.etapas);
 
     viewDoc.innerHTML = templatePlanoCaptura(n);
@@ -4601,14 +4677,11 @@ renderTree();
   async function pcLoadCloud(id){
     if(!sb) return;
     try{
-      const { data, error } = await sb.from('planos_captura').select('state').eq('id', id).single();
+      const { data, error } = await sb.from('planos_captura').select('state,created_at').eq('id', id).single();
       if(error) throw error;
-      STATE = deepMerge(defaultState(), data.state);
-      STATE.etapas = normalizeEtapas(STATE.etapas);
-      STATE.cloudId = id;
       CLOUD_SESSION_ID = id;
+      if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE, true, data.state, data.created_at);
       CLOUD_SESSION_KEY = planoCloudKey();
-      if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE, true);
       toast('Plano carregado da nuvem');
     }catch(err){
       console.error('pcLoadCloud:', err);
@@ -5083,10 +5156,170 @@ renderTree();
     markStatus(true); DIRTY=false;
     if(showToast) toast('Plano salvo neste navegador');
   }
+  /* ---------- exportação em PDF (mesmo layout/estilo do Diário de Bordo,
+     Diário de Manutenção e Risk Assessment — funções rp* compartilhadas) ---------- */
+  function pcBuildReport(){
+    const fase = STATE.escopo.fase==='final' ? 'Final' : 'Preliminar';
+    const empresaNome = STATE.meta.empresa || 'sem empresa';
+    const eq=[]; if(STATE.equip.elios3) eq.push('Elios 3'); if(STATE.equip.elios2) eq.push('Elios 2');
+    if(STATE.equip.go2) eq.push('GO2'+(STATE.equip.go2Variante?' ('+STATE.equip.go2Variante+')':''));
+    if(STATE.equip.g1) eq.push('G1'); if(STATE.equip.rover) eq.push('Rover');
+
+    const imgCell = (src, caption) => src ? `<div style="flex:1;min-width:220px;border:1px solid #E4EAF1;border-radius:8px;overflow:hidden;background:#fff">
+        <img src="${src}" style="width:100%;max-height:220px;object-fit:contain;display:block;background:#F4F7FB">
+        ${caption?`<div style="padding:6px 10px;font-size:11px;color:#5A6B80;border-top:1px solid #E4EAF1">${raEsc(caption)}</div>`:''}
+      </div>` : '';
+    const galeriaImgs = (STATE.galeria||[]).filter(g=>g.img).map(g=>imgCell(g.img, g.titulo||'Referência da estrutura')).join('');
+    const etapasHtml = (STATE.etapas||[]).map((e,i)=>`
+      <div class="rp-section"><h3>Etapa ${String(i+1).padStart(2,'0')} — ${raEsc(e.titulo)}</h3>
+        <div class="rp-declare" style="white-space:pre-wrap">${raEsc(e.desc)||'—'}</div>
+        ${e.img?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(e.img,'Diagrama ilustrativo')}</div>`:''}
+      </div>`).join('');
+
+    const headHtml = `
+    <div class="rp-header">
+      <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+      <div class="rp-title">
+        <h1>Plano de Captura — ${fase}</h1>
+        <div class="sub">${raEsc(STATE.meta.empresa)||'—'} · ${raEsc(STATE.meta.estrutura)||'—'} · ${raEsc(STATE.meta.data)||'—'}</div>
+        <div class="rp-meta">
+          <span class="rp-chip">DOC FO-OPE-020</span>
+          <span class="rp-chip">FASE ${fase.toUpperCase()}</span>
+          ${PC_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(PC_LOCKED_AT)}</span>` : ''}
+          <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+        </div>
+      </div>
+    </div>`;
+
+    const bodyHtml = `
+    <div class="rp-section"><h3>Informações</h3>
+      <div class="rp-grid cols3">
+        <div class="rp-field"><div class="k">Empresa</div><div class="v">${raEsc(STATE.meta.empresa)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Estrutura</div><div class="v">${raEsc(STATE.meta.estrutura)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Ativos — Descrições</div><div class="v">${raEsc(STATE.meta.ativosDescricoes)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Data</div><div class="v">${raEsc(STATE.meta.data)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Referência</div><div class="v">${raEsc(STATE.meta.referencia)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Proposta</div><div class="v">${raEsc(STATE.meta.proposta)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Time de Campo</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Operador de Inspeção de Qualidade 01</div><div class="v">${raEsc(STATE.time.operador1)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Operador de Inspeção de Qualidade 02</div><div class="v">${raEsc(STATE.time.operador2)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Tipo de Serviço</div><div class="v">${raEsc(STATE.time.tipoServico)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Equipamento</div><div class="v">${eq.length?eq.join(', '):'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Informações do Equipamento</h3>
+      <div class="rp-grid cols3">
+        <div class="rp-field"><div class="k">Fabricante</div><div class="v">${raEsc(STATE.drone.fabricante)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Modelo</div><div class="v">${raEsc(STATE.drone.modelo)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Número de Série</div><div class="v">${raEsc(STATE.drone.numeroSerie)||'—'}</div></div>
+        <div class="rp-field"><div class="k">SISANT ANAC</div><div class="v">${raEsc(STATE.drone.sisantAnac)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Peso Máximo de Decolagem</div><div class="v">${raEsc(STATE.drone.pesoMaximo)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Frequências</div><div class="v">${raEsc(STATE.drone.frequencias)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Câmera Principal</div><div class="v">${raEsc(STATE.drone.cameraPrincipal)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Câmera Termal</div><div class="v">${raEsc(STATE.drone.cameraTermal)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Iluminação</div><div class="v">${raEsc(STATE.drone.iluminacao)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Objetivo</h3>
+      <div class="rp-declare" style="white-space:pre-wrap">${raEsc(STATE.objetivo)||'—'}</div>
+    </div>
+
+    <div class="rp-section"><h3>Localidade e Coordenadas</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Coordenadas de Referência</div><div class="v">${raEsc(STATE.coordenadas)||'—'}</div></div>
+      </div>
+      ${STATE.localidadeImg?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(STATE.localidadeImg,'Localidade')}</div>`:''}
+    </div>
+
+    <div class="rp-section"><h3>Entregáveis</h3>
+      <div class="rp-declare" style="white-space:pre-wrap">${raEsc(STATE.entregaveis)||'—'}</div>
+    </div>
+
+    <div class="rp-section"><h3>Segurança</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Procedimentos Iniciais</div><div class="v" style="white-space:pre-wrap">${raEsc(STATE.seguranca.procedimentos)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Informação do Produto Químico</div><div class="v" style="white-space:pre-wrap">${raEsc(STATE.seguranca.produtoQuimico)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Escopo da Inspeção</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Descrição</div><div class="v" style="white-space:pre-wrap">${raEsc(STATE.escopo.descricao)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Pontos de Interesse</div><div class="v" style="white-space:pre-wrap">${raEsc(STATE.escopo.pontosInteresse)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Características do Ativo</h3>
+      <div class="rp-declare" style="white-space:pre-wrap">${raEsc(STATE.ativoCaracteristicas)||'—'}</div>
+    </div>
+
+    ${galeriaImgs ? `<div class="rp-section"><h3>Imagens de Referência da Estrutura</h3><div style="display:flex;gap:12px;flex-wrap:wrap">${galeriaImgs}</div></div>` : ''}
+
+    <div class="rp-section"><h3>Tempo de Inspeção</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Tempo Estimado (horas)</div><div class="v">${raEsc(STATE.tempo.horas)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Previsão / Observações</div><div class="v" style="white-space:pre-wrap">${raEsc(STATE.tempo.previsao)||'—'}</div></div>
+      </div>
+    </div>
+
+    ${etapasHtml}
+
+    <div class="rp-section"><h3>Plano de Contingência</h3>
+      <div class="rp-declare" style="white-space:pre-wrap">${raEsc(STATE.contingencia.texto)||'—'}</div>
+      <div class="rp-grid" style="margin-top:10px">
+        <div class="rp-field"><div class="k">Declaração da equipe de campo</div><div class="v">${STATE.contingencia.agree?'Declarado e compreendido':'Não declarado'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Responsável pela Elaboração do Escopo</h3>
+      <div class="rp-grid cols3">
+        <div class="rp-field"><div class="k">Operador 01</div><div class="v">${raEsc(STATE.responsaveis.operador1)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Operador 02</div><div class="v">${raEsc(STATE.responsaveis.operador2)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Post Processing</div><div class="v">${raEsc(STATE.responsaveis.postProcessing)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-section"><h3>Contato</h3>
+      <div class="rp-grid">
+        <div class="rp-field"><div class="k">Nome</div><div class="v">${raEsc(STATE.contato.nome)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Cargo</div><div class="v">${raEsc(STATE.contato.cargo)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Telefone</div><div class="v">${raEsc(STATE.contato.telefone)||'—'}</div></div>
+        <div class="rp-field"><div class="k">E-mail</div><div class="v">${raEsc(STATE.contato.email)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-020 · Plano de Captura</span></div>`;
+
+    return { headHtml, bodyHtml, title:'Plano de Captura — '+raEsc(empresaNome), filename:'Plano_Captura_'+raEsc(empresaNome).replace(/\s+/g,'_') };
+  }
+
+  function pcExportReport(){
+    const r = pcBuildReport();
+    rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
+  }
+
   function pcReset(){
     if(!confirm('Isso vai limpar todos os campos preenchidos neste navegador e restaurar os textos-padrão. Deseja continuar?')) return;
     try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
     if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE);
+  }
+  function pcUnlockCopy(){
+    // libera uma cópia editável do plano travado: mantém os dados, mas
+    // esquece o vínculo com o registro salvo — o próximo "Salvar na Nuvem"
+    // cria um registro novo, em vez de sobrescrever o que estava travado.
+    const copyState = JSON.parse(JSON.stringify(STATE));
+    copyState.cloudId = null;
+    CLOUD_SESSION_ID = null;
+    CLOUD_SESSION_KEY = null;
+    if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE, false, copyState, null);
+    markDirty();
+    toast('Cópia liberada para edição — salve pra criar um novo registro');
   }
   let toastTimer=null;
   function toast(msg){
@@ -5115,6 +5348,8 @@ renderTree();
   window.pcSave = pcSave;
   window.pcSaveCloud = pcSaveCloud;
   window.pcReset = pcReset;
+  window.pcUnlockCopy = pcUnlockCopy;
+  window.pcExportReport = pcExportReport;
 })();
 
 /* ---------- AUTH GATE ---------- */
