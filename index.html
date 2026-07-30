@@ -1837,11 +1837,11 @@ async function renderDocFromKey(key, meta){
   const chIndex = content.map(ch=>`<a onclick="scrollToSec('${idPrefix}-ch-${ch.num}')"><span class="n">${ch.num}.0</span><span class="tt">${titleCase(ch.title)}</span><span class="dots"></span></a>`).join('');
   let body = '';
   content.forEach(ch=>{
-    body += `<h2 class="sec" id="${idPrefix}-ch-${ch.num}"><span class="sn">${ch.num}.0</span>${titleCase(ch.title)}</h2>`;
+    body += `<h2 class="sec" id="${idPrefix}-ch-${ch.num}"><span class="sn">${ch.num}.0</span> ${titleCase(ch.title)}</h2>`;
     ch.sections.forEach(s=>{
       const parts = s.num.split('.');
       if(parts.length>=2 && parts[1]!=='0'){
-        body += `<h3 class="sub" id="${idPrefix}-sec-${s.num}"><span class="sn">${s.num}</span>${titleCase(s.title)}</h3>${s.html}`;
+        body += `<h3 class="sub" id="${idPrefix}-sec-${s.num}"><span class="sn">${s.num}</span> ${titleCase(s.title)}</h3>${s.html}`;
       } else if(s.html){ body += s.html; }
     });
   });
