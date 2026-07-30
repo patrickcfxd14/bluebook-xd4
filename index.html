@@ -3832,7 +3832,13 @@ function toggleSpy(on){ const s=spyEl(); if(s) s.classList.toggle('show',on); }
 function buildSpy(){
   const s=spyEl(); if(!s) return;
   const secs=[...viewDoc.querySelectorAll('h2.sec')];
-  s.innerHTML=secs.map(h=>`<a data-t="${h.id}" onclick="scrollToSec('${h.id}')">${h.textContent}</a>`).join('');
+  s.innerHTML=secs.map(h=>{
+    const numEl = h.querySelector('.sn');
+    const num = numEl ? numEl.textContent.trim() : '';
+    const title = numEl ? h.textContent.slice(numEl.textContent.length).trim() : h.textContent.trim();
+    const label = num ? (num+' '+title) : title;
+    return `<a data-t="${h.id}" onclick="scrollToSec('${h.id}')">${label}</a>`;
+  }).join('');
 }
 content.addEventListener('scroll',()=>{
   const max=content.scrollHeight-content.clientHeight;
