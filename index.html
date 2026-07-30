@@ -1480,7 +1480,19 @@ function routeTo(id){
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='asset'){ renderAsset(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='pdf'){ renderPDF(n); show(viewDoc); toggleSpy(false); return; }
-  if(n.type==='manual'){ renderManual(n); show(viewDoc); toggleSpy(false); return; }
+  if(n.type==='manual'){
+    // se o item só tem 1 arquivo/link cadastrado, abre ele direto numa
+    // nova aba e nem entra na página do documento — sem isso, seria
+    // preciso clicar no item da árvore e depois clicar em "Abrir" de
+    // novo dentro da página, e a página do documento ficava aberta.
+    if(n.external){
+      const items = n.external.items||[];
+      if(items.length===1){ window.open(n.external.url, '_blank', 'noopener'); return; }
+    } else if(n.files && n.files.length===1){
+      window.open(n.files[0].file, '_blank', 'noopener'); return;
+    }
+    renderManual(n); show(viewDoc); toggleSpy(false); return;
+  }
   renderPlaceholder(n); show(viewDoc); toggleSpy(false);
 }
 
@@ -3685,10 +3697,6 @@ async function fileExists(url){
 async function renderManual(n){
   if(n.external) return renderManualExternal(n);
   const files = n.files||[];
-  // se só tem 1 arquivo cadastrado, já abre a aba agora (ainda dentro do
-  // clique do usuário, senão o navegador bloqueia como pop-up) — depois
-  // de confirmar que o arquivo existe, apontamos essa aba pra ele.
-  const preOpenedWin = (files.length===1) ? window.open('', '_blank', 'noopener') : null;
   viewDoc.innerHTML=`
   <div class="ph">
     ${crumbsHTML(n.id)}
@@ -3715,14 +3723,6 @@ async function renderManual(n){
 
   const results = await Promise.all(files.map(async f=>({ ...f, ok: await fileExists(f.file) })));
   const okCount = results.filter(r=>r.ok).length;
-
-  // se só existe 1 arquivo neste item, direciona a aba pré-aberta pra ele
-  // (evita ter que clicar de novo em "Abrir" dentro da página); se não
-  // existir, fecha a aba em branco que tinha sido aberta.
-  if(preOpenedWin){
-    if(results.length===1 && results[0].ok) preOpenedWin.location = results[0].file;
-    else preOpenedWin.close();
-  }
 
   if(okCount===results.length){
     statusEl.style.background='var(--ok-bg)'; statusEl.style.color='var(--ok)';
@@ -3761,11 +3761,6 @@ async function renderManual(n){
    link como sempre disponível e deixamos o navegador cuidar do resto. */
 function renderManualExternal(n){
   const ex = n.external;
-  // mesmo raciocínio dos PDFs locais: se só tem 1 item, abre direto na
-  // hora do clique no item da árvore, sem precisar clicar de novo no link.
-  if((ex.items||[]).length===1){
-    window.open(ex.url, '_blank', 'noopener');
-  }
   const items = (ex.items||[]).map(label=>`
     <a class="manual-row" href="${ex.url}" target="_blank" rel="noopener">
       <div class="mr-ic">${IC.pdf}</div>
