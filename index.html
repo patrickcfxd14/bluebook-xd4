@@ -48,6 +48,7 @@ svg{display:block}
 .clock b{color:#fff;display:block;font-weight:600}
 .icon-btn{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9FB4CE;transition:.15s;flex-shrink:0}
 .icon-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.icon-btn.active{background:rgba(43,169,224,.22);color:#fff}
 .icon-btn svg{width:18px;height:18px}
 .kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:2px 6px;color:#cfe0f2}
 
@@ -537,6 +538,22 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .fam-card::before{display:none}
   .fam-connector{display:none}
 }
+@media(max-width:640px){
+  /* banner: no celular não cabe tudo — some com o que menos falta
+     (relógio e assistente de IA), encolhe ícones e trunca o nome do
+     usuário, pra não cortar o chip de login nem sumir com a marca */
+  .banner{padding:0 10px;gap:8px}
+  .banner-right{gap:5px}
+  .brand{flex-shrink:0}
+  .brand .t2{display:none}
+  .clock{display:none}
+  #openChat{display:none}
+  .icon-btn{width:32px;height:32px}
+  .icon-btn svg{width:16px;height:16px}
+  .user-chip{padding:4px 4px 4px 8px;max-width:130px}
+  .user-chip span{max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block}
+  .user-chip button{padding:4px 6px;font-size:11px}
+}
 @media(max-width:480px){
   .vp-docs{grid-template-columns:1fr}
 }
@@ -806,6 +823,10 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
   .lb-ops{grid-template-columns:1fr}
   .lb-section>*:not(h3){margin-left:16px;margin-right:16px}
   .lb-section>h3{padding:12px 16px}
+  /* campos de formulário: fonte >=16px evita o zoom automático do Safari
+     no iPhone ao tocar num input — é o que deixava o preenchimento ruim */
+  .lb-field input,.lb-field select,.lb-field textarea,.ra-qual,.ra-outrostxt{font-size:16px}
+  .lb-grid,.lb-op-card .lb-grid{grid-template-columns:1fr}
 }
 @media(max-width:680px){
   .lb-ops{grid-template-columns:1fr}
@@ -1051,6 +1072,9 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
     </button>
     <button class="icon-btn" id="themeToggle" title="Tema claro/escuro" aria-label="Tema">
       <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="icon-btn" id="viewToggle" title="Ver versão desktop/mobile" aria-label="Ver versão desktop/mobile">
+      <svg id="viewToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
     </button>
     <div class="clock" id="clock"><b>--:--</b><span>--</span></div>
     <div class="user-chip" id="userChip" style="display:none">
@@ -4359,6 +4383,35 @@ document.getElementById('themeToggle').addEventListener('click',()=>{
     ? '<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>'
     : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
 });
+
+/* ---------- VER VERSÃO DESKTOP/MOBILE ----------
+   Muda a meta viewport pra forçar o navegador a renderizar como se a tela
+   fosse larga (versão desktop) mesmo em um celular — é o mesmo truque que
+   "Solicitar site para computador" usa. Útil principalmente pra quem tá no
+   celular e quer ver o layout completo. Fica salvo na sessão. */
+(function(){
+  const meta = document.querySelector('meta[name="viewport"]');
+  const DEFAULT_CONTENT = meta.getAttribute('content');
+  const DESKTOP_CONTENT = 'width=1100';
+  const btn = document.getElementById('viewToggle');
+  const icon = document.getElementById('viewToggleIcon');
+  const MONITOR_ICON = '<rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>';
+  const PHONE_ICON = '<rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/>';
+  let forced=false;
+  try{ forced = sessionStorage.getItem('xd4_force_desktop')==='1'; }catch(e){}
+  function apply(){
+    meta.setAttribute('content', forced?DESKTOP_CONTENT:DEFAULT_CONTENT);
+    btn.classList.toggle('active', forced);
+    btn.title = forced ? 'Ver versão mobile' : 'Ver versão desktop';
+    icon.innerHTML = forced ? PHONE_ICON : MONITOR_ICON;
+  }
+  apply();
+  btn.addEventListener('click',()=>{
+    forced=!forced;
+    try{ sessionStorage.setItem('xd4_force_desktop', forced?'1':'0'); }catch(e){}
+    apply();
+  });
+})();
 
 /* ---------- MOBILE / CLOCK / INIT ---------- */
 document.getElementById('mobTree').addEventListener('click',()=>document.getElementById('tree').classList.toggle('open'));
