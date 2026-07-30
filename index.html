@@ -311,6 +311,14 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .doc table tbody tr:nth-child(even){background:var(--sky)}
 .doc table th[colspan]{text-align:center}
 .doc-foot{margin-top:48px;padding-top:22px;border-top:2px solid var(--sky-line);text-align:center;color:var(--ink-3);font-size:13px;font-style:italic}
+.rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.rel-item{display:flex;align-items:center;gap:10px;background:var(--sky);border:1px solid var(--sky-line);border-radius:10px;padding:12px 14px;font-size:13.5px}
+.rel-item .rel-k{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink-2);flex-shrink:0}
+.rel-item .rel-k svg{width:15px;height:15px}
+.rel-item .rel-v a{color:var(--accent);font-weight:600;cursor:pointer}
+.rel-item .rel-v a:hover{text-decoration:underline}
+.rel-item .rel-v.muted{color:var(--ink-3)}
+@media(max-width:680px){.rel-grid{grid-template-columns:1fr}}
 
 /* scrollspy TOC */
 .spy{position:fixed;top:100px;right:24px;width:200px;max-height:70vh;overflow-y:auto;font-size:12px;display:none;padding-left:14px;border-left:1px solid var(--line)}
@@ -1424,6 +1432,7 @@ function stripHTML(s){ return s.replace(/<[^>]+>/g,''); }
 const RAIL_SECTIONS = [
   { id:'home', label:'Dashboard', icon:'home' },
   { id:'operacoes', label:'Operações', icon:'shield' },
+  { id:'ativos', label:'Ativos', icon:'factory' },
   { id:'equip', label:'Equipamentos', icon:'fleet' },
   { id:'conhecimento', label:'Conhecimento', icon:'book' },
   { id:'gestao', label:'Gestão', icon:'org' },
@@ -1440,8 +1449,10 @@ const HUB_DEFS = {
   // ----- topo do rail -----
   operacoes:{ title:'Operações', icon:'shield', kind:'ops',
     sub:'Inicie uma operação escolhendo o tipo e o equipamento — o sistema leva você direto ao Risk Assessment, checklist e diário certos.' },
+  ativos:{ title:'Ativos', icon:'factory', kind:'ativos',
+    sub:'Os objetos inspecionados — tanques, caldeiras, dutos, chaminés. Cada ativo é independente do equipamento usado pra inspecioná-lo.' },
   equip:{ title:'Equipamentos', icon:'fleet', kind:'equip',
-    sub:'Central de comando de cada ativo — perfil, documentação, manutenção e histórico em um só lugar.' },
+    sub:'Os recursos usados para operar — drones, robôs e veículos. Cada equipamento referencia procedimentos, não é dono deles.' },
   conhecimento:{ title:'Conhecimento', icon:'book', kind:'landing',
     sub:'Documentação classificada do SGQ — use quando precisar consultar por tipo de documento, não por operação.' },
   gestao:{ title:'Gestão', icon:'org', kind:'gestao',
@@ -1482,7 +1493,8 @@ function classifyFamily(n){
 }
 function walkTree(fn){ (function w(nodes){ nodes.forEach(n=>{ fn(n); if(n.children) w(n.children); }); })(TREE); }
 function collectByFamily(fam){ const out=[]; walkTree(n=>{ if(classifyFamily(n)===fam) out.push(n); }); return out; }
-function collectEquip(){ const out=[]; walkTree(n=>{ if(n.type==='vehicle'||n.type==='asset') out.push(n); }); return out; }
+function collectEquip(){ return collectVehicles(); } // "Equipamentos" = recursos operacionais (veículos), não inclui ativos
+function collectAtivosList(){ const out=[]; walkTree(n=>{ if(n.type==='asset') out.push(n); }); return out; }
 function collectVehicles(){ const out=[]; walkTree(n=>{ if(n.type==='vehicle') out.push(n); }); return out; }
 function collectLibrary(){
   const out=[];
@@ -1510,13 +1522,24 @@ function hubCard(n){
     </div>`;
 }
 function equipCard(n){
-  const kindLbl = n.type==='vehicle' ? (n.vehicle&&n.vehicle.cls||'Equipamento') : 'Ativo';
   return `
     <div class="doc-hub-card" onclick="selectNode('${n.id}')">
       <div class="dh-ic">${IC[n.icon]||IC.box}</div>
       <div style="min-width:0">
         <div class="dh-top"><span class="node-st st-${n.status||'ok'}"></span><h5>${stripHTML(n.label)}</h5></div>
-        <span class="dh-status" style="color:var(--ink-3)">${kindLbl}</span>
+        <span class="dh-status" style="color:var(--ink-3)">${(n.vehicle&&n.vehicle.cls)||'Equipamento'}</span>
+      </div>
+    </div>`;
+}
+const CRIT_LABEL={crit:'Alta criticidade',warn:'Média criticidade',draft:'Criticidade a definir',ok:'Baixa criticidade'};
+function ativoCard(n){
+  const cat = PARENT[n.id] ? stripHTML(PARENT[n.id].label) : '';
+  return `
+    <div class="doc-hub-card" onclick="selectNode('${n.id}')">
+      <div class="dh-ic">${IC[n.icon]||IC.box}</div>
+      <div style="min-width:0">
+        <div class="dh-top"><span class="node-st st-${n.status||'draft'}"></span><h5>${stripHTML(n.label)}</h5></div>
+        <span class="dh-status" style="color:var(--ink-3)">${CRIT_LABEL[n.status]||'—'}${cat?' · '+cat:''}</span>
       </div>
     </div>`;
 }
@@ -1655,6 +1678,7 @@ function renderHub(key){
   let items, cardsHTML;
   if(meta.kind==='family'){ items = collectByFamily(meta.fam); cardsHTML = items.map(hubCard).join(''); }
   else if(meta.kind==='equip'){ items = collectEquip(); cardsHTML = items.map(equipCard).join(''); }
+  else if(meta.kind==='ativos'){ items = collectAtivosList(); cardsHTML = items.map(ativoCard).join(''); }
   else { items = collectLibrary(); cardsHTML = items.map(libCard).join(''); }
   const count = items.length;
   viewDoc.innerHTML=`
@@ -1917,6 +1941,7 @@ function renderHome(){
 
     <div class="home-actions">
       <button class="home-action-btn primary" onclick="selectNode('hub-operacoes')">${IC.shield}<span>Iniciar Operação</span></button>
+      <button class="home-action-btn" onclick="selectNode('hub-ativos')">${IC.factory}<span>Ativos</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-equip')">${IC.fleet}<span>Equipamentos</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-fo')">${IC.pdf}<span>Abrir Formulário</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-conhecimento')">${IC.book}<span>Biblioteca</span></button>
@@ -2138,6 +2163,18 @@ async function renderDocFromKey(key, meta){
     });
   });
 
+  const relEquip = nearestEquip(meta.crumbId);
+  const relBlock = relEquip ? `
+    <div class="rel-block">
+      <h3 class="sec" style="margin-top:44px">Relacionado com</h3>
+      <div class="rel-grid">
+        <div class="rel-item"><span class="rel-k">${IC.fleet} Equipamentos</span><span class="rel-v"><a onclick="selectNode('${relEquip.id}')">${stripHTML(relEquip.label)}</a></span></div>
+        <div class="rel-item"><span class="rel-k">${IC.factory} Ativos</span><span class="rel-v muted">A definir</span></div>
+        <div class="rel-item"><span class="rel-k">${IC.pdf} Formulários</span><span class="rel-v muted">A definir</span></div>
+        <div class="rel-item"><span class="rel-k">${IC.grad} Treinamentos</span><span class="rel-v muted">A definir</span></div>
+      </div>
+    </div>` : '';
+
   viewDoc.innerHTML = `
   <div class="doc">
     ${crumbsHTML(meta.crumbId)}
@@ -2155,6 +2192,7 @@ async function renderDocFromKey(key, meta){
     </div>
     <div class="chapindex"><h4>Sumário</h4><div class="cols">${chIndex}</div></div>
     ${body}
+    ${relBlock}
     <div class="doc-foot">XD4Solutions · ${meta.footer} · Documento controlado pelo SGQ</div>
   </div>
   <nav class="spy" id="spy"></nav>`;
@@ -3912,22 +3950,11 @@ function renderGroup(n){
 function renderAsset(n){
   const trail=crumbTrail(n.id).filter(x=>x.id!=='home'&&x.id!==n.id);
   const path=trail.slice(-2).map(x=>stripHTML(x.label)).join(' · ');
-  const docTypes=[
-    {label:'POP — Procedimento Operacional', icon:'file'},
-    {label:'TOP — Treinamento', icon:'grad'},
-    {label:'Manual do Fabricante', icon:'pdf'},
-    {label:'Boletins Técnicos', icon:'file'},
-    {label:'Relatórios de Inspeção', icon:'shield'},
-    {label:'Peritagens', icon:'wrench'}
-  ];
-  const cards=docTypes.map(d=>`
-    <div class="doc-hub-card">
-      <div class="dh-ic">${IC[d.icon]||IC.file}</div>
-      <div>
-        <h5>${d.label}</h5>
-        <span class="dh-status">Em elaboração</span>
-      </div>
-    </div>`).join('');
+  const cat = PARENT[n.id];
+  const desc = n.desc || (cat&&cat.desc) || null;
+
+  const empty = (msg)=>`<div style="color:var(--ink-3);font-size:13.5px;padding:4px 0">${msg}</div>`;
+
   viewDoc.innerHTML=`
   <div class="grp2">
     ${crumbsHTML(n.id)}
@@ -3937,10 +3964,40 @@ function renderAsset(n){
         <h1>${stripHTML(n.label)}</h1>
         ${path?`<div class="gh2-sub">${path}</div>`:''}
       </div>
-      <div class="gh2-count">${stName[n.status]||'Em elaboração'}</div>
+      <div class="gh2-count">${CRIT_LABEL[n.status]||'Criticidade a definir'}</div>
     </div>
-    <div class="doc-hub-note">Documentação técnica deste ativo. Os documentos abaixo (POP, TOP, manuais, boletins, relatórios e peritagens) ainda estão em elaboração e serão publicados aqui assim que concluídos.</div>
-    <div class="doc-hub-grid">${cards}</div>
+
+    <div class="doc-hub-note">${desc ? desc : 'Descrição técnica deste ativo ainda não cadastrada.'}</div>
+
+    <div class="dash-grid" style="margin-bottom:24px">
+      <div class="panel">
+        <h3>Riscos associados</h3>
+        ${empty('Ainda não mapeados para este ativo.')}
+      </div>
+      <div class="panel">
+        <h3>Métodos de inspeção recomendados</h3>
+        ${empty('Ainda não definidos para este ativo.')}
+      </div>
+    </div>
+
+    <div class="home-sec-label">Procedimentos aplicáveis</div>
+    ${empty('Nenhum POP vinculado a este ativo ainda — quando um procedimento referenciar este ativo, ele aparece aqui automaticamente.')}
+
+    <div class="home-sec-label" style="margin-top:22px">Equipamentos recomendados</div>
+    ${empty('Ainda não definido quais equipamentos são recomendados para inspecionar este ativo.')}
+
+    <div class="home-sec-label" style="margin-top:22px">Checklists · Plano de Captura · Relatórios</div>
+    <div class="doc-hub-grid">
+      <div class="doc-hub-card" onclick="selectNode('hub-fo')"><div class="dh-ic">${IC.file}</div><div><h5>Checklist</h5><span class="dh-status" style="color:var(--ink-3)">Ver em Formulários</span></div></div>
+      <div class="doc-hub-card" onclick="selectNode('plano-captura')"><div class="dh-ic">${IC.shield}</div><div><h5>Plano de Captura</h5><span class="dh-status" style="color:var(--ink-3)">Formulário digital</span></div></div>
+      <div class="doc-hub-card" onclick="selectNode('hub-fo')"><div class="dh-ic">${IC.pdf}</div><div><h5>Relatórios</h5><span class="dh-status" style="color:var(--ink-3)">Ver em Formulários</span></div></div>
+    </div>
+
+    <div class="home-sec-label" style="margin-top:22px">Histórico de inspeções</div>
+    ${empty('Nenhuma inspeção registrada para este ativo ainda.')}
+
+    <div class="home-sec-label" style="margin-top:22px">Treinamentos relacionados</div>
+    ${empty('Nenhum treinamento vinculado a este ativo ainda.')}
   </div>`;
 }
 
@@ -4099,8 +4156,10 @@ function renderVehicle(n){
         <button class="home-action-btn primary" style="margin-top:14px" onclick="event.stopPropagation();selectNode('hub-operacoes')">${IC.shield}<span>Iniciar operação com este equipamento</span></button>
       </div>
     </div>
-    <div class="vp-maint" style="margin-bottom:24px"><h3>Documentos do veículo</h3></div>
+    <div class="vp-maint" style="margin-bottom:24px"><h3>Procedimentos relacionados</h3></div>
     <div class="vp-docs">${docs}</div>
+    <div class="home-sec-label" style="margin-top:22px">Ativos que este equipamento normalmente inspeciona</div>
+    <div style="color:var(--ink-3);font-size:13.5px;padding:4px 0 20px">Ainda não definido — quando um ativo referenciar este equipamento como recomendado, ele aparece aqui automaticamente.</div>
     <div class="vp-maint"><h3>Histórico de manutenção</h3>${man}</div>
   </div>`;
 }
