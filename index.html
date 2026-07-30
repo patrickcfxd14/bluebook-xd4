@@ -54,6 +54,24 @@ svg{display:block}
 /* ===== LAYOUT ===== */
 .layout{display:grid;grid-template-columns:340px 1fr;height:calc(100vh - 62px)}
 
+/* ===== RAIL (navegação principal: Home/OD/IT/FO/Equipamentos/Biblioteca/Equipe/Admin) ===== */
+.rail{display:flex;flex-direction:column;padding:14px 10px 4px;gap:2px}
+.rail-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:.12s;text-align:left;border:1px solid transparent;width:100%}
+.rail-item:hover{background:var(--sky)}
+.rail-item.active{background:var(--sky);color:var(--xd4);font-weight:600;border-color:var(--sky-line)}
+.rail-item .ri-ic{width:19px;height:19px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.rail-item .ri-ic svg{width:16px;height:16px}
+.rail-divider{margin:12px 18px 6px;padding-top:12px;border-top:1px solid var(--sky-line);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+
+/* elementos das páginas de hub (OD/IT/FO/Equipamentos/Biblioteca) */
+.hub-search{display:flex;align-items:center;gap:10px;height:46px;padding:0 16px;background:var(--paper);border:1px solid var(--sky-line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px}
+.hub-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(58,110,165,.12)}
+.hub-search input{flex:1;border:none;outline:none;font-size:14px;font-family:inherit;color:var(--ink);background:none}
+.hub-search svg{width:17px;height:17px;color:var(--ink-3);flex-shrink:0}
+.doc-hub-card{cursor:pointer}
+.doc-hub-card .dh-top{display:flex;align-items:center;gap:7px}
+.doc-hub-card .dh-tag{display:inline-block;margin-top:5px;font-size:10px;font-weight:600;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);padding:2px 8px;border-radius:99px}
+
 /* ===== TREE ===== */
 .tree{background:var(--paper);border-right:1px solid var(--line);overflow-y:auto;padding:8px 0 40px;transition:background .3s}
 .tree-search{margin:16px 14px;display:flex;align-items:center;gap:9px;height:40px;padding:0 13px;background:var(--sky);border:1px solid var(--sky-line);border-radius:9px;color:var(--ink-3);transition:border-color .15s,box-shadow .15s}
@@ -99,7 +117,11 @@ svg{display:block}
 .home-search input{flex:1;border:none;outline:none;font-size:15px;font-family:inherit;color:var(--ink);background:none}
 .home-search svg{width:18px;height:18px;color:var(--ink-3)}
 
-.home-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0}
+.home-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:26px 0 6px}
+.home-action-btn{display:flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s}
+.home-action-btn svg{width:18px;height:18px}
+.home-action-btn:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.home-action-btn.primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-color:transparent}
 .hstat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 18px;text-align:center;box-shadow:var(--shadow)}
 .hstat .num{font-size:32px;font-weight:600;color:var(--ink);line-height:1;font-family:'IBM Plex Mono',monospace;letter-spacing:-.01em}
 .hstat .lbl{font-size:11.5px;color:var(--ink-3);margin-top:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
@@ -1033,6 +1055,8 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 
 <div class="layout">
   <aside class="tree" id="tree">
+    <nav class="rail" id="rail"></nav>
+    <div class="rail-divider">Estrutura completa</div>
     <div class="tree-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="treeSearch" placeholder="Filtrar documentos, códigos…">
@@ -1389,6 +1413,280 @@ const BYID={}, PARENT={};
 function crumbTrail(id){ const t=[]; let n=BYID[id]; while(n){ t.unshift(n); n=PARENT[n.id]; } return t; }
 function stripHTML(s){ return s.replace(/<[^>]+>/g,''); }
 
+/* ---------- NAVEGAÇÃO PRINCIPAL (RAIL) ----------
+   Arquitetura orientada a fluxo operacional: a navegação principal NÃO
+   começa por tipo de documento (OD/IT/FO). Começa pelo que o operador
+   veio fazer — operar, consultar um equipamento, ou (só quando for
+   mesmo o caso) consultar a documentação classificada, que agora vive
+   dentro de "Conhecimento" como uma subseção, não como topo de navegação.
+   Os dados (TREE) continuam os mesmos — estas páginas "hub" varrem a
+   árvore existente e agrupam por família/equipamento/tipo. */
+const RAIL_SECTIONS = [
+  { id:'home', label:'Dashboard', icon:'home' },
+  { id:'operacoes', label:'Operações', icon:'shield' },
+  { id:'equip', label:'Equipamentos', icon:'fleet' },
+  { id:'conhecimento', label:'Conhecimento', icon:'book' },
+  { id:'gestao', label:'Gestão', icon:'org' },
+  { id:'admin', label:'Administração', icon:'wrench' }
+];
+const OP_TYPES = [
+  { id:'insp-int', label:'Inspeção Interna', icon:'pin', desc:'Inspeção de ativos em áreas internas da planta.' },
+  { id:'insp-ext', label:'Inspeção Externa', icon:'pin', desc:'Inspeção em campo, fora da planta ou em cliente.' },
+  { id:'mapeamento', label:'Mapeamento', icon:'org', desc:'Levantamento 3D, LiDAR ou fotogrametria de área.' },
+  { id:'treinamento', label:'Treinamentos', icon:'grad', desc:'Capacitação e reciclagem de operadores.' },
+  { id:'emergencia', label:'Emergência', icon:'flame', desc:'Resposta rápida — acesso direto ao equipamento e checklist.' }
+];
+const HUB_DEFS = {
+  // ----- topo do rail -----
+  operacoes:{ title:'Operações', icon:'shield', kind:'ops',
+    sub:'Inicie uma operação escolhendo o tipo e o equipamento — o sistema leva você direto ao Risk Assessment, checklist e diário certos.' },
+  equip:{ title:'Equipamentos', icon:'fleet', kind:'equip',
+    sub:'Central de comando de cada ativo — perfil, documentação, manutenção e histórico em um só lugar.' },
+  conhecimento:{ title:'Conhecimento', icon:'book', kind:'landing',
+    sub:'Documentação classificada do SGQ — use quando precisar consultar por tipo de documento, não por operação.' },
+  gestao:{ title:'Gestão', icon:'org', kind:'gestao',
+    sub:'Indicadores da operação para liderança e controle de qualidade.' },
+  admin:{ title:'Administração', icon:'wrench', kind:'soon',
+    sub:'Usuários, permissões e configurações do sistema.' },
+  // ----- sub-hubs dentro de Conhecimento -----
+  od:{ title:'Organização Documental', short:'OD', icon:'org', kind:'family', fam:'OD', parentHub:'conhecimento',
+    sub:'Estrutura organizacional, políticas, controle documental e planejamento — a espinha dorsal do SGQ.' },
+  it:{ title:'Instruções de Trabalho', short:'IT', icon:'file', kind:'family', fam:'IT', parentHub:'conhecimento',
+    sub:'POPs, TOPs, fraseologia e procedimentos que ensinam a executar uma atividade.' },
+  fo:{ title:'Formulários', short:'FO', icon:'pdf', kind:'family', fam:'FO', parentHub:'conhecimento',
+    sub:'Registros operacionais: diários, ordens de serviço, risk assessment, planos de captura e relatórios.' },
+  biblioteca:{ title:'Fabricantes · Biblioteca Técnica', icon:'book', kind:'lib', parentHub:'conhecimento',
+    sub:'Manuais originais dos fabricantes, por equipamento.' },
+  normas:{ title:'Normas', icon:'shield', kind:'soon', parentHub:'conhecimento',
+    sub:'Normas regulatórias e técnicas aplicáveis às operações (ANAC, NRs, ISO).' }
+};
+Object.keys(HUB_DEFS).forEach(k=>{ BYID['hub-'+k]={ id:'hub-'+k, type:'hub', hub:k, label:HUB_DEFS[k].title }; });
+Object.keys(HUB_DEFS).forEach(k=>{ PARENT['hub-'+k] = HUB_DEFS[k].parentHub ? BYID['hub-'+HUB_DEFS[k].parentHub] : null; });
+
+/* classifica um nó de documento em OD / IT / FO (retorna null se não for
+   um "documento" classificável — ex: pastas, veículos, manuais de fabricante) */
+function classifyFamily(n){
+  if(n.type==='mgo'||n.type==='placeholder') return 'OD';
+  if(/^pop-|^pto-|^phr-/.test(n.type||'')) return 'IT';
+  if(['logbook','maintlog','planocaptura','riskassessment'].includes(n.type)) return 'FO';
+  if(n.type==='manual'){
+    const f=(n.files&&n.files[0]&&n.files[0].file)||'';
+    if(f.startsWith('manuals/')) return null; // manual de fabricante → Biblioteca Técnica, não OD/IT/FO
+    const label=(n.files&&n.files[0]&&n.files[0].label)||'';
+    if(/\bFO-/.test(label)) return 'FO';
+    if(/\bOD-/.test(label)) return 'OD';
+    if(/\bIT-/.test(label)) return 'IT';
+    return 'IT';
+  }
+  return null;
+}
+function walkTree(fn){ (function w(nodes){ nodes.forEach(n=>{ fn(n); if(n.children) w(n.children); }); })(TREE); }
+function collectByFamily(fam){ const out=[]; walkTree(n=>{ if(classifyFamily(n)===fam) out.push(n); }); return out; }
+function collectEquip(){ const out=[]; walkTree(n=>{ if(n.type==='vehicle'||n.type==='asset') out.push(n); }); return out; }
+function collectVehicles(){ const out=[]; walkTree(n=>{ if(n.type==='vehicle') out.push(n); }); return out; }
+function collectLibrary(){
+  const out=[];
+  walkTree(n=>{
+    if(n.type!=='manual') return;
+    if(n.external){ out.push(n); return; }
+    const f=(n.files&&n.files[0]&&n.files[0].file)||'';
+    if(f.startsWith('manuals/')) out.push(n);
+  });
+  return out;
+}
+function nearestEquip(id){ let p=PARENT[id]; while(p){ if(p.type==='vehicle') return p; p=PARENT[p.id]; } return null; }
+
+function hubCard(n){
+  const tag = nearestEquip(n.id);
+  const badge = n.code || (n.files&&n.files[0]&&n.files[0].label&&n.files[0].label.split(' — ')[0]) || '';
+  return `
+    <div class="doc-hub-card" onclick="selectNode('${n.id}')">
+      <div class="dh-ic">${IC[n.icon]||IC.file}</div>
+      <div style="min-width:0">
+        <div class="dh-top"><span class="node-st st-${n.status||'ok'}"></span><h5>${stripHTML(n.label)}</h5></div>
+        <span class="dh-status" style="color:var(--ink-3)">${badge||stName[n.status]||''}</span>
+        ${tag?`<span class="dh-tag">${stripHTML(tag.label)}</span>`:''}
+      </div>
+    </div>`;
+}
+function equipCard(n){
+  const kindLbl = n.type==='vehicle' ? (n.vehicle&&n.vehicle.cls||'Equipamento') : 'Ativo';
+  return `
+    <div class="doc-hub-card" onclick="selectNode('${n.id}')">
+      <div class="dh-ic">${IC[n.icon]||IC.box}</div>
+      <div style="min-width:0">
+        <div class="dh-top"><span class="node-st st-${n.status||'ok'}"></span><h5>${stripHTML(n.label)}</h5></div>
+        <span class="dh-status" style="color:var(--ink-3)">${kindLbl}</span>
+      </div>
+    </div>`;
+}
+function libCard(n){
+  const count = n.external ? (n.external.items||[]).length : (n.files||[]).length;
+  const tag = nearestEquip(n.id);
+  return `
+    <div class="doc-hub-card" onclick="selectNode('${n.id}')">
+      <div class="dh-ic">${IC.pdf}</div>
+      <div style="min-width:0">
+        <h5>${tag?stripHTML(tag.label):stripHTML(n.label)}</h5>
+        <span class="dh-status" style="color:var(--ink-3)">${count} arquivo${count===1?'':'s'}</span>
+      </div>
+    </div>`;
+}
+/* card de navegação simples (usado na landing "Conhecimento") */
+function landingCard(hubKey){
+  const m=HUB_DEFS[hubKey];
+  let count=null;
+  if(m.kind==='family') count=collectByFamily(m.fam).length;
+  else if(m.kind==='lib') count=collectLibrary().length;
+  return `
+    <div class="doc-hub-card" onclick="selectNode('hub-${hubKey}')">
+      <div class="dh-ic">${IC[m.icon]||IC.folder}</div>
+      <div style="min-width:0">
+        <h5>${m.short?`${m.short} — ${m.title.replace(/^[A-Z]+ — /,'').split(' · ')[0]}`:m.title}</h5>
+        <span class="dh-status" style="color:var(--ink-3)">${count===null?'Em construção':count+' item'+(count===1?'':'s')}</span>
+      </div>
+    </div>`;
+}
+/* ---------- OPERAÇÕES: launcher orientado a fluxo (tipo → equipamento → ferramenta) ---------- */
+function renderOpsHub(){
+  const cards = OP_TYPES.map(t=>`
+    <div class="doc-hub-card" onclick="opsPickEquip('${t.id}')">
+      <div class="dh-ic">${IC[t.icon]||IC.file}</div>
+      <div style="min-width:0"><h5>${t.label}</h5><span class="dh-status" style="color:var(--ink-3)">${t.desc}</span></div>
+    </div>`).join('');
+  viewDoc.innerHTML=`
+  <div class="grp">
+    ${crumbsHTML('hub-operacoes')}
+    <div class="grp-head">
+      <div class="gh-ic">${IC.shield}</div>
+      <div><h1>Operações</h1><div class="gh-sub">${HUB_DEFS.operacoes.sub}</div></div>
+    </div>
+    <div class="doc-hub-note">Escolha o tipo de operação. Na sequência, escolha o equipamento — o sistema abre direto o POP, o Risk Assessment e o Diário de Bordo daquele equipamento.</div>
+    <div class="doc-hub-grid">${cards}</div>
+    <div id="opsEquipZone"></div>
+  </div>`;
+}
+function opsPickEquip(opId){
+  const op = OP_TYPES.find(t=>t.id===opId);
+  const zone = document.getElementById('opsEquipZone'); if(!zone) return;
+  const cards = collectVehicles().map(v=>`
+    <div class="doc-hub-card" onclick="opsStart('${opId}','${v.id}')">
+      <div class="dh-ic">${IC[v.icon]||IC.box}</div>
+      <div style="min-width:0"><h5>${stripHTML(v.label)}</h5><span class="dh-status" style="color:var(--ink-3)">${(v.vehicle&&v.vehicle.cls)||'Equipamento'}</span></div>
+    </div>`).join('');
+  zone.innerHTML = `
+    <div class="home-sec-label" style="margin-top:28px">${op.label} — qual equipamento?</div>
+    <div class="doc-hub-grid">${cards}</div>`;
+  zone.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function opsStart(opId, vehicleId){
+  const v = BYID[vehicleId]; if(!v) return;
+  // leva direto pro POP do equipamento — ponto de partida real de qualquer
+  // operação hoje (checklist, procedimento, limitações). Risk Assessment e
+  // Diário continuam acessíveis pelo próprio veículo / rail.
+  const pop = (v.children||[]).find(c=>String(c.type||'').startsWith('pop-'));
+  selectNode(pop ? pop.id : vehicleId);
+}
+/* ---------- GESTÃO: indicadores (o que antes vivia na Home) ---------- */
+function renderGestaoHub(){
+  const c=countStatus();
+  viewDoc.innerHTML=`
+  <div class="grp">
+    ${crumbsHTML('hub-gestao')}
+    <div class="grp-head">
+      <div class="gh-ic">${IC.org}</div>
+      <div><h1>Gestão</h1><div class="gh-sub">${HUB_DEFS.gestao.sub}</div></div>
+    </div>
+    <div class="home-stats" style="margin:0 0 24px">
+      <div class="hstat"><div class="num">${c.total}</div><div class="lbl">Documentos</div></div>
+      <div class="hstat"><div class="num ok">${c.ok}</div><div class="lbl">Vigentes</div></div>
+      <div class="hstat"><div class="num">${c.vehicles}</div><div class="lbl">Veículos</div></div>
+      <div class="hstat"><div class="num">${c.families}</div><div class="lbl">Famílias doc.</div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="panel">
+        <h3>Estrutura documental</h3>
+        <div class="health">${donutFamilies()}<div class="health-legend">${familyLegend()}</div></div>
+      </div>
+      <div class="panel">
+        <h3>Atividade recente</h3>
+        <div class="feed">
+          <div class="feed-row"><div class="feed-ic">✓</div><div class="feed-tx">MGO — Manual Geral de Operações vigente<small>IT-OPE-003</small></div></div>
+          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">POP e TOP do Elios 3 publicados<small>IT-OPE-004</small></div></div>
+          <div class="feed-row"><div class="feed-ic">⚙</div><div class="feed-tx">Diário de manutenção em uso<small>FO-OPE-017</small></div></div>
+          <div class="feed-row"><div class="feed-ic">＋</div><div class="feed-tx">MGM — Manual Geral de Manutenção na estrutura<small>IT-MNT-001</small></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="home-sec-label">Status da Frota</div>
+    <div class="fleet-grid">${fleetCards()}</div>
+  </div>`;
+}
+function renderHub(key){
+  const meta = HUB_DEFS[key]; if(!meta) return;
+  if(meta.kind==='ops'){ renderOpsHub(); return; }
+  if(meta.kind==='gestao'){ renderGestaoHub(); return; }
+  if(meta.kind==='landing'){
+    const kids = Object.keys(HUB_DEFS).filter(k=>HUB_DEFS[k].parentHub===key);
+    viewDoc.innerHTML=`
+    <div class="grp">
+      ${crumbsHTML('hub-'+key)}
+      <div class="grp-head">
+        <div class="gh-ic">${IC[meta.icon]||IC.folder}</div>
+        <div><h1>${meta.title}</h1><div class="gh-sub">${meta.sub}</div></div>
+      </div>
+      <div class="doc-hub-grid">${kids.map(landingCard).join('')}</div>
+    </div>`;
+    return;
+  }
+  if(meta.kind==='soon'){
+    viewDoc.innerHTML=`
+    <div class="grp">
+      ${crumbsHTML('hub-'+key)}
+      <div class="grp-head">
+        <div class="gh-ic">${IC[meta.icon]||IC.folder}</div>
+        <div><h1>${meta.title}</h1><div class="gh-sub">${meta.sub}</div></div>
+        <div class="gh-count">Em construção</div>
+      </div>
+      <div class="doc-hub-note">Esta área ainda está sendo modelada. Assim que a estrutura de dados de ${meta.title.toLowerCase()} for definida, ela aparecerá aqui — sem precisar navegar por pastas.</div>
+    </div>`;
+    return;
+  }
+  let items, cardsHTML;
+  if(meta.kind==='family'){ items = collectByFamily(meta.fam); cardsHTML = items.map(hubCard).join(''); }
+  else if(meta.kind==='equip'){ items = collectEquip(); cardsHTML = items.map(equipCard).join(''); }
+  else { items = collectLibrary(); cardsHTML = items.map(libCard).join(''); }
+  const count = items.length;
+  viewDoc.innerHTML=`
+  <div class="grp">
+    ${crumbsHTML('hub-'+key)}
+    <div class="grp-head">
+      <div class="gh-ic">${IC[meta.icon]||IC.folder}</div>
+      <div><h1>${meta.title}</h1><div class="gh-sub">${meta.sub}</div></div>
+      <div class="gh-count">${count} item${count===1?'':'s'}</div>
+    </div>
+    <div class="hub-search" id="hubSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input placeholder="Filtrar em ${meta.title.toLowerCase()}…" oninput="filterHubGrid(this.value)">
+    </div>
+    <div class="doc-hub-grid" id="hubGrid">${cardsHTML || '<div style="color:var(--ink-3);font-size:14px">Nenhum item cadastrado ainda.</div>'}</div>
+  </div>`;
+}
+function filterHubGrid(q){
+  q=(q||'').trim().toLowerCase();
+  document.querySelectorAll('#hubGrid .doc-hub-card').forEach(card=>{
+    card.style.display = !q || card.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+function renderRail(){
+  const el=document.getElementById('rail'); if(!el) return;
+  el.innerHTML = RAIL_SECTIONS.map(s=>`
+    <button class="rail-item" data-sec="${s.id}" onclick="selectNode('${s.id==='home'?'home':'hub-'+s.id}')">
+      <span class="ri-ic">${IC[s.icon]||IC.folder}</span>
+      <span class="ri-lbl">${s.label}</span>
+    </button>`).join('');
+}
+
 /* ---------- ÁRVORE ---------- */
 const treeRoot=document.getElementById('treeRoot');
 function buildTree(nodes,depth=0){
@@ -1441,6 +1739,10 @@ function activateNode(id){
     let p=self&&self.parentElement?self.parentElement.closest('.node'):null;
     while(p){ p.classList.add('open'); p=p.parentElement.closest('.node'); }
   }
+  let railSec = null;
+  if(id==='home') railSec='home';
+  else if(id.startsWith('hub-')){ const k=id.slice(4); railSec = (HUB_DEFS[k]&&HUB_DEFS[k].parentHub) || k; }
+  document.querySelectorAll('.rail-item').forEach(b=>b.classList.toggle('active', b.dataset.sec===railSec));
   routeTo(id);
   if(window.innerWidth<=900) document.getElementById('tree').classList.remove('open');
 }
@@ -1458,6 +1760,7 @@ function show(view){ [viewHome,viewDoc,viewChat].forEach(v=>v.classList.remove('
 function routeTo(id){
   const n=BYID[id]; if(!n) return;
   if(n.type==='home'){ renderHome(); show(viewHome); toggleSpy(false); return; }
+  if(n.type==='hub'){ renderHub(n.hub); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='org'){ renderOrg(); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='mgo'){ renderMGO(); show(viewDoc); return; }
   if(n.type==='pop-elios2'){ renderPOPElios2(); show(viewDoc); return; }
@@ -1565,91 +1868,77 @@ function fleetCards(){
     </div>`;
   }).join('');
 }
+function greetingName(){
+  const el=document.getElementById('userChipName');
+  const t=el&&el.textContent&&el.textContent.trim();
+  return (t&&t!=='—') ? t.split('.')[0].replace(/^\w/,c=>c.toUpperCase()) : null;
+}
+function greetingWord(){
+  const h=new Date().getHours();
+  if(h<12) return 'Bom dia';
+  if(h<18) return 'Boa tarde';
+  return 'Boa noite';
+}
+/* pendências REAIS, derivadas dos próprios dados (não inventadas):
+   veículos aguardando liberação operacional + itens de manutenção não concluídos */
+function computePendencias(){
+  const out=[];
+  collectVehicles().forEach(v=>{
+    if(v.vehicle&&v.vehicle.ready&&v.vehicle.ready!=='ok'){
+      out.push({ label:stripHTML(v.label)+' — aguardando liberação operacional', ref:v.id, icon:v.icon });
+    }
+    (v.vehicle&&v.vehicle.maint||[]).forEach(m=>{
+      if(m[2]&&m[2]!=='ok') out.push({ label:stripHTML(v.label)+' — '+m[1], ref:v.id, icon:'wrench' });
+    });
+  });
+  return out;
+}
 function renderHome(){
-  const c=countStatus();
+  const name=greetingName();
+  const pend=computePendencias();
+  const recentes=[
+    {ref:'diarios', label:'Diário de Bordo — Digital'},
+    {ref:'diarios-manut', label:'Diário de Manutenção — Digital'},
+    {ref:'plano-captura', label:'Plano de Captura — Digital'},
+    {ref:'risk-assessment', label:'Risk Assessment — Digital'}
+  ];
   viewHome.innerHTML=`
   <div class="home">
     <div class="home-hero">
       <img class="home-logo" src="${XD4_LOGO}" alt="XD4 Solutions">
-      <div class="badge-top">${IC.book} Documentação Controlada · SGQ</div>
-      <h1>Sistema de Gestão <span class="navy-txt">Operacional</span></h1>
-      <p>Portal central da operação — do Manual Geral de Operações até cada POP e TOP de veículo, em uma única árvore viva.</p>
+      <h1>${greetingWord()}${name?', '+name:''}.</h1>
+      <p>O que você quer fazer hoje?</p>
       <div class="home-search" onclick="openCmdk()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input placeholder="Buscar documento, veículo ou código…" readonly>
+        <input placeholder="Pesquisar qualquer documento, equipamento, código…" readonly>
         <span class="kbd">Ctrl K</span>
       </div>
     </div>
 
-    <div class="home-stats">
-      <div class="hstat"><div class="num">${c.total}</div><div class="lbl">Documentos</div></div>
-      <div class="hstat"><div class="num ok">${c.ok}</div><div class="lbl">Vigentes</div></div>
-      <div class="hstat"><div class="num">${c.vehicles}</div><div class="lbl">Veículos</div></div>
-      <div class="hstat"><div class="num">${c.families}</div><div class="lbl">Famílias doc.</div></div>
+    <div class="home-actions">
+      <button class="home-action-btn primary" onclick="selectNode('hub-operacoes')">${IC.shield}<span>Iniciar Operação</span></button>
+      <button class="home-action-btn" onclick="selectNode('hub-equip')">${IC.fleet}<span>Equipamentos</span></button>
+      <button class="home-action-btn" onclick="selectNode('hub-fo')">${IC.pdf}<span>Abrir Formulário</span></button>
+      <button class="home-action-btn" onclick="selectNode('hub-conhecimento')">${IC.book}<span>Biblioteca</span></button>
     </div>
 
     <div class="dash-grid">
       <div class="panel">
-        <h3>Estrutura documental</h3>
-        <div class="health">
-          ${donutFamilies()}
-          <div class="health-legend">${familyLegend()}</div>
+        <h3>Pendências</h3>
+        <div class="feed">
+          ${pend.length?pend.map(p=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${p.ref}')"><div class="feed-ic">${IC[p.icon]||IC.wrench}</div><div class="feed-tx">${p.label}</div></div>`).join(''):'<div style="padding:20px 0;color:var(--ink-3);font-size:13.5px">Nenhuma pendência no momento.</div>'}
         </div>
       </div>
       <div class="panel">
-        <h3>Atividade recente</h3>
+        <h3>Adicionados recentemente</h3>
         <div class="feed">
-          <div class="feed-row"><div class="feed-ic">✓</div><div class="feed-tx">MGO — Manual Geral de Operações vigente<small>IT-OPE-003</small></div></div>
-          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">POP e TOP do Elios 3 publicados<small>IT-OPE-004</small></div></div>
-          <div class="feed-row"><div class="feed-ic">⚙</div><div class="feed-tx">Diário de manutenção em uso<small>FO-OPE-017</small></div></div>
-          <div class="feed-row"><div class="feed-ic">＋</div><div class="feed-tx">MGM — Manual Geral de Manutenção na estrutura<small>IT-MNT-001</small></div></div>
-          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">Diário de Bordo digital do Elios 3 disponível<small>Novo</small></div></div>
-          <div class="feed-row"><div class="feed-ic">◈</div><div class="feed-tx">Diário de Manutenção digital do Elios 3 disponível<small>Novo</small></div></div>
+          ${recentes.map(r=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${r.ref}')"><div class="feed-ic">◈</div><div class="feed-tx">${r.label}</div></div>`).join('')}
         </div>
       </div>
     </div>
 
-    <div class="home-sec-label">Status da Frota <span class="live-dot"></span></div>
+    <div class="home-sec-label">Equipamentos <span class="live-dot"></span></div>
     <div class="fleet-grid">${fleetCards()}</div>
-
-    <div class="home-sec-label">Categorias</div>
-    <div class="cat-grid">
-      <div class="cat-card" onclick="selectNode('org')">
-        <div class="cat-ic">${IC.org}</div><h2>Estrutura Documental</h2>
-        <div class="desc">O MGO no topo e todas as famílias de documentos do SGQ abaixo.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>MGO</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Documentos</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('mgo')">
-        <div class="cat-ic">${IC.book}</div><h2>Manuais Gerais</h2>
-        <div class="desc">MGO no topo da pirâmide, com MGM logo abaixo.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>MGO · Rev.03</span><span class="chip"><span class="d" style="background:var(--ok)"></span>MGM · IT-MNT-001</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('aereos')">
-        <div class="cat-ic">${IC.drone}</div><h2>Veículos Aéreos</h2>
-        <div class="desc">Frota Flyability e seus POP/TOP.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>Elios 3</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Elios 2</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('terrestres')">
-        <div class="cat-ic">${IC.robot}</div><h2>Veículos Terrestres</h2>
-        <div class="desc">Robôs Unitree e Rover.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--ok)"></span>GO2</span><span class="chip"><span class="d" style="background:var(--ok)"></span>G1</span><span class="chip"><span class="d" style="background:var(--ok)"></span>Rover</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('diarios')">
-        <div class="cat-ic">${IC.file}</div><h2>Diários de Bordo</h2>
-        <div class="desc">Registro digital de missão, com cálculo automático de horas.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('diarios-manut')">
-        <div class="cat-ic">${IC.wrench}</div><h2>Diários de Manutenção</h2>
-        <div class="desc">Registro digital de discrepâncias, ações corretivas e liberação do equipamento.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
-      </div>
-      <div class="cat-card" onclick="selectNode('risk-assessment')">
-        <div class="cat-ic">${IC.shield}</div><h2>Risk Assessment</h2>
-        <div class="desc">Avaliação de risco pré-missão com nível de risco calculado automaticamente.</div>
-        <div class="chips"><span class="chip"><span class="d" style="background:var(--xd4)"></span>Novo · Digital</span></div>
-      </div>
-    </div>
   </div>`;
 }
 
@@ -3807,6 +4096,7 @@ function renderVehicle(n){
         <h1>${stripHTML(n.label)}</h1>
         <div class="maker">Fabricante: ${v.maker}</div>
         <div class="vp-ready ${v.ready}"><span class="d"></span>${v.ready==='ok'?'Pronto para operação':'Prontidão pendente'}</div>
+        <button class="home-action-btn primary" style="margin-top:14px" onclick="event.stopPropagation();selectNode('hub-operacoes')">${IC.shield}<span>Iniciar operação com este equipamento</span></button>
       </div>
     </div>
     <div class="vp-maint" style="margin-bottom:24px"><h3>Documentos do veículo</h3></div>
@@ -4015,6 +4305,7 @@ tick(); setInterval(tick,1000*30);
 
 document.getElementById('logoSym').src=XD4_SYMBOL;
 (function(){ const l=document.createElement('link'); l.rel='icon'; l.href=XD4_SYMBOL; document.head.appendChild(l); })();
+renderRail();
 renderTree();
 (function initRoute(){
   const initId=location.hash.slice(1);
