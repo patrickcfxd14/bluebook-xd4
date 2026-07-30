@@ -1364,24 +1364,35 @@ const TREE = [
               { id:'ativos-celulose-torre-estocagem-massa', label:'Torre de Estocagem de Massa', icon:'tower', type:'asset', status:'warn' },
               { id:'ativos-celulose-pre-torre-dual', label:'Pré Torre Dual', icon:'tower', type:'asset', status:'warn' },
               { id:'ativos-celulose-torre-dual', label:'Torre Dual', icon:'tower', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-descarga-reator-po', label:'Tanque de Descarga do Reator PO — B218.1', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-descarga-reator-po', label:'Tanque de Descarga do Reator PO — B218.1', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-descarga-reator-po-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
               { id:'ativos-celulose-chamine-caldeira-1', label:'Chaminé da Caldeira 1', icon:'factory', type:'asset', status:'warn' },
               { id:'ativos-celulose-chamine-forno-lama-cal', label:'Chaminé do Forno de Lama de Cal', icon:'factory', type:'asset', status:'warn' },
               { id:'ativos-celulose-dutos-precipitadores', label:'Dutos dos Precipitadores', icon:'pipe', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-licor-preto-fraco', label:'Tanque Armaz. Licor Preto Fraco', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-agua-quente', label:'Tanque de Água Quente', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-agua-limpa-recup', label:'Tanque de Água Limpa Recup/Utilidade', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-licor-preto-fraco', label:'Tanque Armaz. Licor Preto Fraco', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-licor-preto-fraco-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-agua-quente', label:'Tanque de Água Quente', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-agua-quente-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-agua-limpa-recup', label:'Tanque de Água Limpa Recup/Utilidade', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-agua-limpa-recup-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
               { id:'ativos-celulose-cilindros-secadores', label:'Cilindros Secadores', icon:'box', type:'asset', status:'warn' },
               { id:'ativos-celulose-torre-agua-branca', label:'Torre de Água Branca', icon:'tower', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-agua-branca', label:'Tanque de Água Branca', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-refugos', label:'Tanque de Refugos', icon:'box', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-agua-branca', label:'Tanque de Água Branca', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-agua-branca-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-refugos', label:'Tanque de Refugos', icon:'box', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-refugos-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
               { id:'ativos-celulose-transp-movel-pilha-cavaco', label:'Transp. Móvel sobre a Pilha de Cavaco', icon:'pipe', type:'asset', status:'warn' },
               { id:'ativos-celulose-transportador-cavacos-cozimento', label:'Transportador de Cavacos p/ o Cozimento', icon:'pipe', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-condensado-009', label:'Tanque de Condensado 009', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-oleo-combustivel', label:'Tanque Armazen. e Distrib. Óleo Combustível', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-captacao-spill', label:'Tanque de Captação de Spill', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-licor-preto-su40', label:'Tanque de Licor Preto SU.40', icon:'droplet', type:'asset', status:'warn' },
-              { id:'ativos-celulose-tanque-licor-preto-su41', label:'Tanque de Licor Preto SU.41', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-condensado-009', label:'Tanque de Condensado 009', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-condensado-009-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-oleo-combustivel', label:'Tanque Armazen. e Distrib. Óleo Combustível', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-oleo-combustivel-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-captacao-spill', label:'Tanque de Captação de Spill', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-captacao-spill-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-licor-preto-su40', label:'Tanque de Licor Preto SU.40', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-licor-preto-su40-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
+              { id:'ativos-celulose-tanque-licor-preto-su41', label:'Tanque de Licor Preto SU.41', icon:'droplet', type:'asset', status:'warn',
+                children:[ { id:'ativos-celulose-tanque-licor-preto-su41-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
               { id:'ativos-celulose-maquina-papel-l1', label:'Máquina de Papel L1', icon:'factory', type:'asset', status:'warn' }
             ]},
           { id:'ativos-energia', label:'Energia', icon:'bolt', type:'group', status:'draft', desc:'Subestações, linhas e transformadores', children:[] },
@@ -1820,6 +1831,15 @@ function routeTo(id){
   if(n.type==='org'){ renderOrg(); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='mgo'){ renderMGO(); show(viewDoc); return; }
   if(n.type==='pop-elios2'){ renderPOPElios2(); show(viewDoc); return; }
+  if(n.type==='pop-tanques'){
+    renderDocFromKey('pop-tanques', {
+      idPrefix:'tq', crumbId:n.id, icon:'file', code:'IT-OPE',
+      title:'Estratégia de Voo — Tanques e Silos Cilíndricos', subtitle:'Procedimento Operacional · Inspeção Interna com Elios 3',
+      tag:'Metodologia padronizada de voo para inspeção interna de tanques e silos cilíndricos com o drone Elios 3 — cobertura integral do ativo, estratégias por região (teto, costado, fundo, soldas, agitadores) e critérios de segurança e interrupção de missão.',
+      footer:'Estratégia de Voo — Tanques e Silos Cilíndricos'
+    });
+    show(viewDoc); return;
+  }
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
