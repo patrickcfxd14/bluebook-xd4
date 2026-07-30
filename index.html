@@ -1335,46 +1335,30 @@ const TREE = [
         children:[
           { id:'ativos-mineracao', label:'Mineração', icon:'mountain', type:'group', status:'draft', desc:'Barragens, correias e britadores', children:[] },
           { id:'ativos-petroleo-gas', label:'Petróleo e Gás', icon:'flame', type:'group', status:'draft', desc:'Plataformas, tanques e dutos', children:[] },
-          { id:'ativos-celulose', label:'Celulose', icon:'leaf', type:'group', status:'warn', desc:'7 processos mapeados, da recuperação à evaporação',
+          { id:'ativos-celulose', label:'Celulose', icon:'leaf', type:'group', status:'warn', desc:'22 ativos mapeados',
             children:[
-              { id:'ativos-celulose-recuperacao', label:'Recuperação', icon:'flame', type:'group', status:'warn',
-                desc:'Tanques, caldeiras e chaminés',
-                children:[
-                  { id:'ativos-celulose-tanque', label:'Tanque', icon:'box', type:'asset', status:'warn' },
-                  { id:'ativos-celulose-caldeira-recuperacao', label:'Caldeira de Recuperação', icon:'flame', type:'asset', status:'warn' },
-                  { id:'ativos-celulose-chamine-caldeira', label:'Chaminé da Caldeira', icon:'factory', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-linha-fibras', label:'Linha de Fibras', icon:'pipe', type:'group', status:'warn',
-                desc:'Torres de estocagem e dutos',
-                children:[
-                  { id:'ativos-celulose-torre-estocagem', label:'Torre de Estocagem', icon:'tower', type:'asset', status:'warn' },
-                  { id:'ativos-celulose-duto', label:'Duto', icon:'pipe', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-planta-quimica', label:'Planta Química', icon:'droplet', type:'group', status:'warn',
-                desc:'Tanques de produtos químicos',
-                children:[
-                  { id:'ativos-celulose-tanque-clo2', label:'Tanque de Dióxido de Cloro (ClO₂)', icon:'droplet', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-secagem', label:'Secagem', icon:'wrench', type:'group', status:'warn',
-                desc:'Formadores e equipamentos de secagem',
-                children:[
-                  { id:'ativos-celulose-formador', label:'Formador', icon:'wrench', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-fibras', label:'Fibras', icon:'tower', type:'group', status:'warn',
-                desc:'Torres de massa branca',
-                children:[
-                  { id:'ativos-celulose-torre-massa-branca', label:'Torre de Massa Branca', icon:'tower', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-calcificacao', label:'Calcificação', icon:'factory', type:'group', status:'warn',
-                desc:'Chaminés do forno de cal',
-                children:[
-                  { id:'ativos-celulose-chamine-forno-cal', label:'Chaminé do Forno de Cal', icon:'factory', type:'asset', status:'warn' }
-                ]},
-              { id:'ativos-celulose-evaporacao', label:'Evaporação', icon:'droplet', type:'group', status:'warn',
-                desc:'Evaporadores de múltiplo efeito',
-                children:[
-                  { id:'ativos-celulose-evaporador', label:'Evaporador de Efeito', icon:'droplet', type:'asset', status:'warn' }
-                ]}
+              { id:'ativos-celulose-torre-estocagem-massa', label:'Torre de Estocagem de Massa', icon:'tower', type:'asset', status:'warn' },
+              { id:'ativos-celulose-pre-torre-dual', label:'Pré Torre Dual', icon:'tower', type:'asset', status:'warn' },
+              { id:'ativos-celulose-torre-dual', label:'Torre Dual', icon:'tower', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-descarga-reator-po', label:'Tanque de Descarga do Reator PO — B218.1', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-chamine-caldeira-1', label:'Chaminé da Caldeira 1', icon:'factory', type:'asset', status:'warn' },
+              { id:'ativos-celulose-chamine-forno-lama-cal', label:'Chaminé do Forno de Lama de Cal', icon:'factory', type:'asset', status:'warn' },
+              { id:'ativos-celulose-dutos-precipitadores', label:'Dutos dos Precipitadores', icon:'pipe', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-licor-preto-fraco', label:'Tanque Armaz. Licor Preto Fraco', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-agua-quente', label:'Tanque de Água Quente', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-agua-limpa-recup', label:'Tanque de Água Limpa Recup/Utilidade', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-cilindros-secadores', label:'Cilindros Secadores', icon:'box', type:'asset', status:'warn' },
+              { id:'ativos-celulose-torre-agua-branca', label:'Torre de Água Branca', icon:'tower', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-agua-branca', label:'Tanque de Água Branca', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-refugos', label:'Tanque de Refugos', icon:'box', type:'asset', status:'warn' },
+              { id:'ativos-celulose-transp-movel-pilha-cavaco', label:'Transp. Móvel sobre a Pilha de Cavaco', icon:'pipe', type:'asset', status:'warn' },
+              { id:'ativos-celulose-transportador-cavacos-cozimento', label:'Transportador de Cavacos p/ o Cozimento', icon:'pipe', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-condensado-009', label:'Tanque de Condensado 009', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-oleo-combustivel', label:'Tanque Armazen. e Distrib. Óleo Combustível', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-captacao-spill', label:'Tanque de Captação de Spill', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-licor-preto-su40', label:'Tanque de Licor Preto SU.40', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-tanque-licor-preto-su41', label:'Tanque de Licor Preto SU.41', icon:'droplet', type:'asset', status:'warn' },
+              { id:'ativos-celulose-maquina-papel-l1', label:'Máquina de Papel L1', icon:'factory', type:'asset', status:'warn' }
             ]},
           { id:'ativos-energia', label:'Energia', icon:'bolt', type:'group', status:'draft', desc:'Subestações, linhas e transformadores', children:[] },
           { id:'ativos-siderurgia', label:'Siderurgia', icon:'factory', type:'group', status:'draft', desc:'Altos-fornos, coquerias e convertedores', children:[] }
@@ -1414,6 +1398,24 @@ const TREE = [
         files:[ { label:'OD-OPE-003 — Certificado de treino introdutório · Op. de Inspeção de Qualidade', file:'documentos/od-ope-003-certificado-treino-introdutorio.pdf' } ] }
     ]}
 ];
+
+/* cada ativo ganha seu próprio POP — ainda não escrito, mas com a
+   estrutura reservada (mesmo padrão já usado pro MGM). Feito uma vez
+   aqui pra não repetir isso nos 22 (e futuros) ativos manualmente. */
+(function attachAssetPops(nodes){
+  nodes.forEach(n=>{
+    if(n.type==='asset' && !(n.children&&n.children.length)){
+      n.children=[{
+        id:n.id+'-pop', label:'POP — Procedimento de Inspeção', icon:'file', code:'POP',
+        status:'draft', type:'placeholder',
+        phSections:['Objetivo e Escopo','Descrição do Ativo','Riscos e Medidas de Controle',
+          'Equipamentos e EPIs Necessários','Preparação e Isolamento da Área','Procedimento de Inspeção',
+          'Critérios de Aceitação','Registro de Não Conformidades','Emergências','Pós-Inspeção e Relatório']
+      }];
+    }
+    if(n.children) attachAssetPops(n.children);
+  });
+})(TREE);
 
 /* index by id + parent map for breadcrumbs */
 const BYID={}, PARENT={};
@@ -1477,7 +1479,12 @@ Object.keys(HUB_DEFS).forEach(k=>{ PARENT['hub-'+k] = HUB_DEFS[k].parentHub ? BY
 /* classifica um nó de documento em OD / IT / FO (retorna null se não for
    um "documento" classificável — ex: pastas, veículos, manuais de fabricante) */
 function classifyFamily(n){
-  if(n.type==='mgo'||n.type==='placeholder') return 'OD';
+  if(n.type==='mgo') return 'OD';
+  if(n.type==='placeholder'){
+    const p=PARENT[n.id];
+    if(p&&p.type==='asset') return null; // POP reservado de um ativo, ainda sem conteúdo — não conta como documento classificado
+    return 'OD'; // MGM e afins
+  }
   if(/^pop-|^pto-|^phr-/.test(n.type||'')) return 'IT';
   if(['logbook','maintlog','planocaptura','riskassessment'].includes(n.type)) return 'FO';
   if(n.type==='manual'){
@@ -1534,8 +1541,9 @@ function equipCard(n){
 const CRIT_LABEL={crit:'Alta criticidade',warn:'Média criticidade',draft:'Criticidade a definir',ok:'Baixa criticidade'};
 function ativoCard(n){
   const cat = PARENT[n.id] ? stripHTML(PARENT[n.id].label) : '';
+  const target = (n.children&&n.children[0]) ? n.children[0].id : n.id;
   return `
-    <div class="doc-hub-card" onclick="selectNode('${n.id}')">
+    <div class="doc-hub-card" onclick="selectNode('${target}')">
       <div class="dh-ic">${IC[n.icon]||IC.box}</div>
       <div style="min-width:0">
         <div class="dh-top"><span class="node-st st-${n.status||'draft'}"></span><h5>${stripHTML(n.label)}</h5></div>
@@ -3981,7 +3989,7 @@ function renderAsset(n){
     </div>
 
     <div class="home-sec-label">Procedimentos aplicáveis</div>
-    ${empty('Nenhum POP vinculado a este ativo ainda — quando um procedimento referenciar este ativo, ele aparece aqui automaticamente.')}
+    ${(n.children&&n.children[0]) ? `<div class="doc-hub-grid"><div class="doc-hub-card" onclick="selectNode('${n.children[0].id}')"><div class="dh-ic">${IC.file}</div><div><h5>${stripHTML(n.children[0].label)}</h5><span class="dh-status" style="color:var(--ink-3)">${stName[n.children[0].status]||'Estrutura reservada'}</span></div></div></div>` : empty('Nenhum POP vinculado a este ativo ainda.')}
 
     <div class="home-sec-label" style="margin-top:22px">Equipamentos recomendados</div>
     ${empty('Ainda não definido quais equipamentos são recomendados para inspecionar este ativo.')}
