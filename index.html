@@ -1295,6 +1295,8 @@ const TREE = [
                   maint:[['2026-06-14','Troca de gaiola de proteção','ok'],['2026-05-02','Calibração de sensores','ok'],['2026-03-20','Atualização de firmware','ok']] },
                 children:[
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
+                  { id:'elios3-pop-pilha-cavaco', label:'POP — Transportador sobre Pilha de Cavacos', icon:'file', code:'POP', badge:'10 seções', status:'ok', type:'pop-elios3-pilha-cavaco' },
+                  { id:'elios3-pop-torre-massa-branca', label:'POP — Torre de Massa Branca', icon:'file', code:'POP', badge:'16 seções', status:'ok', type:'pop-elios3-torre-massa-branca' },
                   { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
                   { id:'elios3-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios3' },
                   { id:'elios3-manual', label:'Manual do Fabricante', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
@@ -1841,6 +1843,8 @@ function routeTo(id){
     show(viewDoc); return;
   }
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
+  if(n.type==='pop-elios3-pilha-cavaco'){ renderPOPElios3PilhaCavaco(); show(viewDoc); return; }
+  if(n.type==='pop-elios3-torre-massa-branca'){ renderPOPElios3TorreMassaBranca(); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='pop-rover'){ renderPOPRover(); show(viewDoc); return; }
@@ -2273,6 +2277,22 @@ function renderPOPElios3(){
     title:'POP — Flyability Elios 3', subtitle:'Procedimento Operacional Padrão · Operação',
     tag:'Procedimento Operacional Padrão específico do RPAS Flyability Elios 3 — cobre características do veículo, configuração, limitações operacionais, equipe, checklists, procedimento de missão, emergências, pós-operação, manutenção de primeiro nível, registros e suplementos.',
     footer:'POP Flyability Elios 3'
+  });
+}
+function renderPOPElios3PilhaCavaco(){
+  renderDocFromKey('pop-elios3-pilha-cavaco', {
+    idPrefix:'elios3pc', crumbId:'elios3-pop-pilha-cavaco', icon:'file', code:'POP',
+    title:'POP — Transportador sobre Pilha de Cavacos (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Estrutural',
+    tag:'Procedimento Operacional Padrão para inspeção estrutural inferior de transportador de correia sobre a pilha de cavacos utilizando o Flyability Elios 3 — cobre condições obrigatórias, estratégia de voo, sequência de inspeção, captura LiDAR, registro de anomalias e critérios de interrupção e conclusão da missão.',
+    footer:'POP Transportador sobre Pilha de Cavacos — Elios 3'
+  });
+}
+function renderPOPElios3TorreMassaBranca(){
+  renderDocFromKey('pop-elios3-torre-massa-branca', {
+    idPrefix:'elios3tm', crumbId:'elios3-pop-torre-massa-branca', icon:'file', code:'POP',
+    title:'POP — Torre de Massa Branca (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Interna',
+    tag:'Procedimento Operacional Padrão para inspeção interna de torres de armazenagem de massa branca (White Liquor Storage Tower) utilizando o Flyability Elios 3 — cobre estratégia Top Down, descida helicoidal, captura LiDAR e critérios de nova passagem e encerramento da missão.',
+    footer:'POP Torre de Massa Branca — Elios 3'
   });
 }
 function renderPOPG1(){
