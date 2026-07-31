@@ -1409,30 +1409,18 @@ const TREE = [
   { id:'risk-assessment', label:'<b>Risk Assessment</b> — Digital', icon:'shield', code:'FO-OPE-002', badge:'Novo', status:'ok', type:'riskassessment', root:true },
   { id:'docs-gerais', label:'Documentos Gerais', icon:'folder', type:'group', status:'ok', hidden:true,
     children:[
-      { id:'doc-servico-nao-conforme', label:'Serviço não conforme', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'IT-OPE-002 — Serviço não conforme', file:'documentos/it-ope-002-servico-nao-conforme.pdf' } ] },
-      { id:'doc-ordem-servico-nr01', label:'Ordem de serviço NR-01', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'IT-OPE-008 — Ordem de serviço NR-01', file:'documentos/it-ope-008-ordem-servico-nr01.pdf' } ] },
+      { id:'doc-servico-nao-conforme', label:'Serviço não conforme', icon:'file', code:'IT-OPE-002', status:'ok', type:'digital-servico-nao-conforme' },
+      { id:'doc-ordem-servico-nr01', label:'Ordem de serviço NR-01', icon:'file', code:'IT-OPE-008', status:'ok', type:'digital-ordem-servico-nr01' },
       { id:'doc-transporte-bateria', label:'Transporte de bateria via modal aéreo', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
         files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] },
-      { id:'doc-pto-2026', label:'Plano de Procedimento Operacional — PTO 2026', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'Plano de Procedimento Operacional — PTO 2026', file:'documentos/plano-pto-2026.pdf' } ] },
       { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
         files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] },
-      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-005 — Ficha de controle de EPI', file:'documentos/fo-ope-005-ficha-controle-epi.pdf' } ] },
-      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-006 — Ordem de Serviço', file:'documentos/fo-ope-006-ordem-servico.pdf' } ] },
-      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-018 — Relatório de Missão', file:'documentos/fo-ope-018-relatorio-missao.pdf' } ] },
-      { id:'doc-plano-captura-dados', label:'Plano de Captura de dados', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-020 — Plano de Captura de dados', file:'documentos/fo-ope-020-plano-captura-dados.pdf' } ] },
-      { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-021 — Relatório Preliminar de Peritagem', file:'documentos/fo-ope-021-relatorio-preliminar-peritagem.pdf' } ] },
-      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'OD-OPE-001 — Tabela de preservação de produtos', file:'documentos/od-ope-001-tabela-preservacao-produtos.pdf' } ] },
-      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'OD-OPE-003 — Certificado de treino introdutório · Op. de Inspeção de Qualidade', file:'documentos/od-ope-003-certificado-treino-introdutorio.pdf' } ] }
+      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'file', code:'FO-OPE-005', status:'ok', type:'digital-ficha-epi' },
+      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico' },
+      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'file', code:'FO-OPE-018', status:'ok', type:'digital-relatorio-missao' },
+      { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'file', code:'FO-OPE-021', status:'ok', type:'digital-relatorio-peritagem' },
+      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'file', code:'OD-OPE-001', status:'ok', type:'digital-tabela-preservacao' },
+      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'file', code:'OD-OPE-003', status:'ok', type:'digital-certificado-treino' }
     ]}
 ];
 
@@ -1845,6 +1833,14 @@ function routeTo(id){
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
   if(n.type==='pop-elios3-pilha-cavaco'){ renderPOPElios3PilhaCavaco(); show(viewDoc); return; }
   if(n.type==='pop-elios3-torre-massa-branca'){ renderPOPElios3TorreMassaBranca(); show(viewDoc); return; }
+  if(n.type==='digital-servico-nao-conforme'){ renderDocFromKey('it-ope-002-servico-nao-conforme', { idPrefix:'itsnc', crumbId:n.id, icon:'file', code:'IT-OPE-002', title:'Serviço Não Conforme', subtitle:'Instrução de Trabalho · Qualidade', tag:'Define os critérios para identificação, tratamento e registro de não conformidades em produtos e serviços, incluindo os cenários específicos de inspeção/captura de imagens, treinamento e venda de drones.', footer:'IT-OPE-002 · Serviço Não Conforme' }); show(viewDoc); return; }
+  if(n.type==='digital-ordem-servico-nr01'){ renderDocFromKey('it-ope-008-ordem-servico-nr01', { idPrefix:'itos01', crumbId:n.id, icon:'file', code:'IT-OPE-008', title:'Ordem de Serviço NR-01', subtitle:'Instrução de Trabalho · Segurança do Trabalho', tag:'Ordem de serviço obrigatória por força da NR-1, detalhando atividades, obrigações do colaborador e da empresa, riscos da operação, EPI obrigatórios, proibições e procedimento disciplinar.', footer:'IT-OPE-008 · Ordem de Serviço NR-01' }); show(viewDoc); return; }
+  if(n.type==='digital-ficha-epi'){ renderDocFromKey('fo-ope-005-ficha-controle-epi', { idPrefix:'foepi', crumbId:n.id, icon:'file', code:'FO-OPE-005', title:'Ficha de Controle de EPI', subtitle:'Formulário · Segurança do Trabalho', tag:'Formulário de controle de entrega e devolução de Equipamentos de Proteção Individual (EPI), com termo de responsabilidade do colaborador.', footer:'FO-OPE-005 · Ficha de Controle de EPI' }); show(viewDoc); return; }
+  if(n.type==='digital-ordem-servico'){ renderDocFromKey('fo-ope-006-ordem-servico', { idPrefix:'foos', crumbId:n.id, icon:'file', code:'FO-OPE-006', title:'Ordem de Serviço', subtitle:'Formulário · Operações', tag:'Formulário de abertura e fechamento de Ordem de Serviço, cobrindo operação em campo, declaração de anuência, processamento de dados e tempo de serviço.', footer:'FO-OPE-006 · Ordem de Serviço' }); show(viewDoc); return; }
+  if(n.type==='digital-relatorio-missao'){ renderDocFromKey('fo-ope-018-relatorio-missao', { idPrefix:'form', crumbId:n.id, icon:'file', code:'FO-OPE-018', title:'Relatório de Missão', subtitle:'Formulário · Operações', tag:'Formulário de encerramento de missão (Rel Mis), com indicadores de desempenho, processamento dos dados, riscos, debriefing com o cliente e inteligência de campo.', footer:'FO-OPE-018 · Relatório de Missão' }); show(viewDoc); return; }
+  if(n.type==='digital-relatorio-peritagem'){ renderDocFromKey('fo-ope-021-relatorio-preliminar-peritagem', { idPrefix:'foper', crumbId:n.id, icon:'file', code:'FO-OPE-021', title:'Relatório Preliminar de Peritagem', subtitle:'Formulário · Manutenção', tag:'Modelo de relatório preliminar de peritagem de equipamento, cobrindo recebimento, plano de ação técnico e próximos passos até a liberação para retorno operacional.', footer:'FO-OPE-021 · Relatório Preliminar de Peritagem' }); show(viewDoc); return; }
+  if(n.type==='digital-tabela-preservacao'){ renderDocFromKey('od-ope-001-tabela-preservacao-produtos', { idPrefix:'odtab', crumbId:n.id, icon:'file', code:'OD-OPE-001', title:'Tabela de Preservação de Produtos', subtitle:'Outros Documentos · Qualidade', tag:'Regras de identificação, proteção, embalagem, armazenamento e transporte para os equipamentos em uso e descontinuados da frota.', footer:'OD-OPE-001 · Tabela de Preservação de Produtos' }); show(viewDoc); return; }
+  if(n.type==='digital-certificado-treino'){ renderDocFromKey('od-ope-003-certificado-treino-introdutorio', { idPrefix:'odcert', crumbId:n.id, icon:'file', code:'OD-OPE-003', title:'Certificado de Treino Introdutório', subtitle:'Outros Documentos · Treinamento', tag:'Certificado de conclusão do treinamento introdutório de técnicas de pilotagem remota para Operador de Inspeção de Qualidade, com o conteúdo programático ministrado.', footer:'OD-OPE-003 · Certificado de Treino Introdutório' }); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='pop-rover'){ renderPOPRover(); show(viewDoc); return; }
@@ -2038,9 +2034,7 @@ const ORG_DOCS={
         {label:'Serviço não conforme', code:'IT-OPE-002', ref:'doc-servico-nao-conforme'},
         {label:'MGO — Manual Geral de Operações', code:'IT-OPE-003', ref:'mgo'},
         {label:'Ordem de serviço NR-01', code:'IT-OPE-008', ref:'doc-ordem-servico-nr01'},
-        {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'},
-        {label:'Plano de Procedimento Operacional — PTO 2026', code:'', ref:'doc-pto-2026'},
-        {label:'Manual de Fraseologia — Elios 3', code:'', ref:'elios3-fraseologia'}
+        {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'}
       ],
       groups:[
         { label:'Veículos Aéreos', icon:'drone', items:[
@@ -2071,7 +2065,7 @@ const ORG_DOCS={
         {label:'Diário de bordo · Elios 3', code:'FO-OPE-011', ref:'diarios'},
         {label:'Diário de manutenção', code:'FO-OPE-017', ref:'diarios-manut'},
         {label:'Relatório de Missão', code:'FO-OPE-018', ref:'doc-relatorio-missao'},
-        {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'doc-plano-captura-dados'},
+        {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'plano-captura'},
         {label:'Relatório Preliminar de Peritagem', code:'FO-OPE-021', ref:'doc-relatorio-preliminar-peritagem'}
       ]},
     { id:'fam-od', code:'OD', title:'Outros Documentos', icon:'folder',
