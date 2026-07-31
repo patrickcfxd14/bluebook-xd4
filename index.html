@@ -1295,8 +1295,6 @@ const TREE = [
                   maint:[['2026-06-14','Troca de gaiola de proteção','ok'],['2026-05-02','Calibração de sensores','ok'],['2026-03-20','Atualização de firmware','ok']] },
                 children:[
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
-                  { id:'elios3-pop-pilha-cavaco', label:'POP — Transportador sobre Pilha de Cavacos', icon:'file', code:'POP', badge:'10 seções', status:'ok', type:'pop-elios3-pilha-cavaco' },
-                  { id:'elios3-pop-torre-massa-branca', label:'POP — Torre de Massa Branca', icon:'file', code:'POP', badge:'16 seções', status:'ok', type:'pop-elios3-torre-massa-branca' },
                   { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
                   { id:'elios3-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios3' },
                   { id:'elios3-manual', label:'Manual do Fabricante', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
@@ -1363,7 +1361,8 @@ const TREE = [
           { id:'ativos-petroleo-gas', label:'Petróleo e Gás', icon:'flame', type:'group', status:'draft', desc:'Plataformas, tanques e dutos', children:[] },
           { id:'ativos-celulose', label:'Celulose', icon:'leaf', type:'group', status:'warn', desc:'22 ativos mapeados',
             children:[
-              { id:'ativos-celulose-torre-estocagem-massa', label:'Torre de Estocagem de Massa', icon:'tower', type:'asset', status:'warn' },
+              { id:'ativos-celulose-torre-estocagem-massa', label:'Torre de Estocagem de Massa', icon:'tower', type:'asset', status:'ok',
+                children:[ { id:'ativos-celulose-torre-estocagem-massa-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-torre-massa-branca' } ] },
               { id:'ativos-celulose-pre-torre-dual', label:'Pré Torre Dual', icon:'tower', type:'asset', status:'warn' },
               { id:'ativos-celulose-torre-dual', label:'Torre Dual', icon:'tower', type:'asset', status:'warn' },
               { id:'ativos-celulose-tanque-descarga-reator-po', label:'Tanque de Descarga do Reator PO — B218.1', icon:'droplet', type:'asset', status:'warn',
@@ -1383,7 +1382,8 @@ const TREE = [
                 children:[ { id:'ativos-celulose-tanque-agua-branca-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
               { id:'ativos-celulose-tanque-refugos', label:'Tanque de Refugos', icon:'box', type:'asset', status:'warn',
                 children:[ { id:'ativos-celulose-tanque-refugos-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
-              { id:'ativos-celulose-transp-movel-pilha-cavaco', label:'Transp. Móvel sobre a Pilha de Cavaco', icon:'pipe', type:'asset', status:'warn' },
+              { id:'ativos-celulose-transp-movel-pilha-cavaco', label:'Transp. Móvel sobre a Pilha de Cavaco', icon:'pipe', type:'asset', status:'ok',
+                children:[ { id:'ativos-celulose-transp-movel-pilha-cavaco-pop', label:'POP — Inspeção Estrutural (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-pilha-cavaco' } ] },
               { id:'ativos-celulose-transportador-cavacos-cozimento', label:'Transportador de Cavacos p/ o Cozimento', icon:'pipe', type:'asset', status:'warn' },
               { id:'ativos-celulose-tanque-condensado-009', label:'Tanque de Condensado 009', icon:'droplet', type:'asset', status:'warn',
                 children:[ { id:'ativos-celulose-tanque-condensado-009-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
