@@ -422,15 +422,15 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .cmdk-empty{padding:30px;text-align:center;color:var(--ink-3);font-size:14px}
 
 /* ===== ORGANOGRAMA ===== */
-.org{max-width:1080px;margin:0 auto;padding:34px 44px 100px}
-.org-head{margin-bottom:26px}
-.org-head h1{font-size:26px;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:12px}
-.org-head h1 svg{width:26px;height:26px;flex-shrink:0}
+.org{max-width:1220px;margin:0 auto;padding:20px 28px 30px}
+.org-head{margin-bottom:12px}
+.org-head h1{font-size:22px;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:10px}
+.org-head h1 svg{width:22px;height:22px;flex-shrink:0}
 .org-tab svg{width:15px;height:15px;flex-shrink:0}
 .oc-count svg,.od-link svg{width:14px;height:14px}
-.org-head p{color:var(--ink-2);font-size:14px;line-height:1.55;margin-top:7px;max-width:680px}
-.org-tabs{display:flex;gap:8px;margin:24px 0 32px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px;width:fit-content;box-shadow:var(--shadow)}
-.org-tab{padding:10px 18px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:8px}
+.org-head p{color:var(--ink-2);font-size:13px;line-height:1.45;margin-top:4px;max-width:680px}
+.org-tabs{display:flex;gap:8px;margin:12px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px;width:fit-content;box-shadow:var(--shadow)}
+.org-tab{padding:8px 15px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:7px}
 .org-tab.active{background:var(--navy);color:#fff}
 .org-tab:not(.active):hover{background:var(--sky)}
 .org-panel{display:none}
@@ -439,29 +439,29 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 @keyframes blueBookSpin{to{transform:rotate(360deg)}}
 
 /* chart: piramidal com linhas */
-.chart{display:flex;flex-direction:column;align-items:center;overflow-x:auto;padding:10px 0 20px}
-.tier{display:flex;justify-content:center;gap:26px;position:relative;flex-wrap:nowrap}
-.tier + .tier{margin-top:44px}
+.chart{display:flex;flex-direction:column;align-items:center;overflow-x:auto;padding:4px 0 8px}
+.tier{display:flex;justify-content:center;gap:16px;position:relative;flex-wrap:nowrap}
+.tier + .tier{margin-top:22px}
 /* connector vertical descendo de um tier para o próximo */
-.tier::before{content:"";position:absolute;top:-44px;left:50%;width:2px;height:22px;background:var(--sky-line)}
+.tier::before{content:"";position:absolute;top:-22px;left:50%;width:2px;height:22px;background:var(--sky-line)}
 .tier:first-child::before{display:none}
 /* barra horizontal que une irmãos */
-.tier.multi::after{content:"";position:absolute;top:-22px;left:var(--barL,25%);right:var(--barR,25%);height:2px;background:var(--sky-line)}
+.tier.multi::after{content:"";position:absolute;top:-11px;left:var(--barL,25%);right:var(--barR,25%);height:2px;background:var(--sky-line)}
 /* cada nó tem um "poste" subindo até a barra */
 .onode{position:relative;display:flex;flex-direction:column;align-items:center}
-.onode.hasup::before{content:"";position:absolute;top:-22px;left:50%;width:2px;height:22px;background:var(--sky-line)}
+.onode.hasup::before{content:"";position:absolute;top:-11px;left:50%;width:2px;height:11px;background:var(--sky-line)}
 
-.ocard{width:190px;background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:18px 16px;text-align:center;cursor:pointer;transition:.16s;box-shadow:var(--shadow);position:relative}
-.ocard:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
+.ocard{width:172px;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px;text-align:center;cursor:pointer;transition:.16s;box-shadow:var(--shadow);position:relative}
+.ocard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
 .ocard.lvl0{background:linear-gradient(135deg,var(--navy),var(--blue));border-color:var(--navy)}
 .ocard.lvl0 .oc-role,.ocard.lvl0 .oc-name{color:#fff}
 .ocard.lvl0 .oc-ic{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.25)}
 .ocard.lvl0 .oc-tag{background:rgba(255,255,255,.15);color:#dbe9f7;border-color:transparent}
-.oc-ic{width:48px;height:48px;border-radius:12px;background:var(--sky);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--accent)}
-.oc-ic svg{width:22px;height:22px}
-.oc-role{font-size:15px;font-weight:600;color:var(--ink);line-height:1.25}
-.oc-name{font-size:12px;color:var(--ink-3);margin-top:4px}
-.oc-tag{display:inline-block;margin-top:9px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:3px 10px}
+.oc-ic{width:36px;height:36px;border-radius:10px;background:var(--sky);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;margin:0 auto 7px;color:var(--accent)}
+.oc-ic svg{width:18px;height:18px}
+.oc-role{font-size:14px;font-weight:600;color:var(--ink);line-height:1.2}
+.oc-name{font-size:11px;color:var(--ink-3);margin-top:3px}
+.oc-tag{display:inline-block;margin-top:7px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:3px 9px}
 .oc-count{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--xd4);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace}
 .oc-flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--navy);background:var(--warn);border-radius:99px;padding:3px 10px;white-space:nowrap}
 
@@ -489,31 +489,42 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 
 /* famílias documentais (modo docs) — grid responsivo, não corta lateral */
 .docs-chart{align-items:stretch}
-.fam-connector{width:2px;height:26px;background:var(--sky-line);margin:0 auto}
-.fam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;align-items:start;width:100%;position:relative}
+.fam-connector{width:2px;height:18px;background:var(--sky-line);margin:0 auto}
+.fam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start;width:100%;position:relative}
 /* barra horizontal ligando o topo às famílias */
-.fam-grid::before{content:"";position:absolute;top:-13px;left:12%;right:12%;height:2px;background:var(--sky-line)}
-.fam-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);position:relative}
-.fam-card::before{content:"";position:absolute;top:-13px;left:50%;width:2px;height:13px;background:var(--sky-line)}
-.fam-head{display:flex;align-items:center;gap:9px;padding:14px 16px;background:linear-gradient(120deg,var(--sky),transparent);border-bottom:1px solid var(--line)}
-.fam-code{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:#fff;background:var(--navy);border-radius:6px;padding:3px 9px;flex-shrink:0;min-width:30px;text-align:center}
-.fam-title{font-size:14px;font-weight:600;color:var(--ink);flex:1;line-height:1.25}
-.fam-count{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
-.fam-items{padding:6px}
-.doc-item{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:8px;font-size:12.5px;transition:.12s}
+.fam-grid::before{content:"";position:absolute;top:-10px;left:12%;right:12%;height:2px;background:var(--sky-line)}
+.fam-card{background:var(--paper);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+.fam-card::before{content:"";position:absolute;top:-10px;left:50%;width:2px;height:10px;background:var(--sky-line)}
+.fam-card.wide{grid-column:1 / -1}
+.fam-head{display:flex;align-items:center;gap:9px;padding:11px 14px;background:linear-gradient(120deg,var(--sky),transparent);border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.fam-code{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:#fff;background:var(--navy);border-radius:6px;padding:3px 9px;flex-shrink:0;min-width:28px;text-align:center}
+.fam-title{font-size:13.5px;font-weight:600;color:var(--ink);flex:1;line-height:1.25}
+.fam-count{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;min-width:21px;height:21px;display:flex;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
+.fam-toggle{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:transform .18s;flex-shrink:0}
+.fam-toggle svg{width:15px;height:15px}
+.fam-card.collapsed .fam-toggle{transform:rotate(-90deg)}
+.fam-card.collapsed .fam-items{display:none}
+.fam-items{padding:5px}
+.doc-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;font-size:12px;transition:.12s}
 .doc-item + .doc-item{border-top:1px solid var(--line)}
 .doc-item.link{cursor:pointer}
 .doc-item.link:hover{background:var(--sky)}
-.di-dot{width:8px;height:8px;border-radius:99px;flex-shrink:0;background:var(--accent)}
+.di-dot{width:6px;height:6px;border-radius:99px;flex-shrink:0;background:var(--accent)}
 .di-label{flex:1;color:var(--ink);line-height:1.3}
-.di-code{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3);flex-shrink:0}
-.doc-item.link .di-label::after{content:"↗";font-size:10px;color:var(--accent);margin-left:5px}
-/* subgrupo (veículos aéreos / terrestres dentro de uma família) */
-.doc-subgroup{margin:8px 4px 2px;border:1px solid var(--sky-line);border-radius:10px;overflow:hidden;background:var(--sky)}
-.doc-subgroup + .doc-subgroup{margin-top:10px}
-.dsg-head{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:12px;font-weight:600;color:var(--blue);background:var(--paper);border-bottom:1px solid var(--sky-line)}
-.dsg-head svg{width:15px;height:15px;flex-shrink:0;color:var(--accent)}
-.doc-subgroup .doc-item{background:transparent}
+.di-code{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink-3);flex-shrink:0}
+.doc-item.link .di-label::after{content:"↗";font-size:9px;color:var(--accent);margin-left:4px}
+/* subgrupos (POPs/TOPs/Fraseologias) lado a lado dentro da família IT */
+.doc-subgroup-row{display:flex;gap:8px;padding:3px;flex-wrap:wrap}
+.doc-subgroup-row .doc-subgroup{flex:1;min-width:150px;margin:0}
+.doc-subgroup{margin:6px 4px 2px;border:1px solid var(--sky-line);border-radius:9px;overflow:hidden;background:var(--sky)}
+.doc-subgroup + .doc-subgroup{margin-top:6px}
+.dsg-head{display:flex;align-items:center;gap:7px;padding:7px 10px;font-size:11.5px;font-weight:600;color:var(--blue);background:var(--paper);border-bottom:1px solid var(--sky-line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none}
+.dsg-head svg:first-child{width:14px;height:14px;flex-shrink:0;color:var(--accent)}
+.dsg-toggle{margin-left:auto;width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:transform .18s;flex-shrink:0}
+.dsg-toggle svg{width:12px;height:12px}
+.doc-subgroup.collapsed .dsg-toggle{transform:rotate(-90deg)}
+.doc-subgroup.collapsed .doc-item{display:none}
+.doc-subgroup .doc-item{background:transparent;padding:5px 9px;font-size:11px}
 .doc-subgroup .doc-item.link:hover{background:var(--paper)}
 
 
@@ -532,11 +543,12 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .vp-hero{flex-direction:column;text-align:center}
   .org{padding:22px 14px 70px}
   .ocard{width:150px;padding:13px 11px}
-  .tier{gap:14px}.tier + .tier{margin-top:38px}
+  .tier{gap:14px}.tier + .tier{margin-top:16px}
   .fam-grid{grid-template-columns:1fr;gap:14px}
   .fam-grid::before{display:none}
   .fam-card::before{display:none}
   .fam-connector{display:none}
+  .doc-subgroup-row{flex-direction:column}
 }
 @media(max-width:640px){
   /* banner: no celular não cabe tudo — some com o que menos falta
@@ -1281,10 +1293,10 @@ const XD4_LOGO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAC5CAYAAACMaD
 
 /* ---------- DADOS: árvore-mestra (edite aqui para crescer) ---------- */
 const TREE = [
-  { id:'home', label:'<b>Início</b> — Painel operacional', icon:'home', type:'home', status:'ok', leaf:true },
-  { id:'org', label:'<b>Estrutura Documental</b>', icon:'org', type:'org', status:'ok', leaf:true },
+  { id:'home', label:'<b>Início</b> — Painel operacional', icon:'home', type:'home', status:'ok', leaf:true, hidden:true },
+  { id:'org', label:'<b>Estrutura Documental</b>', icon:'org', type:'org', status:'ok', leaf:true, hidden:true },
   { id:'mgo', label:'<b>MGO</b> — Manual Geral de Operações', icon:'book', code:'IT-OPE-003', status:'ok', type:'mgo', root:true },
-  { id:'veiculos', label:'<b>Veículos</b>', icon:'fleet', type:'group', status:'ok', root:true,
+  { id:'veiculos', label:'<b>Veículos</b>', icon:'fleet', type:'group', status:'ok', root:true, hidden:true,
     children:[
       { id:'aereos', label:'<b>Veículos Aéreos</b>', icon:'drone', type:'group', status:'ok', sidebarLeaf:true,
         children:[
@@ -1413,7 +1425,7 @@ const TREE = [
         files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] },
       { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
         files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] },
-      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'file', code:'FO-OPE-005', status:'ok', type:'digital-ficha-epi' },
+      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'file', code:'FO-OPE-005', badge:'Novo', status:'ok', type:'epiform' },
       { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico' },
       { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'file', code:'FO-OPE-018', status:'ok', type:'digital-relatorio-missao' },
       { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'file', code:'FO-OPE-021', status:'ok', type:'digital-relatorio-peritagem' },
@@ -1509,7 +1521,7 @@ function classifyFamily(n){
     return 'OD'; // MGM e afins
   }
   if(/^pop-|^pto-|^phr-/.test(n.type||'')) return 'IT';
-  if(['logbook','maintlog','planocaptura','riskassessment'].includes(n.type)) return 'FO';
+  if(['logbook','maintlog','planocaptura','riskassessment','epiform'].includes(n.type)) return 'FO';
   if(n.type==='manual'){
     const f=(n.files&&n.files[0]&&n.files[0].file)||'';
     if(f.startsWith('manuals/')) return null; // manual de fabricante → Biblioteca Técnica, não OD/IT/FO
@@ -1834,7 +1846,7 @@ function routeTo(id){
   if(n.type==='pop-elios3-torre-massa-branca'){ renderPOPElios3TorreMassaBranca(); show(viewDoc); return; }
   if(n.type==='digital-servico-nao-conforme'){ renderDocFromKey('it-ope-002-servico-nao-conforme', { idPrefix:'itsnc', crumbId:n.id, icon:'file', code:'IT-OPE-002', title:'Serviço Não Conforme', subtitle:'Instrução de Trabalho · Qualidade', tag:'Define os critérios para identificação, tratamento e registro de não conformidades em produtos e serviços, incluindo os cenários específicos de inspeção/captura de imagens, treinamento e venda de drones.', footer:'IT-OPE-002 · Serviço Não Conforme' }); show(viewDoc); return; }
   if(n.type==='digital-ordem-servico-nr01'){ renderDocFromKey('it-ope-008-ordem-servico-nr01', { idPrefix:'itos01', crumbId:n.id, icon:'file', code:'IT-OPE-008', title:'Ordem de Serviço NR-01', subtitle:'Instrução de Trabalho · Segurança do Trabalho', tag:'Ordem de serviço obrigatória por força da NR-1, detalhando atividades, obrigações do colaborador e da empresa, riscos da operação, EPI obrigatórios, proibições e procedimento disciplinar.', footer:'IT-OPE-008 · Ordem de Serviço NR-01' }); show(viewDoc); return; }
-  if(n.type==='digital-ficha-epi'){ renderDocFromKey('fo-ope-005-ficha-controle-epi', { idPrefix:'foepi', crumbId:n.id, icon:'file', code:'FO-OPE-005', title:'Ficha de Controle de EPI', subtitle:'Formulário · Segurança do Trabalho', tag:'Formulário de controle de entrega e devolução de Equipamentos de Proteção Individual (EPI), com termo de responsabilidade do colaborador.', footer:'FO-OPE-005 · Ficha de Controle de EPI' }); show(viewDoc); return; }
+  if(n.type==='epiform'){ renderEpiForm(n); show(viewDoc); return; }
   if(n.type==='digital-ordem-servico'){ renderDocFromKey('fo-ope-006-ordem-servico', { idPrefix:'foos', crumbId:n.id, icon:'file', code:'FO-OPE-006', title:'Ordem de Serviço', subtitle:'Formulário · Operações', tag:'Formulário de abertura e fechamento de Ordem de Serviço, cobrindo operação em campo, declaração de anuência, processamento de dados e tempo de serviço.', footer:'FO-OPE-006 · Ordem de Serviço' }); show(viewDoc); return; }
   if(n.type==='digital-relatorio-missao'){ renderDocFromKey('fo-ope-018-relatorio-missao', { idPrefix:'form', crumbId:n.id, icon:'file', code:'FO-OPE-018', title:'Relatório de Missão', subtitle:'Formulário · Operações', tag:'Formulário de encerramento de missão (Rel Mis), com indicadores de desempenho, processamento dos dados, riscos, debriefing com o cliente e inteligência de campo.', footer:'FO-OPE-018 · Relatório de Missão' }); show(viewDoc); return; }
   if(n.type==='digital-relatorio-peritagem'){ renderDocFromKey('fo-ope-021-relatorio-preliminar-peritagem', { idPrefix:'foper', crumbId:n.id, icon:'file', code:'FO-OPE-021', title:'Relatório Preliminar de Peritagem', subtitle:'Formulário · Manutenção', tag:'Modelo de relatório preliminar de peritagem de equipamento, cobrindo recebimento, plano de ação técnico e próximos passos até a liberação para retorno operacional.', footer:'FO-OPE-021 · Relatório Preliminar de Peritagem' }); show(viewDoc); return; }
@@ -2046,24 +2058,41 @@ const ORG_DOCS={
         {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'}
       ],
       groups:[
-        { label:'Veículos Aéreos', icon:'drone', items:[
+        { label:'POPs — Procedimento Operacional Padrão', icon:'file', items:[
           {label:'POP — Elios 3', code:'', ref:'elios3-pop'},
-          {label:'TOP — Elios 3', code:'IT-OPE-004', ref:'elios3-top'},
-          {label:'Fraseologia Padrão — Elios 3', code:'', ref:'elios3-fraseologia'},
           {label:'POP — Elios 2', code:'', ref:'elios2-pop'},
-          {label:'TOP — Elios 2', code:'', ref:'elios2-top'},
-          {label:'Fraseologia Padrão — Elios 2', code:'', ref:'elios2-fraseologia'}
-        ]},
-        { label:'Veículos Terrestres', icon:'robot', items:[
           {label:'POP — Unitree GO2', code:'', ref:'go2-pop'},
-          {label:'TOP — Unitree GO2', code:'', ref:'go2-top'},
-          {label:'Fraseologia Padrão — Unitree GO2', code:'', ref:'go2-fraseologia'},
           {label:'POP — Unitree G1', code:'', ref:'g1-pop'},
+          {label:'POP — Rover', code:'', ref:'rover-pop'}
+        ]},
+        { label:'TOPs — Treinamento Operacional Padrão', icon:'grad', items:[
+          {label:'TOP — Elios 3', code:'IT-OPE-004', ref:'elios3-top'},
+          {label:'TOP — Elios 2', code:'', ref:'elios2-top'},
+          {label:'TOP — Unitree GO2', code:'', ref:'go2-top'},
           {label:'TOP — Unitree G1', code:'', ref:'g1-top'},
-          {label:'Fraseologia Padrão — Unitree G1', code:'', ref:'g1-fraseologia'},
-          {label:'POP — Rover', code:'', ref:'rover-pop'},
-          {label:'TOP — Rover', code:'', ref:'rover-top'},
-          {label:'Fraseologia Padrão — Rover', code:'', ref:'rover-fraseologia'}
+          {label:'TOP — Rover', code:'', ref:'rover-top'}
+        ]},
+        { label:'Fraseologia Padrão', icon:'file', items:[
+          {label:'Fraseologia — Elios 3', code:'', ref:'elios3-fraseologia'},
+          {label:'Fraseologia — Elios 2', code:'', ref:'elios2-fraseologia'},
+          {label:'Fraseologia — Unitree GO2', code:'', ref:'go2-fraseologia'},
+          {label:'Fraseologia — Unitree G1', code:'', ref:'g1-fraseologia'},
+          {label:'Fraseologia — Rover', code:'', ref:'rover-fraseologia'}
+        ]},
+        { label:'POPs de Ativos', icon:'box', collapsed:true, items:[
+          {label:'POP — Torre de Estocagem de Massa', code:'', ref:'ativos-celulose-torre-estocagem-massa-pop'},
+          {label:'POP — Transp. Móvel s/ Pilha de Cavaco', code:'', ref:'ativos-celulose-transp-movel-pilha-cavaco-pop'},
+          {label:'POP — Tanque Descarga Reator PO B218.1', code:'', ref:'ativos-celulose-tanque-descarga-reator-po-pop'},
+          {label:'POP — Tanque Licor Preto Fraco', code:'', ref:'ativos-celulose-tanque-licor-preto-fraco-pop'},
+          {label:'POP — Tanque de Água Quente', code:'', ref:'ativos-celulose-tanque-agua-quente-pop'},
+          {label:'POP — Tanque Água Limpa Recup/Utilidade', code:'', ref:'ativos-celulose-tanque-agua-limpa-recup-pop'},
+          {label:'POP — Tanque de Água Branca', code:'', ref:'ativos-celulose-tanque-agua-branca-pop'},
+          {label:'POP — Tanque de Refugos', code:'', ref:'ativos-celulose-tanque-refugos-pop'},
+          {label:'POP — Tanque de Condensado 009', code:'', ref:'ativos-celulose-tanque-condensado-009-pop'},
+          {label:'POP — Tanque Óleo Combustível', code:'', ref:'ativos-celulose-tanque-oleo-combustivel-pop'},
+          {label:'POP — Tanque Captação de Spill', code:'', ref:'ativos-celulose-tanque-captacao-spill-pop'},
+          {label:'POP — Tanque Licor Preto SU.40', code:'', ref:'ativos-celulose-tanque-licor-preto-su40-pop'},
+          {label:'POP — Tanque Licor Preto SU.41', code:'', ref:'ativos-celulose-tanque-licor-preto-su41-pop'}
         ]}
       ]},
     { id:'fam-fo', code:'FO', title:'Formulários', icon:'file',
@@ -2090,11 +2119,10 @@ function renderOrg(){
   <div class="org">
     <div class="org-head">
       <h1>${IC.org} Estrutura Documental</h1>
-      <p>A <b>estrutura documental do SGQ</b>: o MGO no topo e todas as famílias de documentos abaixo. Clique em qualquer item para abrir o que estiver disponível na plataforma.</p>
+      <p>MGO e MGM no topo, famílias de documentos abaixo. Clique em qualquer item pra abrir.</p>
     </div>
     <div class="org-panel active" id="orgPanel"></div>
     <div class="org-detail" id="orgDetail"></div>
-    <div class="org-hint">Toque em qualquer documento para abrir o que estiver disponível na plataforma.</div>
   </div>`;
   drawDocs();
 }
@@ -2103,17 +2131,18 @@ const stLabel={keep:'Vigente',drop:'Será removido',new:'A incluir'};
 function drawDocs(){
   const panel=document.getElementById('orgPanel');
   const tops=ORG_DOCS.top;
-  // topo: MGO + MGM lado a lado
-  const tn=tops.length; const tpct=100/(tn*2);
-  const topCards=tops.map(t=>`
-     <div class="onode ${tn>1?'hasup':''}">
-       <div class="ocard lvl0" onclick="selectNode('${t.ref}')">
-         <div class="oc-ic">${IC[t.icon]}</div>
-         <div class="oc-role">${t.role}</div>
-         <div class="oc-name">${t.name}</div>
-         <div class="oc-tag">${t.tag}</div>
-       </div></div>`).join('');
-  const topCard=`<div class="tier ${tn>1?'multi':''}" style="--barL:${tpct}%;--barR:${tpct}%">${topCards}</div>`;
+  const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>';
+  // topo: MGO acima, MGM logo abaixo — hierarquia vertical, não lado a lado
+  const topCard = tops.map(t=>`
+     <div class="tier">
+       <div class="onode">
+         <div class="ocard lvl0" onclick="selectNode('${t.ref}')">
+           <div class="oc-ic">${IC[t.icon]}</div>
+           <div class="oc-role">${t.role}</div>
+           <div class="oc-name">${t.name}</div>
+           <div class="oc-tag">${t.tag}</div>
+         </div></div>
+     </div>`).join('');
 
   const renderItem=it=>{
     const clickable=it.ref&&BYID[it.ref];
@@ -2127,18 +2156,20 @@ function drawDocs(){
   const cards=ORG_DOCS.families.map(f=>{
     const total=f.items.length+(f.groups?f.groups.reduce((a,g)=>a+g.items.length,0):0);
     const directItems=f.items.map(renderItem).join('');
-    const groupBlocks=(f.groups||[]).map(g=>`
-      <div class="doc-subgroup">
-        <div class="dsg-head">${IC[g.icon]||''}<span>${g.label}</span></div>
+    const groupBlocks=(f.groups||[]).map((g,gi)=>`
+      <div class="doc-subgroup${g.collapsed?' collapsed':''}" id="dsg-${f.id}-${gi}">
+        <div class="dsg-head" onclick="orgToggle('dsg-${f.id}-${gi}')">${IC[g.icon]||''}<span>${g.label}</span><span class="dsg-toggle">${CHEV}</span></div>
         ${g.items.map(renderItem).join('')}
       </div>`).join('');
-    return `<div class="fam-card">
-        <div class="fam-head">
+    const groupsHtml = f.groups ? `<div class="doc-subgroup-row">${groupBlocks}</div>` : '';
+    return `<div class="fam-card${f.groups?' wide':''}" id="fam-${f.id}">
+        <div class="fam-head" onclick="orgToggle('fam-${f.id}')">
           <span class="fam-code">${f.code}</span>
           <span class="fam-title">${f.title}</span>
           <span class="fam-count">${total}</span>
+          <span class="fam-toggle">${CHEV}</span>
         </div>
-        <div class="fam-items">${directItems}${groupBlocks}</div>
+        <div class="fam-items">${directItems}${groupsHtml}</div>
       </div>`;
   }).join('');
   panel.innerHTML=`<div class="chart docs-chart">
@@ -2147,6 +2178,10 @@ function drawDocs(){
     <div class="fam-grid">${cards}</div>
   </div>`;
   document.getElementById('orgDetail').classList.remove('show');
+}
+function orgToggle(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('collapsed');
 }
 
 /* ---------- LEITOR: MGO ---------- */
@@ -2929,6 +2964,264 @@ function lbBuildReport(){
 
 function lbExportReport(){
   const r = lbBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
+}
+
+/* ================= FICHA DE CONTROLE DE EPI — Registro Digital (mesmo padrão do Diário de Bordo) ================= */
+const EPI_CATALOGO = [
+  ['AB2022','Abafador'], ['AP2023','Avental PVC talabarte'], ['BT2022','Botas'],
+  ['CPCT202','Capacete'], ['CR2022','Colete reflexivo'], ['CS2022','Cinto de segurança talabarte'],
+  ['LP2022','Luvas'], ['MMF2022','Macacão p/ missão fem.'], ['MMM202','Macacão p/ missão masc.'],
+  ['MT2022','Macacões para treinamento'], ['MF2022','Máscara de fulga'], ['OPL2022','Óculos plutão'],
+  ['OP2022','Óculos de proteção'], ['PA2022','Protetor auricular'], ['PA2022 ','Protetor auditivo concha'],
+  ['PP2022','Perneira de proteção'], ['PS2023','Protetor solar luvex'], ['MF2022 ','Purificador de ar para fuga']
+];
+let EPI_NODE=null, EPI_STATE=null, EPI_LOCKED_AT=null;
+function epiSeedItens(){
+  return EPI_CATALOGO.map(([codigo,descricao])=>({ codigo:codigo.trim(), descricao, qtde:'', unid:'', sigEntrega:false, dataDevolucao:'', sigDevolucao:false }));
+}
+function renderEpiForm(n, overrideState, lockedAtIso){
+  EPI_NODE = n;
+  EPI_LOCKED_AT = lockedAtIso || null;
+  EPI_STATE = overrideState || {
+    nome:'', funcao:'', dataAdmissao:'', dataDesligamento:'', observacoes:'',
+    itens: epiSeedItens(),
+    colabData:'', sigColaborador:false, sigEmpresa:false
+  };
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap${EPI_LOCKED_AT?' locked':''}" style="max-width:1040px">
+    ${EPI_LOCKED_AT ? lockBannerHtml(EPI_LOCKED_AT, 'epiUnlockCopy') : ''}
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Ficha de Controle de EPI — Registro Digital</h1>
+          <div class="lb-sub">Registro oficial de entrega e devolução de Equipamentos de Proteção Individual, em substituição ao preenchimento manual em papel.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-005</b></span>
+            <span class="lb-chip">REV <b>02</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="epiStatus"><span class="d"></span><span id="epiStatusText">Rascunho não salvo</span></div>
+      </div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Colaborador</div><div class="v">${EPI_STATE.nome||'—'}</div></div>
+        <div class="cell"><div class="k">Função</div><div class="v">${EPI_STATE.funcao||'—'}</div></div>
+        <div class="cell"><div class="k">Admissão</div><div class="v">${EPI_STATE.dataAdmissao||'—'}</div></div>
+        <div class="cell"><div class="k">Desligamento</div><div class="v">${EPI_STATE.dataDesligamento||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Dados do Colaborador</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Nome</label><input id="epiNome" value="${EPI_STATE.nome}"></div>
+        <div class="lb-field"><label>Função</label><input id="epiFuncao" value="${EPI_STATE.funcao}"></div>
+        <div class="lb-field"><label>Data de admissão</label><input id="epiDataAdmissao" type="date" value="${EPI_STATE.dataAdmissao}"></div>
+        <div class="lb-field"><label>Data de desligamento</label><input id="epiDataDesligamento" type="date" value="${EPI_STATE.dataDesligamento}"></div>
+      </div>
+      <div class="lb-field full" style="margin-top:14px"><label>Observações</label><textarea id="epiObservacoes" placeholder="Observações relevantes…">${EPI_STATE.observacoes}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Equipamentos de Proteção Individual (EPI)</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr>
+            <th>Código</th><th>Descrição</th><th>Qtde</th><th>Unid.</th><th>Assinatura (entrega)</th><th>Data (devolução)</th><th>Assinatura (devolução)</th>
+          </tr></thead>
+          <tbody id="epiItensBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Termo de Responsabilidade</h3>
+      <div class="ra-declare">Declaro ter recebido da xd4solutions os Equipamentos de Proteção Individual — EPI descritos nesta ficha, estando ciente que somente poderei utilizá-los a serviço desta empresa, comprometo-me, conforme Portaria 3.214/78, NR-6 item 6.7, a usá-los somente para a finalidade a que se destinam, responsabilizando-me pela guarda e conservação, comunicando à empresa qualquer alteração que os torne impróprios para uso, bem como devolvê-los na hipótese de rescisão contratual.
+      <br><br>Em caso de perda/extravio, poderá ser cobrado o valor integral do equipamento: na 1ª entrega, nenhum valor será cobrado; na 2ª entrega, será cobrado 50% do valor do equipamento; na 3ª entrega, será cobrado 100% do valor do equipamento.
+      <br><br>Declaro ainda que fui orientado quanto ao uso correto, conservação e finalidade do EPI recebido, bem como a obrigatoriedade e as sanções disciplinares decorrentes do não uso dos EPI no desempenho das minhas funções, de acordo com o Art. 482 da CLT.</div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Assinaturas</h3>
+      <div class="lb-ops">
+        <div class="lb-op-card">
+          <div class="tag">Assinatura do Colaborador</div>
+          <div class="lb-sig ${EPI_STATE.sigColaborador?'on':''}" style="height:70px" onclick="epiOpenSig('sigColaborador','Assinatura do Colaborador')">${sigMark(EPI_STATE.sigColaborador)}</div>
+        </div>
+        <div class="lb-op-card">
+          <div class="tag">Data</div>
+          <div class="lb-grid"><div class="lb-field"><input id="epiColabData" type="date" value="${EPI_STATE.colabData}"></div></div>
+          <div class="tag" style="margin-top:10px">Assinatura da Empresa</div>
+          <div class="lb-sig ${EPI_STATE.sigEmpresa?'on':''}" style="height:70px" onclick="epiOpenSig('sigEmpresa','Assinatura da Empresa')">${sigMark(EPI_STATE.sigEmpresa)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section" id="epiCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Fichas salvas na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="epiCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="epiCloudListWrap" style="display:none">
+        <label>Abrir uma ficha já salva</label>
+        <select id="epiCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="epiSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Ficha de EPI</button>
+        <button class="lb-print" onclick="epiExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar PDF (layout completo)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="epiToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="epiToastText">Ficha salva</span></div>
+  `;
+  epiRenderItens();
+  epiInitCloud();
+}
+function epiRenderItens(){
+  const body = document.getElementById('epiItensBody');
+  if(!body) return;
+  body.innerHTML = EPI_STATE.itens.map((it,i)=>`<tr>
+      <td>${raEsc(it.codigo)}</td>
+      <td class="lb-local">${raEsc(it.descricao)}</td>
+      <td><input value="${it.qtde}" onchange="epiSetItem(${i},'qtde',this.value)" style="text-align:center;width:60px"></td>
+      <td><input value="${it.unid}" onchange="epiSetItem(${i},'unid',this.value)" style="text-align:center;width:60px"></td>
+      <td><div class="lb-sig ${it.sigEntrega?'on':''}" onclick="epiOpenItemSig(${i},'sigEntrega','Assinatura de entrega — ${raEsc(it.descricao)}')">${sigMark(it.sigEntrega)}</div></td>
+      <td><input type="date" value="${it.dataDevolucao}" onchange="epiSetItem(${i},'dataDevolucao',this.value)"></td>
+      <td><div class="lb-sig ${it.sigDevolucao?'on':''}" onclick="epiOpenItemSig(${i},'sigDevolucao','Assinatura de devolução — ${raEsc(it.descricao)}')">${sigMark(it.sigDevolucao)}</div></td>
+    </tr>`).join('');
+  epiMarkDirty();
+}
+function epiSetItem(i,field,val){ EPI_STATE.itens[i][field]=val; epiMarkDirty(); }
+function epiOpenItemSig(i,field,title){
+  openSignaturePad(title, dataUrl=>{ EPI_STATE.itens[i][field]=dataUrl; epiRenderItens(); });
+}
+function epiOpenSig(field,title){
+  openSignaturePad(title, dataUrl=>{
+    epiGatherFields();
+    EPI_STATE[field]=dataUrl;
+    renderEpiForm(EPI_NODE, EPI_STATE, EPI_LOCKED_AT);
+  });
+}
+function epiMarkDirty(){
+  const s = document.getElementById('epiStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('epiStatusText').textContent='Rascunho não salvo'; }
+}
+function epiToast(msg){
+  const t = document.getElementById('epiToast');
+  document.getElementById('epiToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function epiGatherFields(){
+  ['epiNome','epiFuncao','epiDataAdmissao','epiDataDesligamento','epiObservacoes','epiColabData'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    if(id==='epiNome') EPI_STATE.nome = el.value;
+    if(id==='epiFuncao') EPI_STATE.funcao = el.value;
+    if(id==='epiDataAdmissao') EPI_STATE.dataAdmissao = el.value;
+    if(id==='epiDataDesligamento') EPI_STATE.dataDesligamento = el.value;
+    if(id==='epiObservacoes') EPI_STATE.observacoes = el.value;
+    if(id==='epiColabData') EPI_STATE.colabData = el.value;
+  });
+}
+async function epiSave(){
+  epiGatherFields();
+  const s = document.getElementById('epiStatus');
+  s.classList.add('saved');
+  document.getElementById('epiStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const rel = epiBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+  if(!pdfBlob){ console.warn('PDF idêntico não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
+
+  const r = await sendToDrive('ficha_epi', EPI_STATE, extra);
+  if(r.reason==='timeout_assumed_ok'){ epiToast('Ficha enviada ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ epiToast('Ficha salva e enviada ao Google Drive'); }
+  else if(r.reason==='not_configured'){ epiToast('Ficha salva localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); epiToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('fichas_epi', { nome: EPI_STATE.nome||null, funcao: EPI_STATE.funcao||null, state: EPI_STATE });
+}
+function epiInitCloud(){
+  sbFillCloudList('fichas_epi', 'id,nome,funcao,created_at',
+    r => `${r.nome||'Sem nome'}${r.funcao? ' — '+r.funcao:''}`,
+    'epiCloudStatus', 'epiCloudListWrap', 'epiCloudList', epiLoadCloud);
+}
+async function epiLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('fichas_epi').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(EPI_NODE) renderEpiForm(EPI_NODE, data.state, data.created_at);
+    epiToast('Ficha carregada da nuvem');
+  }catch(err){ console.error('epiLoadCloud:', err); }
+}
+function epiUnlockCopy(){
+  if(EPI_NODE) renderEpiForm(EPI_NODE, EPI_STATE);
+  epiToast('Cópia liberada para edição — salve pra criar um novo registro');
+}
+function epiBuildReport(){
+  epiGatherFields();
+  const rows = EPI_STATE.itens.map(it=>`<tr>
+      <td>${raEsc(it.codigo)}</td><td>${raEsc(it.descricao)}</td><td style="text-align:center">${raEsc(it.qtde)}</td><td style="text-align:center">${raEsc(it.unid)}</td>
+      <td class="rp-sigcell">${rpSigCell(it.sigEntrega)}</td><td>${raEsc(it.dataDevolucao)}</td><td class="rp-sigcell">${rpSigCell(it.sigDevolucao)}</td>
+    </tr>`).join('');
+
+  const headHtml = `
+  <div class="rp-header">
+    <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+    <div class="rp-title">
+      <h1>Ficha de Controle de EPI — Registro Digital</h1>
+      <div class="sub">${raEsc(EPI_STATE.nome)||'—'} · ${raEsc(EPI_STATE.funcao)||'—'}</div>
+      <div class="rp-meta">
+        <span class="rp-chip">DOC FO-OPE-005</span>
+        <span class="rp-chip">REV 02</span>
+        ${EPI_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(EPI_LOCKED_AT)}</span>` : ''}
+        <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  </div>`;
+
+  const bodyHtml = `
+  <div class="rp-section"><h3>Dados do Colaborador</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Nome</div><div class="v">${raEsc(EPI_STATE.nome)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Função</div><div class="v">${raEsc(EPI_STATE.funcao)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de admissão</div><div class="v">${raEsc(EPI_STATE.dataAdmissao)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de desligamento</div><div class="v">${raEsc(EPI_STATE.dataDesligamento)||'—'}</div></div>
+    </div>
+    <div class="rp-field" style="margin-top:10px"><div class="k">Observações</div><div class="v">${raEsc(EPI_STATE.observacoes)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Equipamentos de Proteção Individual (EPI)</h3>
+    <table class="rp-table">
+      <thead><tr><th>Código</th><th>Descrição</th><th>Qtde</th><th>Unid.</th><th>Assinatura (entrega)</th><th>Data (devolução)</th><th>Assinatura (devolução)</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+
+  <div class="rp-section"><h3>Termo de Responsabilidade</h3>
+    <div class="rp-declare">Declaro ter recebido da xd4solutions os Equipamentos de Proteção Individual — EPI descritos nesta ficha, estando ciente que somente poderei utilizá-los a serviço desta empresa, comprometo-me, conforme Portaria 3.214/78, NR-6 item 6.7, a usá-los somente para a finalidade a que se destinam, responsabilizando-me pela guarda e conservação, comunicando à empresa qualquer alteração que os torne impróprios para uso, bem como devolvê-los na hipótese de rescisão contratual. Em caso de perda/extravio, poderá ser cobrado o valor integral do equipamento, conforme regras da 1ª, 2ª e 3ª entrega. Declaro ainda que fui orientado quanto ao uso correto, conservação e finalidade do EPI recebido, de acordo com o Art. 482 da CLT.</div>
+  </div>
+
+  <div class="rp-section"><h3>Assinaturas</h3>
+    <div class="rp-grid">
+      <div class="rp-field"><div class="k">Assinatura do Colaborador</div><div class="v rp-sigcell">${rpSigCell(EPI_STATE.sigColaborador)}</div></div>
+      <div class="rp-field"><div class="k">Data</div><div class="v">${raEsc(EPI_STATE.colabData)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Assinatura da Empresa</div><div class="v rp-sigcell">${rpSigCell(EPI_STATE.sigEmpresa)}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-005 · Ficha de Controle de EPI</span></div>`;
+
+  return { headHtml, bodyHtml, title:'Ficha de EPI — '+(raEsc(EPI_STATE.nome)||'sem nome'), filename:'Ficha_EPI_'+(raEsc(EPI_STATE.nome)||'sem_nome').replace(/\s+/g,'_') };
+}
+function epiExportReport(){
+  const r = epiBuildReport();
   rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
 }
 
@@ -3962,6 +4255,10 @@ function grpCard(k){
     thumb = IC[k.icon]||IC.file;
     cat = 'Registro de Missão';
     meta = 'Diário de bordo digital';
+  } else if(k.type==='epiform'){
+    thumb = IC[k.icon]||IC.file;
+    cat = 'Formulário Digital';
+    meta = 'Ficha de EPI — preencher e assinar';
   } else {
     thumb = IC[k.icon]||IC.file;
     cat = k.code || 'Documento';
