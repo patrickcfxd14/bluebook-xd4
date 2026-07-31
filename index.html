@@ -422,111 +422,83 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .cmdk-empty{padding:30px;text-align:center;color:var(--ink-3);font-size:14px}
 
 /* ===== ORGANOGRAMA ===== */
-.org{max-width:1220px;margin:0 auto;padding:20px 28px 30px}
-.org-head{margin-bottom:12px}
-.org-head h1{font-size:22px;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:10px}
-.org-head h1 svg{width:22px;height:22px;flex-shrink:0}
-.org-tab svg{width:15px;height:15px;flex-shrink:0}
-.oc-count svg,.od-link svg{width:14px;height:14px}
-.org-head p{color:var(--ink-2);font-size:13px;line-height:1.45;margin-top:4px;max-width:680px}
-.org-tabs{display:flex;gap:8px;margin:12px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px;width:fit-content;box-shadow:var(--shadow)}
-.org-tab{padding:8px 15px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:7px}
-.org-tab.active{background:var(--navy);color:#fff}
-.org-tab:not(.active):hover{background:var(--sky)}
-.org-panel{display:none}
-.org-panel.active{display:block;animation:fade .25s}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes blueBookSpin{to{transform:rotate(360deg)}}
 
-/* chart: piramidal com linhas */
-.chart{display:flex;flex-direction:column;align-items:center;overflow-x:auto;padding:4px 0 8px}
-.tier{display:flex;justify-content:center;gap:16px;position:relative;flex-wrap:nowrap}
-.tier + .tier{margin-top:22px}
-/* connector vertical descendo de um tier para o próximo */
-.tier::before{content:"";position:absolute;top:-22px;left:50%;width:2px;height:22px;background:var(--sky-line)}
-.tier:first-child::before{display:none}
-/* barra horizontal que une irmãos */
-.tier.multi::after{content:"";position:absolute;top:-11px;left:var(--barL,25%);right:var(--barR,25%);height:2px;background:var(--sky-line)}
-/* cada nó tem um "poste" subindo até a barra */
-.onode{position:relative;display:flex;flex-direction:column;align-items:center}
-.onode.hasup::before{content:"";position:absolute;top:-11px;left:50%;width:2px;height:11px;background:var(--sky-line)}
+/* ======================================================================
+   ESTRUTURA DOCUMENTAL — árvore/fluxograma moderno.
+   MGO/MGM no topo → linha desce até um barramento → 5 ramos (categorias),
+   cada ramo já mostra todo o conteúdo dentro (sem precisar clicar pra ver).
+   ====================================================================== */
+.org{max-width:1400px;margin:0 auto;padding:32px 28px 60px}
 
-.ocard{width:172px;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px;text-align:center;cursor:pointer;transition:.16s;box-shadow:var(--shadow);position:relative}
-.ocard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
-.ocard.lvl0{background:linear-gradient(135deg,var(--navy),var(--blue));border-color:var(--navy)}
-.ocard.lvl0 .oc-role,.ocard.lvl0 .oc-name{color:#fff}
-.ocard.lvl0 .oc-ic{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.25)}
-.ocard.lvl0 .oc-tag{background:rgba(255,255,255,.15);color:#dbe9f7;border-color:transparent}
-.oc-ic{width:36px;height:36px;border-radius:10px;background:var(--sky);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;margin:0 auto 7px;color:var(--accent)}
-.oc-ic svg{width:18px;height:18px}
-.oc-role{font-size:14px;font-weight:600;color:var(--ink);line-height:1.2}
-.oc-name{font-size:11px;color:var(--ink-3);margin-top:3px}
-.oc-tag{display:inline-block;margin-top:7px;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:3px 9px}
-.oc-count{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--xd4);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace}
-.oc-flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--navy);background:var(--warn);border-radius:99px;padding:3px 10px;white-space:nowrap}
+/* ---- header + busca global ---- */
+.dh-header{margin-bottom:8px}
+.dh-eyebrow{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.dh-eyebrow svg{width:14px;height:14px}
+.dh-header h1{font-size:28px;color:var(--ink);font-weight:700;letter-spacing:-.01em}
+.dh-header p{color:var(--ink-2);font-size:14.5px;line-height:1.55;margin-top:6px;max-width:680px}
 
-/* painel de detalhe do cargo */
-.org-detail{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:0;overflow:hidden;box-shadow:var(--shadow);display:none}
-.org-detail.show{display:block;animation:fade .2s}
-.od-head{display:flex;align-items:center;gap:16px;padding:24px 28px;background:linear-gradient(120deg,var(--sky),transparent);border-bottom:1px solid var(--line)}
-.od-ic{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.od-ic svg{width:26px;height:26px}
-.od-head h3{font-size:20px;color:var(--ink);font-weight:700}
-.od-head .sub{font-size:13px;color:var(--ink-3);margin-top:2px}
-.od-body{padding:24px 28px}
-.od-body h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:8px}
-.od-body h4::before{content:"";width:14px;height:2px;background:var(--accent);border-radius:2px}
-.od-body ul{list-style:none;margin:0 0 4px}
-.od-body li{padding:8px 0 8px 24px;position:relative;font-size:14px;color:var(--ink);border-top:1px solid var(--line)}
-.od-body li:first-child{border-top:none}
-.od-body li::before{content:"";position:absolute;left:5px;top:15px;width:8px;height:8px;border-radius:99px;background:var(--accent)}
-.od-close{margin-left:auto;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);flex-shrink:0}
-.od-close:hover{background:var(--sky);color:var(--ink)}
-.od-link{display:inline-flex;align-items:center;gap:7px;margin-top:16px;font-size:13px;font-weight:500;color:var(--accent);cursor:pointer}
-.od-link:hover{text-decoration:underline}
+.dh-search{position:relative;margin-top:20px;max-width:560px}
+.dh-search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ink-3);pointer-events:none}
+.dh-search input{width:100%;padding:14px 16px 14px 46px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-size:14.5px;font-family:inherit;box-shadow:var(--shadow);transition:.15s}
+.dh-search input:focus{outline:none;border-color:var(--xd4);box-shadow:0 0 0 4px rgba(43,169,224,.13)}
+.dh-search-kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);background:var(--sky);border:1px solid var(--sky-line);border-radius:6px;padding:3px 7px;pointer-events:none}
+.dh-search input:focus ~ .dh-search-kbd,.dh-search input:not(:placeholder-shown) ~ .dh-search-kbd{display:none}
+.dh-results-meta{font-size:12.5px;color:var(--ink-3);margin-top:10px;min-height:16px}
 
-.org-hint{text-align:center;color:var(--ink-3);font-size:13px;margin-top:8px;font-style:italic}
+/* ---- árvore ---- */
+.dh-flow{padding:26px 0 20px;overflow-x:auto}
+.dh-flow-inner{min-width:920px;display:flex;flex-direction:column;align-items:center}
 
-/* famílias documentais (modo docs) — grid responsivo, não corta lateral */
-.docs-chart{align-items:stretch}
-.fam-connector{width:2px;height:18px;background:var(--sky-line);margin:0 auto}
-.fam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start;width:100%;position:relative}
-/* barra horizontal ligando o topo às famílias */
-.fam-grid::before{content:"";position:absolute;top:-10px;left:12%;right:12%;height:2px;background:var(--sky-line)}
-.fam-card{background:var(--paper);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow);position:relative}
-.fam-card::before{content:"";position:absolute;top:-10px;left:50%;width:2px;height:10px;background:var(--sky-line)}
-.fam-card.wide{grid-column:1 / -1}
-.fam-head{display:flex;align-items:center;gap:9px;padding:11px 14px;background:linear-gradient(120deg,var(--sky),transparent);border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
-.fam-code{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:#fff;background:var(--navy);border-radius:6px;padding:3px 9px;flex-shrink:0;min-width:28px;text-align:center}
-.fam-title{font-size:13.5px;font-weight:600;color:var(--ink);flex:1;line-height:1.25}
-.fam-count{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;min-width:21px;height:21px;display:flex;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
-.fam-toggle{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:transform .18s;flex-shrink:0}
-.fam-toggle svg{width:15px;height:15px}
-.fam-card.collapsed .fam-toggle{transform:rotate(-90deg)}
-.fam-card.collapsed .fam-items{display:none}
-.fam-items{padding:5px}
-.doc-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;font-size:12px;transition:.12s}
-.doc-item + .doc-item{border-top:1px solid var(--line)}
-.doc-item.link{cursor:pointer}
-.doc-item.link:hover{background:var(--sky)}
-.di-dot{width:6px;height:6px;border-radius:99px;flex-shrink:0;background:var(--accent)}
-.di-label{flex:1;color:var(--ink);line-height:1.3}
-.di-code{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink-3);flex-shrink:0}
-.doc-item.link .di-label::after{content:"↗";font-size:9px;color:var(--accent);margin-left:4px}
-/* subgrupos (POPs/TOPs/Fraseologias) lado a lado dentro da família IT */
-.doc-subgroup-row{display:flex;gap:8px;padding:3px;flex-wrap:wrap}
-.doc-subgroup-row .doc-subgroup{flex:1;min-width:150px;margin:0}
-.doc-subgroup{margin:6px 4px 2px;border:1px solid var(--sky-line);border-radius:9px;overflow:hidden;background:var(--sky)}
-.doc-subgroup + .doc-subgroup{margin-top:6px}
-.dsg-head{display:flex;align-items:center;gap:7px;padding:7px 10px;font-size:11.5px;font-weight:600;color:var(--blue);background:var(--paper);border-bottom:1px solid var(--sky-line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none}
-.dsg-head svg:first-child{width:14px;height:14px;flex-shrink:0;color:var(--accent)}
-.dsg-toggle{margin-left:auto;width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:transform .18s;flex-shrink:0}
-.dsg-toggle svg{width:12px;height:12px}
-.doc-subgroup.collapsed .dsg-toggle{transform:rotate(-90deg)}
-.doc-subgroup.collapsed .doc-item{display:none}
-.doc-subgroup .doc-item{background:transparent;padding:5px 9px;font-size:11px}
-.doc-subgroup .doc-item.link:hover{background:var(--paper)}
+/* tier 1: MGO / MGM — cartões-hero, a raiz da árvore */
+.dh-top-row{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;position:relative;padding-bottom:36px}
+.dh-top-row::after{content:"";position:absolute;bottom:0;left:50%;width:2px;height:36px;background:var(--sky-line);transform:translateX(-1px)}
+.dh-top-card{width:210px;background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:16px;padding:20px 18px;text-align:center;color:#fff;cursor:pointer;box-shadow:var(--shadow-lg);transition:.18s;position:relative;flex-shrink:0}
+.dh-top-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -12px rgba(11,37,69,.35)}
+.dh-top-ic{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.dh-top-ic svg{width:22px;height:22px}
+.dh-top-role{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.dh-top-name{font-size:11.5px;opacity:.82;margin-top:4px;line-height:1.4}
+.dh-top-tag{display:inline-block;margin-top:11px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.05em;background:rgba(255,255,255,.16);border-radius:99px;padding:3px 11px}
 
+/* tier 2: os 5 ramos — barramento horizontal + conector individual por ramo */
+.dh-branch-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;align-items:flex-start;position:relative;padding-top:36px;width:100%}
+.dh-branch-row::before{content:"";position:absolute;top:0;left:8%;right:8%;height:2px;background:var(--sky-line)}
+.dh-panel{position:relative;width:258px;flex-shrink:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:.15s}
+.dh-panel:hover{box-shadow:var(--shadow-lg)}
+.dh-panel::before{content:"";position:absolute;top:-36px;left:50%;width:2px;height:36px;background:var(--sky-line);transform:translateX(-1px)}
+.dh-panel::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--tile-accent,var(--xd4))}
+
+.dh-panel-head{display:flex;align-items:center;gap:10px;padding:14px 15px;cursor:pointer;user-select:none;background:linear-gradient(120deg,var(--sky),transparent)}
+.dh-panel-ic{width:34px;height:34px;border-radius:9px;background:var(--sky);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;color:var(--tile-accent,var(--accent));flex-shrink:0}
+.dh-panel-ic svg{width:17px;height:17px}
+.dh-panel-title{flex:1;min-width:0}
+.dh-panel-title h2{font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-.005em}
+.dh-panel-title span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px;line-height:1.35}
+.dh-panel-count{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--ink-3);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:3px 9px;flex-shrink:0}
+.dh-panel-toggle{width:18px;height:18px;color:var(--ink-3);flex-shrink:0;transition:transform .18s}
+.dh-panel-toggle svg{width:13px;height:13px}
+.dh-panel.collapsed .dh-panel-toggle{transform:rotate(-90deg)}
+.dh-panel.collapsed .dh-panel-body{display:none}
+.dh-flow.searching .dh-panel-body{display:block!important}
+
+.dh-panel-body{padding:8px 10px 10px;max-height:420px;overflow-y:auto}
+.dh-p-section + .dh-p-section{margin-top:10px}
+.dh-p-section-label{font-size:10px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;padding:6px 6px 5px}
+.dh-p-items{display:flex;flex-direction:column;gap:2px}
+
+.dh-item{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:8px;font-size:12.5px;transition:.1s}
+.dh-item.link{cursor:pointer}
+.dh-item.link:hover{background:var(--sky)}
+.dh-item-dot{width:5px;height:5px;border-radius:99px;background:var(--tile-accent,var(--accent));flex-shrink:0}
+.dh-item-title{flex:1;min-width:0;color:var(--ink);line-height:1.3}
+.dh-item-title mark{background:rgba(58,110,165,.22);color:inherit;border-radius:3px;padding:0 1px}
+.dh-item-code{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink-3);flex-shrink:0;white-space:nowrap}
+.dh-item-go{width:14px;height:14px;color:var(--ink-3);flex-shrink:0;opacity:0;transition:.1s;transform:translateX(-2px)}
+.dh-item-go svg{width:14px;height:14px}
+.dh-item.link:hover .dh-item-go{opacity:1;transform:translateX(0);color:var(--tile-accent,var(--xd4))}
+.dh-item.na{opacity:.5}
 
 @media(max-width:900px){
   .layout{grid-template-columns:1fr}
@@ -541,14 +513,7 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .vp-specs{grid-template-columns:1fr 1fr}
   .chapindex .cols{grid-template-columns:1fr}
   .vp-hero{flex-direction:column;text-align:center}
-  .org{padding:22px 14px 70px}
-  .ocard{width:150px;padding:13px 11px}
-  .tier{gap:14px}.tier + .tier{margin-top:16px}
-  .fam-grid{grid-template-columns:1fr;gap:14px}
-  .fam-grid::before{display:none}
-  .fam-card::before{display:none}
-  .fam-connector{display:none}
-  .doc-subgroup-row{flex-direction:column}
+  .org{padding:20px 16px 50px}
 }
 @media(max-width:640px){
   /* banner: no celular não cabe tudo — some com o que menos falta
@@ -1667,7 +1632,7 @@ function renderGestaoHub(){
       <div class="hstat"><div class="num">${c.total}</div><div class="lbl">Documentos</div></div>
       <div class="hstat"><div class="num ok">${c.ok}</div><div class="lbl">Vigentes</div></div>
       <div class="hstat"><div class="num">${c.vehicles}</div><div class="lbl">Veículos</div></div>
-      <div class="hstat"><div class="num">${c.families}</div><div class="lbl">Famílias doc.</div></div>
+      <div class="hstat"><div class="num">${c.families}</div><div class="lbl">Categorias doc.</div></div>
     </div>
     <div class="dash-grid">
       <div class="panel">
@@ -1688,6 +1653,7 @@ function renderGestaoHub(){
     <div class="fleet-grid">${fleetCards()}</div>
   </div>`;
 }
+/* ================= Senha de administrador — protege só a seção "Administração" ================= */
 function renderHub(key){
   const meta = HUB_DEFS[key]; if(!meta) return;
   if(meta.kind==='ops'){ renderOpsHub(); return; }
@@ -1891,12 +1857,10 @@ function routeTo(id){
 
 /* ---------- HOME / DASHBOARD ---------- */
 /* Fonte única de verdade para contagem de documentos: cada documento
-   (ref) só é contado uma vez, mesmo se aparecer em mais de um lugar da
-   Estrutura Documental (ex: MGO aparece no topo E dentro da família IT;
-   a Fraseologia do Elios 3 aparece dentro do grupo de veículos E como
-   item avulso). O card "Documentos" da home e o gráfico de rosca usam
-   exatamente este mesmo cálculo, então nunca podem divergir. */
-const FAM_COLORS=['var(--xd4)','var(--blue)','var(--accent)','var(--ok)'];
+   (ref) só é contado uma vez, mesmo se aparecer em mais de uma seção
+   da Estrutura Documental. O card "Documentos" da home e o gráfico de
+   rosca usam exatamente este mesmo cálculo, então nunca podem divergir. */
+const FAM_COLORS=['var(--xd4)','var(--blue)','var(--accent)','var(--ok)','var(--warn)','var(--ink-3)'];
 function docStats(){
   const seen=new Set();
   const overall={ok:0,warn:0,draft:0,crit:0,total:0};
@@ -1907,17 +1871,13 @@ function docStats(){
     overall.total++; overall[n.status]=(overall[n.status]||0)+1;
     return n;
   };
-  let topN=0;
-  ORG_DOCS.top.forEach(t=>{ if(claim(t.ref))topN++; });
-  const perFamily=ORG_DOCS.families.map(f=>{
+  const slices=ORG_DOCS.categories.map(c=>{
     let n=0;
-    f.items.forEach(it=>{ if(claim(it.ref))n++; });
-    (f.groups||[]).forEach(g=>g.items.forEach(it=>{ if(claim(it.ref))n++; }));
-    return {code:f.code,title:f.title,n};
-  });
-  const slices=[{code:'GER',title:'Manuais Gerais',n:topN}, ...perFamily].filter(s=>s.n>0);
+    c.sections.forEach(s=>s.items.forEach(it=>{ if(claim(it.ref))n++; }));
+    return {code:c.short,title:c.title,n};
+  }).filter(s=>s.n>0);
   overall.vehicles=Object.values(BYID).filter(n=>n.type==='vehicle').length;
-  overall.families=ORG_DOCS.families.length;
+  overall.families=ORG_DOCS.categories.length;
   return {overall, slices};
 }
 function countStatus(){ return docStats().overall; }
@@ -2040,46 +2000,40 @@ function renderHome(){
   </div>`;
 }
 
-/* ---------- ORGANOGRAMA / ESTRUTURA DOCUMENTAL ---------- */
-/* Estrutura documental REAL do SGQ (fonte: organograma-arvore).
-   Topo = MGO. Abaixo, as 4 famílias com seus documentos e status:
-   keep=vigente/fica · drop=será removido · new=a incluir */
+/* ============================================================================
+   ESTRUTURA DOCUMENTAL — arquitetura por PROPÓSITO, não por código de família.
+   6 categorias fixas que respondem, sem precisar pensar, "onde fica isso":
+   Manuais · Procedimentos (POP) · Treinamento (TOP/Fraseologia) ·
+   Formulários · Registros Digitais · Documentos Corporativos.
+   Cada categoria tem seções internas; cada item aponta pra um nó real da
+   árvore (ref) — clicar leva direto pro documento, exatamente como antes.
+   ============================================================================ */
 const ORG_DOCS={
-  top:[
-    {id:'mgo',role:'MGO',name:'Manual Geral de Operações',icon:'book',tag:'IT-OPE-003',ref:'mgo'},
-    {id:'mgm',role:'MGM',name:'Manual Geral de Manutenção',icon:'wrench',tag:'IT-MNT-001',ref:'mgm'}
-  ],
-  families:[
-    { id:'fam-it', code:'IT', title:'Instruções de Trabalho', icon:'file',
-      items:[
-        {label:'Serviço não conforme', code:'IT-OPE-002', ref:'doc-servico-nao-conforme'},
-        {label:'MGO — Manual Geral de Operações', code:'IT-OPE-003', ref:'mgo'},
-        {label:'Ordem de serviço NR-01', code:'IT-OPE-008', ref:'doc-ordem-servico-nr01'},
-        {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'}
-      ],
-      groups:[
-        { label:'POPs — Procedimento Operacional Padrão', icon:'file', items:[
+  categories:[
+    { id:'manuais', short:'GER', title:'Manuais Gerais', icon:'book', accent:'var(--navy)',
+      desc:'Os documentos-mãe do SGQ — a base normativa de onde todo o resto deriva.',
+      sections:[
+        { label:'Manuais', items:[
+          {label:'MGO — Manual Geral de Operações', code:'IT-OPE-003', ref:'mgo'},
+          {label:'MGM — Manual Geral de Manutenção', code:'IT-MNT-001', ref:'mgm'}
+        ]}
+      ]},
+    { id:'it', short:'IT', title:'Instruções de Trabalho', icon:'file', accent:'var(--blue)',
+      desc:'Como operar cada equipamento e inspecionar cada ativo — POPs, TOPs, fraseologia e políticas internas.',
+      sections:[
+        { label:'Instruções de Trabalho', items:[
+          {label:'Serviço não conforme', code:'IT-OPE-002', ref:'doc-servico-nao-conforme'},
+          {label:'Ordem de serviço NR-01', code:'IT-OPE-008', ref:'doc-ordem-servico-nr01'},
+          {label:'Transporte de bateria via modal aéreo', code:'', ref:'doc-transporte-bateria'}
+        ]},
+        { label:'POPs — por equipamento', items:[
           {label:'POP — Elios 3', code:'', ref:'elios3-pop'},
           {label:'POP — Elios 2', code:'', ref:'elios2-pop'},
           {label:'POP — Unitree GO2', code:'', ref:'go2-pop'},
           {label:'POP — Unitree G1', code:'', ref:'g1-pop'},
           {label:'POP — Rover', code:'', ref:'rover-pop'}
         ]},
-        { label:'TOPs — Treinamento Operacional Padrão', icon:'grad', items:[
-          {label:'TOP — Elios 3', code:'IT-OPE-004', ref:'elios3-top'},
-          {label:'TOP — Elios 2', code:'', ref:'elios2-top'},
-          {label:'TOP — Unitree GO2', code:'', ref:'go2-top'},
-          {label:'TOP — Unitree G1', code:'', ref:'g1-top'},
-          {label:'TOP — Rover', code:'', ref:'rover-top'}
-        ]},
-        { label:'Fraseologia Padrão', icon:'file', items:[
-          {label:'Fraseologia — Elios 3', code:'', ref:'elios3-fraseologia'},
-          {label:'Fraseologia — Elios 2', code:'', ref:'elios2-fraseologia'},
-          {label:'Fraseologia — Unitree GO2', code:'', ref:'go2-fraseologia'},
-          {label:'Fraseologia — Unitree G1', code:'', ref:'g1-fraseologia'},
-          {label:'Fraseologia — Rover', code:'', ref:'rover-fraseologia'}
-        ]},
-        { label:'POPs de Ativos', icon:'box', collapsed:true, items:[
+        { label:'POPs — por ativo', items:[
           {label:'POP — Torre de Estocagem de Massa', code:'', ref:'ativos-celulose-torre-estocagem-massa-pop'},
           {label:'POP — Transp. Móvel s/ Pilha de Cavaco', code:'', ref:'ativos-celulose-transp-movel-pilha-cavaco-pop'},
           {label:'POP — Tanque Descarga Reator PO B218.1', code:'', ref:'ativos-celulose-tanque-descarga-reator-po-pop'},
@@ -2093,95 +2047,207 @@ const ORG_DOCS={
           {label:'POP — Tanque Captação de Spill', code:'', ref:'ativos-celulose-tanque-captacao-spill-pop'},
           {label:'POP — Tanque Licor Preto SU.40', code:'', ref:'ativos-celulose-tanque-licor-preto-su40-pop'},
           {label:'POP — Tanque Licor Preto SU.41', code:'', ref:'ativos-celulose-tanque-licor-preto-su41-pop'}
+        ]},
+        { label:'TOP — Treinamento Operacional Padrão', items:[
+          {label:'TOP — Elios 3', code:'IT-OPE-004', ref:'elios3-top'},
+          {label:'TOP — Elios 2', code:'', ref:'elios2-top'},
+          {label:'TOP — Unitree GO2', code:'', ref:'go2-top'},
+          {label:'TOP — Unitree G1', code:'', ref:'g1-top'},
+          {label:'TOP — Rover', code:'', ref:'rover-top'}
+        ]},
+        { label:'Fraseologia Padrão', items:[
+          {label:'Fraseologia — Elios 3', code:'', ref:'elios3-fraseologia'},
+          {label:'Fraseologia — Elios 2', code:'', ref:'elios2-fraseologia'},
+          {label:'Fraseologia — Unitree GO2', code:'', ref:'go2-fraseologia'},
+          {label:'Fraseologia — Unitree G1', code:'', ref:'g1-fraseologia'},
+          {label:'Fraseologia — Rover', code:'', ref:'rover-fraseologia'}
         ]}
       ]},
-    { id:'fam-fo', code:'FO', title:'Formulários', icon:'file',
-      items:[
-        {label:'Risk Assessment', code:'FO-OPE-002', ref:'risk-assessment'},
-        {label:'Ficha de controle de EPI', code:'FO-OPE-005', ref:'doc-ficha-epi'},
-        {label:'Ordem de Serviço', code:'FO-OPE-006', ref:'doc-ordem-servico'},
-        {label:'Diário de bordo · Elios 3', code:'FO-OPE-011', ref:'diarios'},
-        {label:'Diário de manutenção', code:'FO-OPE-017', ref:'diarios-manut'},
-        {label:'Relatório de Missão', code:'FO-OPE-018', ref:'doc-relatorio-missao'},
-        {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'plano-captura'},
-        {label:'Relatório Preliminar de Peritagem', code:'FO-OPE-021', ref:'doc-relatorio-preliminar-peritagem'}
+    { id:'fo', short:'FO', title:'Formulários', icon:'pdf', accent:'var(--warn)',
+      desc:'O que se preenche em cada atividade — formulários digitais e registros da operação.',
+      sections:[
+        { label:'Formulários digitais', items:[
+          {label:'Risk Assessment', code:'FO-OPE-002', ref:'risk-assessment'},
+          {label:'Ficha de Controle de EPI', code:'FO-OPE-005', ref:'doc-ficha-epi'},
+          {label:'Diário de Bordo', code:'FO-OPE-011', ref:'diarios'},
+          {label:'Diário de Manutenção', code:'FO-OPE-017', ref:'diarios-manut'},
+          {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'plano-captura'}
+        ]},
+        { label:'Formulários impressos', items:[
+          {label:'Ordem de Serviço', code:'FO-OPE-006', ref:'doc-ordem-servico'},
+          {label:'Relatório de Missão', code:'FO-OPE-018', ref:'doc-relatorio-missao'},
+          {label:'Relatório Preliminar de Peritagem', code:'FO-OPE-021', ref:'doc-relatorio-preliminar-peritagem'}
+        ]}
       ]},
-    { id:'fam-od', code:'OD', title:'Outros Documentos', icon:'folder',
-      items:[
-        {label:'Tabela de preservação de produtos', code:'OD-OPE-001', ref:'doc-tabela-preservacao'},
-        {label:'Certificado de treino introdutório · Op. de Inspeção de Qualidade', code:'OD-OPE-003', ref:'doc-certificado-treino'}
+    { id:'od', short:'OD', title:'Outros Documentos', icon:'folder', accent:'var(--ok)',
+      desc:'Demais documentos administrativos e de apoio do SGQ.',
+      sections:[
+        { label:'Outros Documentos', items:[
+          {label:'Tabela de preservação de produtos', code:'OD-OPE-001', ref:'doc-tabela-preservacao'},
+          {label:'Certificado de treino introdutório', code:'OD-OPE-003', ref:'doc-certificado-treino'}
+        ]}
       ]}
   ]
 };
 
+const ORG_ICON_SEARCH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+const ORG_ICON_ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const ORG_ICON_CHEVRON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>';
+const ORG_COLLAPSED={}; // catId -> true/false (lembra o que o usuário recolheu, só nesta sessão de tela)
+
+function orgHighlight(text, q){
+  if(!q) return text;
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if(i<0) return text;
+  return text.slice(0,i) + '<mark>' + text.slice(i,i+q.length) + '</mark>' + text.slice(i+q.length);
+}
 function renderOrg(){
-  viewDoc.innerHTML=`
-  <div class="org">
-    <div class="org-head">
-      <h1>${IC.org} Estrutura Documental</h1>
-      <p>MGO e MGM no topo, famílias de documentos abaixo. Clique em qualquer item pra abrir.</p>
-    </div>
-    <div class="org-panel active" id="orgPanel"></div>
-    <div class="org-detail" id="orgDetail"></div>
-  </div>`;
-  drawDocs();
+  viewDoc.innerHTML=`<div class="org" id="orgRoot"></div>`;
+  document.getElementById('orgRoot').innerHTML = orgHeaderHTML() + orgFlowHTML();
+  orgWireSearch();
 }
 
-const stLabel={keep:'Vigente',drop:'Será removido',new:'A incluir'};
-function drawDocs(){
-  const panel=document.getElementById('orgPanel');
-  const tops=ORG_DOCS.top;
-  const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"/></svg>';
-  // topo: MGO acima, MGM logo abaixo — hierarquia vertical, não lado a lado
-  const topCard = tops.map(t=>`
-     <div class="tier">
-       <div class="onode">
-         <div class="ocard lvl0" onclick="selectNode('${t.ref}')">
-           <div class="oc-ic">${IC[t.icon]}</div>
-           <div class="oc-role">${t.role}</div>
-           <div class="oc-name">${t.name}</div>
-           <div class="oc-tag">${t.tag}</div>
-         </div></div>
-     </div>`).join('');
-
-  const renderItem=it=>{
-    const clickable=it.ref&&BYID[it.ref];
-    const codeHtml=it.code?`<span class="di-code">${it.code}</span>`:'';
-    return `<div class="doc-item ${clickable?'link':''}" ${clickable?`onclick="selectNode('${it.ref}')"`:''}>
-      <span class="di-dot"></span><span class="di-label">${it.label}</span>${codeHtml}
+function orgHeaderHTML(){
+  const totalDocs = ORG_DOCS.categories.reduce((a,c)=>a+c.sections.reduce((b,s)=>b+s.items.length,0),0);
+  return `
+    <div class="dh-header">
+      <div class="dh-eyebrow">${IC.org}<span>Sistema de Gestão Operacional · XD4</span></div>
+      <h1>Estrutura Documental</h1>
+      <p>Todos os ${totalDocs} documentos do SGQ, em forma de árvore — do manual geral até cada procedimento. Busque pra filtrar, ou recolha um ramo que não precisa agora.</p>
+      <div class="dh-search">
+        ${ORG_ICON_SEARCH}
+        <input type="text" id="orgSearchInput" placeholder="Buscar documento ou código… (atalho: /)" autocomplete="off">
+        <span class="dh-search-kbd">/</span>
+      </div>
+      <div class="dh-results-meta" id="orgResultsMeta"></div>
     </div>`;
-  };
-
-  // famílias em grid responsivo (não corta nas laterais; quebra em linhas)
-  const cards=ORG_DOCS.families.map(f=>{
-    const total=f.items.length+(f.groups?f.groups.reduce((a,g)=>a+g.items.length,0):0);
-    const directItems=f.items.map(renderItem).join('');
-    const groupBlocks=(f.groups||[]).map((g,gi)=>`
-      <div class="doc-subgroup${g.collapsed?' collapsed':''}" id="dsg-${f.id}-${gi}">
-        <div class="dsg-head" onclick="orgToggle('dsg-${f.id}-${gi}')">${IC[g.icon]||''}<span>${g.label}</span><span class="dsg-toggle">${CHEV}</span></div>
-        ${g.items.map(renderItem).join('')}
-      </div>`).join('');
-    const groupsHtml = f.groups ? `<div class="doc-subgroup-row">${groupBlocks}</div>` : '';
-    return `<div class="fam-card${f.groups?' wide':''}" id="fam-${f.id}">
-        <div class="fam-head" onclick="orgToggle('fam-${f.id}')">
-          <span class="fam-code">${f.code}</span>
-          <span class="fam-title">${f.title}</span>
-          <span class="fam-count">${total}</span>
-          <span class="fam-toggle">${CHEV}</span>
-        </div>
-        <div class="fam-items">${directItems}${groupsHtml}</div>
-      </div>`;
-  }).join('');
-  panel.innerHTML=`<div class="chart docs-chart">
-    ${topCard}
-    <div class="fam-connector"></div>
-    <div class="fam-grid">${cards}</div>
-  </div>`;
-  document.getElementById('orgDetail').classList.remove('show');
 }
-function orgToggle(id){
-  const el=document.getElementById(id);
-  if(el) el.classList.toggle('collapsed');
+
+function orgItemHTML(it){
+  const ok=it.ref&&BYID[it.ref];
+  const codeHtml = it.code ? `<span class="dh-item-code">${it.code}</span>` : (ok?'':'<span class="dh-item-code">Em breve</span>');
+  return `<div class="dh-item ${ok?'link':'na'}" data-search="${(it.label+' '+(it.code||'')).toLowerCase()}" ${ok?`onclick="selectNode('${it.ref}')"`:''}>
+    <span class="dh-item-dot"></span>
+    <span class="dh-item-title">${it.label}</span>
+    ${codeHtml}
+    ${ok?`<span class="dh-item-go">${ORG_ICON_ARROW}</span>`:''}
+  </div>`;
+}
+
+/* tier 1 — a raiz da árvore: os itens da categoria "manuais" (MGO/MGM) */
+function orgTopCardHTML(it){
+  const ok=it.ref&&BYID[it.ref];
+  const role=it.label.split('—')[0].trim();
+  const name=it.label.includes('—')?it.label.split('—').slice(1).join('—').trim():'';
+  return `<div class="dh-top-card" data-search="${(it.label+' '+(it.code||'')).toLowerCase()}" ${ok?`onclick="selectNode('${it.ref}')"`:''}>
+    <div class="dh-top-ic">${IC.book}</div>
+    <div class="dh-top-role">${role}</div>
+    ${name?`<div class="dh-top-name">${name}</div>`:''}
+    ${it.code?`<div class="dh-top-tag">${it.code}</div>`:''}
+  </div>`;
+}
+
+/* tier 2 — os ramos (todas as categorias, exceto a raiz), com conteúdo completo dentro */
+function orgPanelHTML(cat){
+  const total=cat.sections.reduce((a,s)=>a+s.items.length,0);
+  const available=cat.sections.reduce((a,s)=>a+s.items.filter(it=>it.ref&&BYID[it.ref]).length,0);
+  const collapsed = !!ORG_COLLAPSED[cat.id];
+  const sectionsHtml=cat.sections.map(s=>`
+    <div class="dh-p-section" data-section>
+      <div class="dh-p-section-label">${s.label}</div>
+      <div class="dh-p-items">${s.items.map(orgItemHTML).join('')}</div>
+    </div>`).join('');
+  return `<div class="dh-panel${collapsed?' collapsed':''}" id="panel-${cat.id}" style="--tile-accent:${cat.accent}" data-panel>
+    <div class="dh-panel-head" onclick="orgTogglePanel('${cat.id}')">
+      <div class="dh-panel-ic">${IC[cat.icon]||IC.file}</div>
+      <div class="dh-panel-title">
+        <h2>${cat.title}</h2>
+        <span>${cat.desc}</span>
+      </div>
+      <span class="dh-panel-count">${available}/${total}</span>
+      <span class="dh-panel-toggle">${ORG_ICON_CHEVRON}</span>
+    </div>
+    <div class="dh-panel-body">${sectionsHtml}</div>
+  </div>`;
+}
+
+function orgFlowHTML(){
+  const rootCat = ORG_DOCS.categories.find(c=>c.id==='manuais');
+  const branchCats = ORG_DOCS.categories.filter(c=>c.id!=='manuais');
+  const topCards = rootCat.sections.flatMap(s=>s.items).map(orgTopCardHTML).join('');
+  const branchCards = branchCats.map(orgPanelHTML).join('');
+  return `<div class="dh-flow" id="orgFlow">
+    <div class="dh-flow-inner">
+      <div class="dh-top-row">${topCards}</div>
+      <div class="dh-branch-row" id="orgBranchRow">${branchCards}</div>
+    </div>
+  </div>`;
+}
+
+function orgTogglePanel(catId){
+  ORG_COLLAPSED[catId] = !ORG_COLLAPSED[catId];
+  const el=document.getElementById('panel-'+catId);
+  if(el) el.classList.toggle('collapsed', ORG_COLLAPSED[catId]);
+}
+
+/* busca ao vivo: filtra os itens dentro da própria árvore, sem trocar de tela.
+   Enquanto há busca ativa, os ramos ficam todos abertos (ignora o recolhido)
+   pra garantir que o resultado sempre apareça. Os cartões do topo (MGO/MGM)
+   também participam da busca, mas nunca desaparecem da árvore — só perdem
+   destaque quando não combinam com o termo digitado. */
+function orgWireSearch(){
+  const input=document.getElementById('orgSearchInput');
+  const flow=document.getElementById('orgFlow');
+  const meta=document.getElementById('orgResultsMeta');
+  if(!input||!flow) return;
+  const allTopCards=[...flow.querySelectorAll('.dh-top-card')];
+  const allItems=[...flow.querySelectorAll('.dh-item')];
+  const allSections=[...flow.querySelectorAll('[data-section]')];
+  const allPanels=[...flow.querySelectorAll('[data-panel]')];
+
+  input.addEventListener('input', ()=>{
+    const q=input.value.trim().toLowerCase();
+    if(!q){
+      flow.classList.remove('searching');
+      allTopCards.forEach(el=>{ el.style.opacity=''; });
+      allItems.forEach(el=>{ el.style.display=''; el.querySelector('.dh-item-title').innerHTML = el.querySelector('.dh-item-title').textContent; });
+      allSections.forEach(el=>el.style.display='');
+      allPanels.forEach(el=>el.style.display='');
+      meta.textContent='';
+      return;
+    }
+    flow.classList.add('searching');
+    let totalMatches=0;
+    allTopCards.forEach(el=>{
+      const hit = el.dataset.search.includes(q);
+      el.style.opacity = hit ? '1' : '.35';
+      if(hit) totalMatches++;
+    });
+    allPanels.forEach(panel=>{
+      let panelHas=false;
+      panel.querySelectorAll('[data-section]').forEach(sec=>{
+        let secHas=false;
+        sec.querySelectorAll('.dh-item').forEach(el=>{
+          const hit = el.dataset.search.includes(q);
+          el.style.display = hit ? '' : 'none';
+          if(hit){
+            secHas=true; panelHas=true; totalMatches++;
+            const t=el.querySelector('.dh-item-title');
+            t.innerHTML = orgHighlight(t.textContent, q);
+          }
+        });
+        sec.style.display = secHas ? '' : 'none';
+      });
+      panel.style.display = panelHas ? '' : 'none';
+    });
+    meta.textContent = totalMatches ? `${totalMatches} documento${totalMatches===1?'':'s'} encontrado${totalMatches===1?'':'s'}` : `Nenhum documento encontrado pra "${input.value.trim()}"`;
+  });
+
+  document.addEventListener('keydown', function orgSlashFocus(e){
+    if(e.key==='/' && document.activeElement!==input && document.getElementById('orgSearchInput')){
+      e.preventDefault(); input.focus();
+    }
+  });
 }
 
 /* ---------- LEITOR: MGO ---------- */
