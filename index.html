@@ -123,6 +123,7 @@ svg{display:block}
 .home-action-btn svg{width:18px;height:18px}
 .home-action-btn:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
 .home-action-btn.primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-color:transparent}
+.home-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .hstat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 18px;text-align:center;box-shadow:var(--shadow)}
 .hstat .num{font-size:32px;font-weight:600;color:var(--ink);line-height:1;font-family:'IBM Plex Mono',monospace;letter-spacing:-.01em}
 .hstat .lbl{font-size:11.5px;color:var(--ink-3);margin-top:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
@@ -378,6 +379,8 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .vp-ready .d{width:7px;height:7px;border-radius:99px}
 .vp-ready.ok{background:var(--ok-bg);color:var(--ok)}.vp-ready.ok .d{background:var(--ok)}
 .vp-ready.warn{background:var(--warn-bg);color:var(--warn)}.vp-ready.warn .d{background:var(--warn)}
+.vp-pendente-motivo{margin-top:10px;font-size:13px;color:var(--ink-2);background:var(--warn-bg);border:1px solid rgba(181,130,10,.25);border-radius:9px;padding:9px 13px;max-width:480px}
+.vp-pendente-motivo b{color:var(--warn)}
 .vp-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .spec{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:15px;box-shadow:var(--shadow)}
 .spec .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600}
@@ -399,6 +402,11 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .maint-row .badge{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500}
 .maint-row .badge.ok{background:var(--ok-bg);color:var(--ok)}
 .maint-row .badge.warn{background:var(--warn-bg);color:var(--warn)}
+.maint-edit,.maint-del{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);flex-shrink:0;background:transparent;border:none;cursor:pointer;transition:.15s}
+.maint-edit svg{width:13px;height:13px}
+.maint-edit:hover{background:var(--sky);color:var(--accent)}
+.maint-del{font-size:14px;font-weight:600}
+.maint-del:hover{background:var(--warn-bg);color:var(--warn)}
 
 .backbtn{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:13.5px;font-weight:500;cursor:pointer;margin-bottom:18px}
 .backbtn:hover{text-decoration:underline}
@@ -1317,7 +1325,7 @@ const TREE = [
                     ] }
                 ]},
               { id:'elios2', label:'Flyability Elios 2', icon:'drone', type:'vehicle', status:'ok',
-                vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'warn', img:'https://absolutendt.ca/wp-content/uploads/2025/03/Elios-2-1.png',
+                vehicle:{ maker:'Flyability', cls:'Drone de Inspeção Confinada', ready:'ok', img:'https://absolutendt.ca/wp-content/uploads/2025/03/Elios-2-1.png',
                   specs:[['Peso','1.45','kg'],['Autonomia','10','min'],['Proteção','IP44',''],['Sensor','4K','']],
                   maint:[['2026-04-11','Substituição de hélices','ok'],['2026-02-08','Revisão geral','ok']] },
                 children:[
@@ -1331,7 +1339,7 @@ const TREE = [
           { id:'terrestres', label:'<b>Veículos Terrestres</b>', icon:'robot', type:'group', status:'ok', sidebarLeaf:true,
             children:[
               { id:'go2', label:'Unitree GO2', icon:'robot', type:'vehicle', status:'ok',
-                vehicle:{ maker:'Unitree', cls:'Robô Quadrúpede', ready:'warn', img:'https://www.unitree.com/images/1c36f0b03cfd445fbcad12b4b1eb3a29_3840x3266.jpg',
+                vehicle:{ maker:'Unitree', cls:'Robô Quadrúpede', ready:'ok', img:'https://www.unitree.com/images/1c36f0b03cfd445fbcad12b4b1eb3a29_3840x3266.jpg',
                   specs:[['Peso','15','kg'],['Autonomia','2','h'],['Carga','8','kg'],['Sensor','LiDAR 360°','']],
                   maint:[['2026-05-30','Ajuste de atuadores','ok'],['2026-04-15','Recebimento e comissionamento','ok']] },
                 children:[
@@ -1342,7 +1350,7 @@ const TREE = [
                     files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
                 ]},
               { id:'g1', label:'Unitree G1', icon:'robot', type:'vehicle', status:'ok',
-                vehicle:{ maker:'Unitree', cls:'Robô Humanoide', ready:'warn', img:'https://www.unitree.com/images/a20ba1ebc0724df8a8135744dee8bbea_2740x1720.jpg',
+                vehicle:{ maker:'Unitree', cls:'Robô Humanoide', ready:'ok', img:'https://www.unitree.com/images/a20ba1ebc0724df8a8135744dee8bbea_2740x1720.jpg',
                   specs:[['Peso','35','kg'],['Autonomia','2','h'],['Altura','1.27','m'],['Graus lib.','23','']],
                   maint:[['2026-06-01','Comissionamento inicial','warn']] },
                 children:[
@@ -1353,7 +1361,7 @@ const TREE = [
                     files:[ { label:'Manual do Fabricante — Unitree G1', file:'manuals/g1.pdf' } ] }
                 ]},
               { id:'rover', label:'Rover', icon:'robot', type:'vehicle', status:'ok',
-                vehicle:{ maker:'FS Racing', cls:'Rover Sniper — Truggy RC 1/10 3S', ready:'warn',
+                vehicle:{ maker:'FS Racing', cls:'Rover Sniper — Truggy RC 1/10 3S', ready:'ok',
                   img:'https://www.hearnshobbies.com/cdn/shop/files/FS-53711-BU_1024x.jpg?v=1734701648',
                   specs:[['Escala','1:10',''],['Motor','Brushless 2500KV',''],['Tração','4WD',''],['Bateria','3S LiPo','']],
                   maint:[['2026-05-12','Montagem de payload (câmera)','ok']] },
@@ -1973,28 +1981,126 @@ function donut(c){
   const pct=Math.round(100*c.ok/total);
   return `<svg class="donut" viewBox="0 0 130 130"><circle cx="65" cy="65" r="54" fill="none" stroke="var(--sky-line)" stroke-width="16"/>${arcs}<text x="65" y="61" text-anchor="middle" font-size="26" font-weight="600" fill="var(--ink)" font-family="IBM Plex Mono">${pct}%</text><text x="65" y="80" text-anchor="middle" font-size="10" fill="var(--ink-3)">vigente</text></svg>`;
 }
-function fleetCards(){
-  const vehicles=Object.values(BYID).filter(n=>n.type==='vehicle');
-  return vehicles.map(n=>{
-    const v=n.vehicle||{};
-    const ok=v.ready==='ok';
-    const lastMaint=(v.maint&&v.maint[0])?v.maint[0]:null;
-    return `<div class="fleet-card" onclick="selectNode('${n.id}')">
-      <div class="fleet-img">${v.img?`<img src="${v.img}" alt="${n.label}" loading="lazy">`:`<div class="fleet-img-ph">${IC[n.icon]||IC.robot}</div>`}
-        <span class="fleet-status ${ok?'ok':'warn'}"><span class="d"></span>${ok?'Operacional':'Em Atenção'}</span>
-      </div>
-      <div class="fleet-body">
-        <div class="fleet-name">${n.label}</div>
-        <div class="fleet-meta">${v.maker||''} · ${v.cls||''}</div>
-        ${lastMaint?`<div class="fleet-maint"><span>Última manutenção</span><b>${lastMaint[0]}</b></div>`:''}
-      </div>
-    </div>`;
-  }).join('');
-}
 function greetingName(){
   const el=document.getElementById('userChipName');
   const t=el&&el.textContent&&el.textContent.trim();
   return (t&&t!=='—') ? t.split('.')[0].replace(/^\w/,c=>c.toUpperCase()) : null;
+}
+
+/* ---------- STATUS MANUAL DO EQUIPAMENTO (Operacional / Pendente + motivo) ----------
+   Por padrão, todo equipamento é Operacional (definido no cadastro, TREE). Quando é
+   preciso tirar um de operação, o responsável marca aqui como Pendente e escreve o
+   motivo — fica salvo neste navegador (localStorage) e aparece na Dashboard, na
+   página do equipamento e na lista de Pendências, até alguém marcar como
+   Operacional de novo. */
+const EQUIP_STATUS_KEY='xd4_bluebook_equip_status_v1';
+function equipLoadOverrides(){
+  try{ return JSON.parse(localStorage.getItem(EQUIP_STATUS_KEY)||'{}'); }catch(e){ return {}; }
+}
+function equipSaveOverrides(obj){
+  try{ localStorage.setItem(EQUIP_STATUS_KEY, JSON.stringify(obj)); }catch(e){}
+}
+/* status efetivo de um equipamento: usa o override salvo, se existir; senão, usa o
+   valor padrão cadastrado (v.ready). Retorna {status:'ok'|'warn', motivo} */
+function equipEffectiveStatus(id, baseReady){
+  const ov=equipLoadOverrides()[id];
+  if(ov && ov.status==='warn') return { status:'warn', motivo:ov.motivo||'' };
+  return { status: baseReady||'ok', motivo:'' };
+}
+function equipMarcarPendente(id){
+  const motivo=prompt('Motivo da pendência (aparece na Dashboard e na página do equipamento):');
+  if(motivo===null) return; // cancelou
+  const overrides=equipLoadOverrides();
+  overrides[id]={ status:'warn', motivo: motivo.trim() || 'Sem motivo informado.' };
+  equipSaveOverrides(overrides);
+  if(BYID[id]) selectNode(id); else renderHome();
+}
+function equipMarcarOperacional(id){
+  const overrides=equipLoadOverrides();
+  delete overrides[id];
+  equipSaveOverrides(overrides);
+  if(BYID[id]) selectNode(id); else renderHome();
+}
+
+/* ---------- HISTÓRICO DE MANUTENÇÃO (editável) ----------
+   Os registros que vêm no cadastro (TREE) são só o ponto de partida —
+   o responsável pode adicionar, editar ou remover qualquer um, inclusive
+   os que já vieram prontos. A partir da primeira edição, a lista completa
+   passa a viver neste navegador (localStorage), por equipamento. */
+const EQUIP_MAINT_KEY='xd4_bluebook_equip_maint_v1';
+function equipMaintLoadAll(){
+  try{ return JSON.parse(localStorage.getItem(EQUIP_MAINT_KEY)||'{}'); }catch(e){ return {}; }
+}
+function equipMaintSaveAll(obj){
+  try{ localStorage.setItem(EQUIP_MAINT_KEY, JSON.stringify(obj)); }catch(e){}
+}
+/* lista efetiva de manutenção de um equipamento: usa a versão salva neste
+   navegador se já houve alguma edição; senão, usa a lista original do
+   cadastro (v.maint). */
+function equipMaintList(id, baseMaint){
+  const all=equipMaintLoadAll();
+  if(all[id]) return all[id];
+  return (baseMaint||[]).map(m=>m.slice());
+}
+function equipMaintPersist(id, list){
+  const all=equipMaintLoadAll();
+  all[id]=list;
+  equipMaintSaveAll(all);
+}
+function equipMaintAdd(id){
+  const n=BYID[id]; if(!n) return;
+  const data=prompt('Data (AAAA-MM-DD):', new Date().toISOString().slice(0,10));
+  if(data===null) return;
+  const desc=prompt('Descrição do serviço:');
+  if(desc===null || !desc.trim()) return;
+  const concluido=confirm('Clique OK se já está CONCLUÍDO, ou Cancelar se ainda está PENDENTE.');
+  const list=equipMaintList(id, n.vehicle&&n.vehicle.maint);
+  list.unshift([data.trim(), desc.trim(), concluido?'ok':'warn']);
+  equipMaintPersist(id, list);
+  selectNode(id);
+}
+function equipMaintEdit(id, idx){
+  const n=BYID[id]; if(!n) return;
+  const list=equipMaintList(id, n.vehicle&&n.vehicle.maint);
+  const cur=list[idx]; if(!cur) return;
+  const data=prompt('Data (AAAA-MM-DD):', cur[0]);
+  if(data===null) return;
+  const desc=prompt('Descrição do serviço:', cur[1]);
+  if(desc===null || !desc.trim()) return;
+  const concluido=confirm('Clique OK pra CONCLUÍDO, ou Cancelar pra PENDENTE.');
+  list[idx]=[data.trim(), desc.trim(), concluido?'ok':'warn'];
+  equipMaintPersist(id, list);
+  selectNode(id);
+}
+function equipMaintRemove(id, idx){
+  const n=BYID[id]; if(!n) return;
+  const list=equipMaintList(id, n.vehicle&&n.vehicle.maint);
+  const cur=list[idx]; if(!cur) return;
+  if(!confirm('Remover o registro "'+cur[1]+'" ('+cur[0]+')?')) return;
+  list.splice(idx,1);
+  equipMaintPersist(id, list);
+  selectNode(id);
+}
+
+function fleetCards(){
+  const vehicles=Object.values(BYID).filter(n=>n.type==='vehicle');
+  return vehicles.map(n=>{
+    const v=n.vehicle||{};
+    const eff=equipEffectiveStatus(n.id, v.ready);
+    const ok=eff.status==='ok';
+    const maintList=equipMaintList(n.id, v.maint);
+    const lastMaint=maintList[0]||null;
+    return `<div class="fleet-card" onclick="selectNode('${n.id}')">
+      <div class="fleet-img">${v.img?`<img src="${v.img}" alt="${n.label}" loading="lazy">`:`<div class="fleet-img-ph">${IC[n.icon]||IC.robot}</div>`}
+        <span class="fleet-status ${ok?'ok':'warn'}"><span class="d"></span>${ok?'Operacional':'Pendente'}</span>
+      </div>
+      <div class="fleet-body">
+        <div class="fleet-name">${n.label}</div>
+        <div class="fleet-meta">${v.maker||''} · ${v.cls||''}</div>
+        ${!ok&&eff.motivo?`<div class="fleet-maint"><span>Motivo</span><b style="color:var(--warn)">${stripHTML(eff.motivo)}</b></div>`:lastMaint?`<div class="fleet-maint"><span>Última manutenção</span><b>${lastMaint[0]}</b></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 function greetingWord(){
   const h=new Date().getHours();
@@ -2007,10 +2113,11 @@ function greetingWord(){
 function computePendencias(){
   const out=[];
   collectVehicles().forEach(v=>{
-    if(v.vehicle&&v.vehicle.ready&&v.vehicle.ready!=='ok'){
-      out.push({ label:stripHTML(v.label)+' — aguardando liberação operacional', ref:v.id, icon:v.icon });
+    const eff=equipEffectiveStatus(v.id, v.vehicle&&v.vehicle.ready);
+    if(eff.status!=='ok'){
+      out.push({ label:stripHTML(v.label)+(eff.motivo?' — '+eff.motivo:' — aguardando liberação operacional'), ref:v.id, icon:v.icon });
     }
-    (v.vehicle&&v.vehicle.maint||[]).forEach(m=>{
+    equipMaintList(v.id, v.vehicle&&v.vehicle.maint).forEach(m=>{
       if(m[2]&&m[2]!=='ok') out.push({ label:stripHTML(v.label)+' — '+m[1], ref:v.id, icon:'wrench' });
     });
   });
@@ -2019,11 +2126,16 @@ function computePendencias(){
 function renderHome(){
   const name=greetingName();
   const pend=computePendencias();
-  const recentes=[
-    {ref:'diarios', label:'Diário de Bordo — Digital'},
-    {ref:'diarios-manut', label:'Diário de Manutenção — Digital'},
-    {ref:'plano-captura', label:'Plano de Captura — Digital'},
-    {ref:'risk-assessment', label:'Risk Assessment — Digital'}
+  const vehicles=collectVehicles();
+  const okCount=vehicles.filter(v=>equipEffectiveStatus(v.id, v.vehicle&&v.vehicle.ready).status==='ok').length;
+  const attnCount=vehicles.length-okCount;
+  const quick=[
+    {ref:'mgo', ic:'book', label:'MGO'},
+    {ref:'mgm', ic:'wrench', label:'MGM'},
+    {ref:'risk-assessment', ic:'shield', label:'Risk Assessment'},
+    {ref:'plano-captura', ic:'shield', label:'Plano de Captura'},
+    {ref:'diarios', ic:'file', label:'Diário de Bordo'},
+    {ref:'diarios-manut', ic:'wrench', label:'Diário de Manutenção'}
   ];
   viewHome.innerHTML=`
   <div class="home">
@@ -2045,32 +2157,40 @@ function renderHome(){
       <button class="home-action-btn" onclick="selectNode('hub-conhecimento')">${IC.book}<span>Biblioteca</span></button>
     </div>
 
-    <div class="home-sec-label">Acesso rápido</div>
-    <div class="home-actions">
-      <button class="home-action-btn" onclick="selectNode('mgo')">${IC.book}<span>MGO</span></button>
-      <button class="home-action-btn" onclick="selectNode('mgm')">${IC.wrench}<span>MGM</span></button>
-      <button class="home-action-btn" onclick="selectNode('risk-assessment')">${IC.shield}<span>Risk Assessment</span></button>
-      <button class="home-action-btn" onclick="selectNode('plano-captura')">${IC.shield}<span>Plano de Captura</span></button>
-      <button class="home-action-btn" onclick="selectNode('diarios')">${IC.file}<span>Diário de Bordo</span></button>
-      <button class="home-action-btn" onclick="selectNode('diarios-manut')">${IC.wrench}<span>Diário de Manutenção</span></button>
-    </div>
-
-    <div class="dash-grid">
-      <div class="panel">
-        <h3>Pendências</h3>
-        <div class="feed">
-          ${pend.length?pend.map(p=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${p.ref}')"><div class="feed-ic">${IC[p.icon]||IC.wrench}</div><div class="feed-tx">${p.label}</div></div>`).join(''):'<div style="padding:20px 0;color:var(--ink-3);font-size:13.5px">Nenhuma pendência no momento.</div>'}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;margin-top:8px">
+      <div class="panel" style="display:flex;flex-direction:column;height:340px">
+        <h3>Acesso rápido</h3>
+        <div style="display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1">
+          ${quick.map(q=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${q.ref}')"><div class="feed-ic">${IC[q.ic]||IC.file}</div><div class="feed-tx">${q.label}</div></div>`).join('')}
         </div>
       </div>
-      <div class="panel">
-        <h3>Adicionados recentemente</h3>
-        <div class="feed">
-          ${recentes.map(r=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${r.ref}')"><div class="feed-ic">◈</div><div class="feed-tx">${r.label}</div></div>`).join('')}
+
+      <div class="panel" style="display:flex;flex-direction:column;height:340px">
+        <h3>Pendências${pend.length?` <span style="color:var(--warn);font-weight:700">(${pend.length})</span>`:''}</h3>
+        <div class="feed" style="height:auto;flex:1;overflow-y:auto">
+          ${pend.length?pend.map(p=>`<div class="feed-row" style="cursor:pointer" onclick="selectNode('${p.ref}')"><div class="feed-ic">${IC[p.icon]||IC.wrench}</div><div class="feed-tx">${p.label}</div></div>`).join(''):'<div style="padding:20px 0;color:var(--ink-3);font-size:13.5px">Nenhuma pendência no momento. Tudo em dia.</div>'}
+        </div>
+      </div>
+
+      <div class="panel" style="cursor:pointer;display:flex;flex-direction:column;height:340px" onclick="selectNode('hub-equip')">
+        <h3>Frota <span class="live-dot"></span></h3>
+        <div style="display:flex;flex-direction:column;justify-content:center;flex:1;gap:14px">
+          <div style="display:flex;gap:14px">
+            <div style="flex:1;text-align:center;padding:16px 8px;background:var(--ok-bg);border-radius:10px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;color:var(--ok)">${okCount}</div>
+              <div style="font-size:11px;color:var(--ink-2);margin-top:2px">Operacional</div>
+            </div>
+            <div style="flex:1;text-align:center;padding:16px 8px;background:var(--warn-bg);border-radius:10px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;color:var(--warn)">${attnCount}</div>
+              <div style="font-size:11px;color:var(--ink-2);margin-top:2px">Pendente</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:12px;color:var(--accent);font-weight:600">Ver todos os equipamentos →</div>
         </div>
       </div>
     </div>
 
-    <div class="home-sec-label">Equipamentos <span class="live-dot"></span></div>
+    <div class="home-sec-label" style="margin-top:28px">Equipamentos <span class="live-dot"></span></div>
     <div class="fleet-grid">${fleetCards()}</div>
   </div>`;
 }
@@ -4855,9 +4975,16 @@ function renderManualExternal(n){
 /* ---------- FICHA DE VEÍCULO ---------- */
 function renderVehicle(n){
   const v=n.vehicle;
+  const eff=equipEffectiveStatus(n.id, v.ready);
+  const ok=eff.status==='ok';
   const kids=(n.children||[]);
   const docs=kids.map(k=>`<div class="vp-doc" onclick="selectNode('${k.id}')"><div class="di">${IC[k.icon]||IC.file}</div><h4>${stripHTML(k.label)}</h4><div class="st"><span class="d st-${k.status}"></span>${stName[k.status]}</div></div>`).join('');
-  const man=v.maint.map(m=>`<div class="maint-row"><span class="date">${m[0]}</span><span class="desc">${m[1]}</span><span class="badge ${m[2]}">${m[2]==='ok'?'Concluído':'Pendente'}</span></div>`).join('');
+  const maintList=equipMaintList(n.id, v.maint);
+  const man=maintList.map((m,idx)=>`<div class="maint-row">
+      <span class="date">${m[0]}</span><span class="desc">${m[1]}</span><span class="badge ${m[2]}">${m[2]==='ok'?'Concluído':'Pendente'}</span>
+      <button class="maint-edit" title="Editar" onclick="event.stopPropagation();equipMaintEdit('${n.id}',${idx})">${IC.wrench}</button>
+      <button class="maint-del" title="Remover" onclick="event.stopPropagation();equipMaintRemove('${n.id}',${idx})">✕</button>
+    </div>`).join('');
   const imgHTML = v.img ? `<img src="${v.img}" alt="${stripHTML(n.label)}" onerror="this.parentElement.innerHTML=IC['${n.icon}']">` : IC[n.icon];
   viewDoc.innerHTML=`
   <div class="vp">
@@ -4868,15 +4995,26 @@ function renderVehicle(n){
         <div class="cls">${v.cls}</div>
         <h1>${stripHTML(n.label)}</h1>
         <div class="maker">Fabricante: ${v.maker}</div>
-        <div class="vp-ready ${v.ready}"><span class="d"></span>${v.ready==='ok'?'Pronto para operação':'Prontidão pendente'}</div>
-        <button class="home-action-btn primary" style="margin-top:14px" onclick="event.stopPropagation();selectNode('hub-operacoes')">${IC.shield}<span>Iniciar operação com este equipamento</span></button>
+        <div class="vp-ready ${ok?'ok':'warn'}"><span class="d"></span>${ok?'Pronto para operação':'Prontidão pendente'}</div>
+        ${!ok&&eff.motivo?`<div class="vp-pendente-motivo"><b>Motivo:</b> ${stripHTML(eff.motivo)}</div>`:''}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="home-action-btn primary" onclick="event.stopPropagation();selectNode('hub-operacoes')">${IC.shield}<span>Iniciar operação com este equipamento</span></button>
+          ${ok
+            ? `<button class="home-action-btn" onclick="event.stopPropagation();equipMarcarPendente('${n.id}')">${IC.wrench}<span>Marcar como pendente</span></button>`
+            : `<button class="home-action-btn" onclick="event.stopPropagation();equipMarcarOperacional('${n.id}')">${IC.shield}<span>Marcar como operacional</span></button>`}
+        </div>
       </div>
     </div>
     <div class="vp-maint" style="margin-bottom:24px"><h3>Procedimentos relacionados</h3></div>
     <div class="vp-docs">${docs}</div>
     <div class="home-sec-label" style="margin-top:22px">Ativos que este equipamento normalmente inspeciona</div>
     <div style="color:var(--ink-3);font-size:13.5px;padding:4px 0 20px">Ainda não definido — quando um ativo referenciar este equipamento como recomendado, ele aparece aqui automaticamente.</div>
-    <div class="vp-maint"><h3>Histórico de manutenção</h3>${man}</div>
+    <div class="vp-maint">
+      <h3>Histórico de manutenção
+        <button class="home-action-btn" style="margin-left:auto;padding:7px 14px;font-size:12.5px" onclick="event.stopPropagation();equipMaintAdd('${n.id}')">${IC.wrench}<span>Adicionar registro</span></button>
+      </h3>
+      ${man || '<div style="color:var(--ink-3);font-size:13.5px;padding:8px 0">Nenhum registro ainda.</div>'}
+    </div>
   </div>`;
 }
 
