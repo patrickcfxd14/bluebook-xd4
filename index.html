@@ -707,17 +707,49 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .ra-risk-hint{font-size:11.5px;color:var(--ink-3);margin-top:7px}
 
 .ra-declare{background:var(--sky);border:1px solid var(--sky-line);border-radius:12px;padding:16px 18px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.ra-equiplabel{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--sky);border:1px solid var(--sky-line);border-radius:99px;padding:3px 10px;text-transform:none;letter-spacing:0}
+.ra-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.ra-steps li{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--sky-line);font-size:13.5px;color:var(--ink)}
+.ra-steps li:last-child{border-bottom:none}
+.ra-steps .n{width:24px;height:24px;border-radius:99px;background:var(--sky);border:1px solid var(--sky-line);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ra-agree{display:flex;align-items:flex-start;gap:11px;margin-top:14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);user-select:none}
 .ra-agree .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;color:transparent;background:var(--paper);flex-shrink:0;margin-top:1px;transition:.15s}
 .ra-agree .box svg{width:12px;height:12px}
 .ra-agree.on .box{background:var(--ok);border-color:var(--ok);color:#fff}
 
+/* subtítulo dentro de uma seção (ex.: "Contato no Local" dentro de "Dados da Missão") */
+.ra-subhead{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin:22px 0 12px;padding-top:16px;border-top:1px solid var(--sky-line)}
+.lb-grid + .ra-subhead{margin-top:20px}
+
+/* grupos de contexto dentro de Verificações Pré-Operacionais (Pessoas/Área/Atmosfera/Equipamentos) */
+.ra-grp + .ra-grp{margin-top:18px}
+.ra-grp-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;padding-bottom:8px;border-bottom:1.5px solid var(--sky-line)}
+.ra-grp-head svg{width:15px;height:15px;color:var(--accent);flex-shrink:0}
+
+/* observações da missão */
+.ra-obs{width:100%;min-height:80px;border:1px solid var(--line);border-radius:9px;padding:11px 13px;background:var(--sky);color:var(--ink);font-family:inherit;font-size:13.5px;line-height:1.55;resize:vertical}
+.ra-obs:focus{outline:none;border-color:var(--xd4);background:var(--paper)}
+
+/* status final da operação — 3 botões grandes, um só pode ficar selecionado */
+.ra-status-hint{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);margin-bottom:12px}
+.ra-status-hint svg{width:15px;height:15px;color:var(--accent);flex-shrink:0}
+.ra-statusgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ra-statusbtn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;transition:.15s;font-family:inherit}
+.ra-statusbtn:hover{border-color:var(--accent)}
+.ra-statusbtn .dot{font-size:22px;line-height:1}
+.ra-statusbtn .lbl{font-size:12.5px;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.3}
+.ra-statusbtn.liberada.sel{background:var(--ok-bg);border-color:var(--ok)}
+.ra-statusbtn.restricoes.sel{background:var(--warn-bg);border-color:var(--warn)}
+.ra-statusbtn.nao_liberada.sel{background:var(--crit-bg);border-color:var(--crit)}
+.ra-statusbtn.sel .lbl{color:var(--ink)}
+@media(max-width:640px){ .ra-statusgrid{grid-template-columns:1fr} }
+
 /* ===== ASSINATURA DIGITAL — modal com canvas ===== */
 .lb-sig{overflow:hidden}
 .lb-sig img{display:block}
-.sig-modal-overlay{position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(2px);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s}
+.sig-modal-overlay{position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(2px);z-index:900;opacity:0;pointer-events:none;transition:.2s;overflow-y:auto;padding:24px 0}
 .sig-modal-overlay.show{opacity:1;pointer-events:auto}
-.sig-modal{background:var(--paper);border-radius:16px;box-shadow:var(--shadow-lg);width:min(560px,92vw);padding:20px 22px 22px;transform:translateY(10px);transition:.2s}
+.sig-modal{background:var(--paper);border-radius:16px;box-shadow:var(--shadow-lg);width:min(560px,92vw);padding:20px 22px 22px;transform:translateY(10px);transition:.2s;margin:0 auto}
 .sig-modal-overlay.show .sig-modal{transform:translateY(0)}
 .sig-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
 .sig-modal-head h4{font-size:15.5px;font-weight:700;color:var(--ink)}
@@ -738,6 +770,9 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .ra-sig-block{margin-top:16px}
 .ra-sig-block label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:8px;font-weight:600}
 .ra-sig-pad{height:110px;border:1.5px dashed var(--sky-line);border-radius:12px;background:var(--sky);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;overflow:hidden;position:relative}
+.ra-sig-del{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:8px;background:rgba(11,37,69,.65);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;z-index:2}
+.ra-sig-del svg{width:14px;height:14px}
+.ra-sig-del:hover{background:var(--crit)}
 .ra-sig-pad:hover{border-color:var(--xd4);background:var(--paper)}
 .ra-sig-pad img{max-height:100%;max-width:100%;object-fit:contain}
 .ra-sig-pad .ph{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink-3);font-size:12.5px;font-weight:600}
@@ -1343,8 +1378,10 @@ const TREE = [
               { id:'ativos-celulose-torre-dual', label:'Torre Dual', icon:'tower', type:'asset', status:'warn' },
               { id:'ativos-celulose-tanque-descarga-reator-po', label:'Tanque de Descarga do Reator PO — B218.1', icon:'droplet', type:'asset', status:'warn',
                 children:[ { id:'ativos-celulose-tanque-descarga-reator-po-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
-              { id:'ativos-celulose-chamine-caldeira-1', label:'Chaminé da Caldeira 1', icon:'factory', type:'asset', status:'warn' },
-              { id:'ativos-celulose-chamine-forno-lama-cal', label:'Chaminé do Forno de Lama de Cal', icon:'factory', type:'asset', status:'warn' },
+              { id:'ativos-celulose-chamine-caldeira-1', label:'Chaminé da Caldeira 1', icon:'factory', type:'asset', status:'ok',
+                children:[ { id:'ativos-celulose-chamine-caldeira-1-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-chamine-caldeira' } ] },
+              { id:'ativos-celulose-chamine-forno-lama-cal', label:'Chaminé do Forno de Lama de Cal', icon:'factory', type:'asset', status:'ok',
+                children:[ { id:'ativos-celulose-chamine-forno-lama-cal-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-chamine-caldeira' } ] },
               { id:'ativos-celulose-dutos-precipitadores', label:'Dutos dos Precipitadores', icon:'pipe', type:'asset', status:'warn' },
               { id:'ativos-celulose-tanque-licor-preto-fraco', label:'Tanque Armaz. Licor Preto Fraco', icon:'droplet', type:'asset', status:'warn',
                 children:[ { id:'ativos-celulose-tanque-licor-preto-fraco-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
@@ -1807,6 +1844,15 @@ function routeTo(id){
     });
     show(viewDoc); return;
   }
+  if(n.type==='pop-elios3-chamine-caldeira'){
+    renderDocFromKey('pop-elios3-chamine-caldeira', {
+      idPrefix:'cham', crumbId:n.id, icon:'file', code:'POP',
+      title:'POP — Chaminé da Caldeira / Forno de Lama de Cal (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Interna',
+      tag:'Procedimento Operacional Padrão para inspeção interna das chaminés da Caldeira de Recuperação e do Forno de Lama de Cal, utilizando o Flyability Elios 3 — cobre estratégia Bottom-Up, subida vertical, descida helicoidal, captura LiDAR e critérios de interrupção e conclusão da missão.',
+      footer:'POP Chaminé da Caldeira / Forno de Lama de Cal — Elios 3'
+    });
+    show(viewDoc); return;
+  }
   if(n.type==='pop-elios3'){ renderPOPElios3(); show(viewDoc); return; }
   if(n.type==='pop-elios3-pilha-cavaco'){ renderPOPElios3PilhaCavaco(); show(viewDoc); return; }
   if(n.type==='pop-elios3-torre-massa-branca'){ renderPOPElios3TorreMassaBranca(); show(viewDoc); return; }
@@ -2036,6 +2082,8 @@ const ORG_DOCS={
         { label:'POPs — por ativo', items:[
           {label:'POP — Torre de Estocagem de Massa', code:'', ref:'ativos-celulose-torre-estocagem-massa-pop'},
           {label:'POP — Transp. Móvel s/ Pilha de Cavaco', code:'', ref:'ativos-celulose-transp-movel-pilha-cavaco-pop'},
+          {label:'POP — Chaminé da Caldeira 1', code:'', ref:'ativos-celulose-chamine-caldeira-1-pop'},
+          {label:'POP — Chaminé do Forno de Lama de Cal', code:'', ref:'ativos-celulose-chamine-forno-lama-cal-pop'},
           {label:'POP — Tanque Descarga Reator PO B218.1', code:'', ref:'ativos-celulose-tanque-descarga-reator-po-pop'},
           {label:'POP — Tanque Licor Preto Fraco', code:'', ref:'ativos-celulose-tanque-licor-preto-fraco-pop'},
           {label:'POP — Tanque de Água Quente', code:'', ref:'ativos-celulose-tanque-agua-quente-pop'},
@@ -2385,7 +2433,7 @@ function renderPOPElios3(){
 }
 function renderPOPElios3PilhaCavaco(){
   renderDocFromKey('pop-elios3-pilha-cavaco', {
-    idPrefix:'elios3pc', crumbId:'elios3-pop-pilha-cavaco', icon:'file', code:'POP',
+    idPrefix:'elios3pc', crumbId:'ativos-celulose-transp-movel-pilha-cavaco-pop', icon:'file', code:'POP',
     title:'POP — Transportador sobre Pilha de Cavacos (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Estrutural',
     tag:'Procedimento Operacional Padrão para inspeção estrutural inferior de transportador de correia sobre a pilha de cavacos utilizando o Flyability Elios 3 — cobre condições obrigatórias, estratégia de voo, sequência de inspeção, captura LiDAR, registro de anomalias e critérios de interrupção e conclusão da missão.',
     footer:'POP Transportador sobre Pilha de Cavacos — Elios 3'
@@ -2393,7 +2441,7 @@ function renderPOPElios3PilhaCavaco(){
 }
 function renderPOPElios3TorreMassaBranca(){
   renderDocFromKey('pop-elios3-torre-massa-branca', {
-    idPrefix:'elios3tm', crumbId:'elios3-pop-torre-massa-branca', icon:'file', code:'POP',
+    idPrefix:'elios3tm', crumbId:'ativos-celulose-torre-estocagem-massa-pop', icon:'file', code:'POP',
     title:'POP — Torre de Massa Branca (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Interna',
     tag:'Procedimento Operacional Padrão para inspeção interna de torres de armazenagem de massa branca (White Liquor Storage Tower) utilizando o Flyability Elios 3 — cobre estratégia Top Down, descida helicoidal, captura LiDAR e critérios de nova passagem e encerramento da missão.',
     footer:'POP Torre de Massa Branca — Elios 3'
@@ -3617,15 +3665,16 @@ function mtExportReport(){
 const RA_EQUIP_ITEMS = [
   { key:'elios3', label:'Elios 3', icon:'drone' },
   { key:'elios2', label:'Elios 2', icon:'drone' },
-  { key:'quadrupede', label:'Robô Quadrúpede', icon:'robot', qual:true },
-  { key:'humanoide', label:'Robô Humanoide', icon:'robot', qual:true },
+  { key:'go2', label:'Unitree GO2', icon:'robot' },
+  { key:'go2wheels', label:'Unitree GO2 Wheels', icon:'robot' },
+  { key:'g1', label:'Unitree G1', icon:'robot' },
   { key:'rover', label:'Rover', icon:'robot' },
-  { key:'outro', label:'Outro', icon:'box', qual:true }
+  { key:'outro', label:'Outro equipamento', icon:'box', qual:true }
 ];
 const RA_LOCAL_ITEMS = [
   { key:'confinada', label:'Área confinada' },
   { key:'aguaPoeira', label:'Presença de água e poeira' },
-  { key:'ultrapassarGaiola', label:'Elementos que podem ultrapassar a gaiola/frame do equipamento' },
+  { key:'ultrapassarGaiola', label:'Elementos que podem atingir o equipamento' },
   { key:'cairSobre', label:'Elementos que podem cair sobre o equipamento' },
   { key:'ambienteExplosivo', label:'Ambiente explosivo' },
   { key:'ventos', label:'Ventos acima de 7 m/s' }
@@ -3647,40 +3696,161 @@ const RA_EPI_ITEMS = [
   { key:'macacao', label:'Macacão' },
   { key:'altaVisibilidade', label:'Alta visibilidade' }
 ];
-const RA_ASPECTOS = [
-  'Os pilotos e observadores devem passar por algum treinamento inicial ou periódico específico promovido pela empresa?',
-  'Os meios de combate a incêndio estão em plena condição de funcionamento e posicionados ao alcance dos colaboradores? (Extintores e Hidrantes)',
-  'Produtos inflamáveis, pós-combustíveis e depósitos oleosos foram removidos? Interna e externa (caso necessário)',
-  'Materiais inflamáveis que não podem ser retirados do ambiente estão protegidos contra o calor por lonas resistentes a fogo, protetores de metal ou outro tipo de proteção?',
-  'Atmosfera explosiva na área foi controlada?',
-  'Os funcionários estão informados sobre a realização do trabalho?',
-  'A área de trabalho encontra-se devidamente isolada e sinalizada?',
-  'Foi realizada a medição de gás no ambiente?',
-  'Recipientes e sistemas de tubulação estão purgados de líquidos/vapor inflamável?',
-  'O acesso dos pilotos ao local da atividade está livre de dificuldades?',
-  'O ativo a ser inspecionado foi devidamente limpo, eliminando resíduos e pó em suspensão?',
-  'A temperatura do local da atividade estará entre 0 e 40 graus?'
+/* Controles mitigatórios adotados pra reduzir o risco identificado.
+   Fica registrado no mesmo documento, logo antes do status final —
+   é o que justifica a classificação de "liberada com restrições". */
+const RA_CONTROLES_ITEMS = [
+  { key:'areaIsolada', label:'Área isolada' },
+  { key:'vigiaExterno', label:'Vigia externo' },
+  { key:'detectorGases', label:'Detector de gases' },
+  { key:'permissaoTrabalho', label:'Permissão de Trabalho' },
+  { key:'linhaVida', label:'Linha de vida' },
+  { key:'monitoramentoContinuo', label:'Monitoramento contínuo' }
 ];
+
+/* Verificações Pré-Operacionais muda conforme o equipamento selecionado em
+   "Equipamento". Elios 3 e Elios 2 usam o checklist original (o mesmo de
+   sempre). GO2, GO2-W, G1 e Rover têm listas próprias, adaptadas às
+   características reais de cada plataforma (faixa de temperatura, terreno,
+   mobilidade). Cada pergunta pertence a um grupo (grp) — Pessoas, Área,
+   Atmosfera ou Equipamentos — pra facilitar a leitura em campo.
+   Todas as perguntas seguem a mesma lógica: SIM = condição segura,
+   NÃO = ponto de atenção. Nenhuma pergunta é invertida.
+   Fontes: manual de operação Unitree GO2 (faixa 5–35°C, evitar gelo/piso
+   escorregadio), datasheet Unitree GO2-W (obstáculos até 70cm, rampa até
+   35°), specs públicas Unitree G1 (sem IP declarado — tratado como uso
+   preferencialmente coberto). Não encontrei especificações públicas para
+   o "Rover" — os itens de piso/temperatura desse ficaram genéricos de
+   propósito, em vez de inventar um número. */
+const RA_ASPECTOS_ELIOS = [
+  { grp:'pessoas', q:'Piloto e observador treinados para esta operação?' },
+  { grp:'pessoas', q:'Equipe do local informada sobre a atividade?' },
+  { grp:'area', q:'Área isolada e sinalizada?' },
+  { grp:'area', q:'Inflamáveis e resíduos oleosos removidos do local?' },
+  { grp:'area', q:'Materiais inflamáveis remanescentes protegidos contra calor?' },
+  { grp:'area', q:'Acesso ao local liberado, sem obstáculos?' },
+  { grp:'area', q:'Ativo preparado para a inspeção (limpo, sem pó em suspensão)?' },
+  { grp:'atmosfera', q:'Atmosfera explosiva controlada?' },
+  { grp:'atmosfera', q:'Medição de gás realizada?' },
+  { grp:'atmosfera', q:'Temperatura do local entre 0°C e 40°C?' },
+  { grp:'equipamentos', q:'Extintores e hidrantes disponíveis e acessíveis?' },
+  { grp:'equipamentos', q:'Recipientes e tubulações purgados de líquido/vapor inflamável?' }
+];
+const RA_ASPECTOS_GO2 = [
+  { grp:'pessoas', q:'Equipe treinada para operação com o robô?' },
+  { grp:'pessoas', q:'Equipe do local informada sobre a atividade?' },
+  { grp:'area', q:'Área isolada e sinalizada?' },
+  { grp:'area', q:'Inflamáveis e resíduos oleosos removidos do trajeto?' },
+  { grp:'area', q:'Materiais inflamáveis remanescentes protegidos contra calor?' },
+  { grp:'area', q:'Piso livre de gelo, lama ou superfícies escorregadias?' },
+  { grp:'area', q:'Trajeto livre de obstáculos e rampas acima de 30°?' },
+  { grp:'atmosfera', q:'Atmosfera explosiva controlada?' },
+  { grp:'atmosfera', q:'Medição de gás realizada?' },
+  { grp:'atmosfera', q:'Temperatura do local entre 5°C e 35°C (faixa operacional do GO2)?' },
+  { grp:'equipamentos', q:'Extintores e hidrantes disponíveis e acessíveis?' },
+  { grp:'equipamentos', q:'Recipientes e tubulações purgados de líquido/vapor inflamável?' }
+];
+const RA_ASPECTOS_GO2W = [
+  { grp:'pessoas', q:'Equipe treinada para operação com o robô?' },
+  { grp:'pessoas', q:'Equipe do local informada sobre a atividade?' },
+  { grp:'area', q:'Área isolada e sinalizada?' },
+  { grp:'area', q:'Inflamáveis e resíduos oleosos removidos do trajeto?' },
+  { grp:'area', q:'Materiais inflamáveis remanescentes protegidos contra calor?' },
+  { grp:'area', q:'Piso livre de gelo, lama ou superfícies escorregadias?' },
+  { grp:'area', q:'Trajeto livre de obstáculos acima de 70cm ou rampas acima de 35°?' },
+  { grp:'atmosfera', q:'Atmosfera explosiva controlada?' },
+  { grp:'atmosfera', q:'Medição de gás realizada?' },
+  { grp:'atmosfera', q:'Temperatura do local entre 5°C e 35°C (faixa operacional do GO2-W)?' },
+  { grp:'equipamentos', q:'Extintores e hidrantes disponíveis e acessíveis?' },
+  { grp:'equipamentos', q:'Recipientes e tubulações purgados de líquido/vapor inflamável?' }
+];
+const RA_ASPECTOS_G1 = [
+  { grp:'pessoas', q:'Equipe treinada para operação com o robô?' },
+  { grp:'pessoas', q:'Equipe do local informada sobre a atividade?' },
+  { grp:'area', q:'Área isolada e sinalizada?' },
+  { grp:'area', q:'Inflamáveis e resíduos oleosos removidos do trajeto?' },
+  { grp:'area', q:'Materiais inflamáveis remanescentes protegidos contra calor?' },
+  { grp:'area', q:'Piso plano e livre de obstáculos para caminhada bípede?' },
+  { grp:'area', q:'Local protegido de chuva, poeira e umidade excessiva?' },
+  { grp:'atmosfera', q:'Atmosfera explosiva controlada?' },
+  { grp:'atmosfera', q:'Medição de gás realizada?' },
+  { grp:'atmosfera', q:'Temperatura dentro da faixa segura de operação do equipamento?' },
+  { grp:'equipamentos', q:'Extintores e hidrantes disponíveis e acessíveis?' },
+  { grp:'equipamentos', q:'Recipientes e tubulações purgados de líquido/vapor inflamável?' }
+];
+const RA_ASPECTOS_ROVER = [
+  { grp:'pessoas', q:'Equipe treinada para operação com o equipamento?' },
+  { grp:'pessoas', q:'Equipe do local informada sobre a atividade?' },
+  { grp:'area', q:'Área isolada e sinalizada?' },
+  { grp:'area', q:'Inflamáveis e resíduos oleosos removidos do trajeto?' },
+  { grp:'area', q:'Materiais inflamáveis remanescentes protegidos contra calor?' },
+  { grp:'area', q:'Trajeto livre de obstáculos e buracos?' },
+  { grp:'area', q:'Piso adequado para tração das rodas?' },
+  { grp:'atmosfera', q:'Atmosfera explosiva controlada?' },
+  { grp:'atmosfera', q:'Medição de gás realizada?' },
+  { grp:'atmosfera', q:'Temperatura dentro da faixa segura de operação do equipamento?' },
+  { grp:'equipamentos', q:'Extintores e hidrantes disponíveis e acessíveis?' },
+  { grp:'equipamentos', q:'Recipientes e tubulações purgados de líquido/vapor inflamável?' }
+];
+const RA_ASPECTOS_POR_EQUIP = {
+  elios3: RA_ASPECTOS_ELIOS,
+  elios2: RA_ASPECTOS_ELIOS,
+  go2: RA_ASPECTOS_GO2,
+  go2wheels: RA_ASPECTOS_GO2W,
+  g1: RA_ASPECTOS_G1,
+  rover: RA_ASPECTOS_ROVER
+};
+const RA_ASPECTOS_GRUPOS = [
+  { key:'pessoas', label:'Pessoas', icon:'shield' },
+  { key:'area', label:'Área', icon:'file' },
+  { key:'atmosfera', label:'Atmosfera', icon:'droplet' },
+  { key:'equipamentos', label:'Equipamentos', icon:'wrench' }
+];
+/* qual equipamento manda no checklist agora: o primeiro marcado, na ordem
+   da lista de equipamentos (RA_EQUIP_ITEMS). Nenhum marcado ainda → Elios 3. */
+function raActiveEquipKey(){
+  const found = RA_EQUIP_ITEMS.find(it=>it.key!=='outro' && RA_STATE.equip[it.key]);
+  return found ? found.key : 'elios3';
+}
+function raActiveAspectos(){
+  return RA_ASPECTOS_POR_EQUIP[raActiveEquipKey()] || RA_ASPECTOS_ELIOS;
+}
+
+/* Plano de Recuperação do Equipamento — avalia o PLANEJAMENTO da
+   recuperação (não um acidente que já aconteceu). Todas as perguntas
+   seguem a mesma lógica: SIM = condição segura. */
 const RA_RECUPERACAO = [
-  'Em caso de acidente, o equipamento pode ser recuperado no local?',
-  'Se deixado no local, isso pode danificar o ativo?',
-  'Após o acidente, isolar a área e proceder com o registro fotográfico geral do local do acidente',
-  'Suspender todas as atividades aéreas independente do contrato',
-  'Comunicar imediatamente ao Chefe de Operações',
-  'Preencher o relatório de missão',
-  'Recolher todos os materiais da aeronave e catalogar as peças danificadas'
+  'Existe estratégia definida para recuperação do equipamento?',
+  'A recuperação pode ser realizada com segurança?',
+  'Equipamento pode permanecer no local sem sofrer danos, caso não seja recuperado de imediato?',
+  'Ativo permanece protegido, caso o equipamento não seja recuperado de imediato?'
+];
+const RA_ACIDENTE_STEPS = [
+  'Isolar a área e registrar fotos do local.',
+  'Suspender a operação imediatamente.',
+  'Comunicar o Chefe de Operações.',
+  'Preencher o relatório de missão.',
+  'Recolher o equipamento e catalogar danos.'
+];
+const RA_STATUS_OPTS = [
+  { key:'liberada', label:'Operação Liberada', dot:'🟢', color:'var(--ok)' },
+  { key:'restricoes', label:'Liberada com Restrições', dot:'🟡', color:'var(--warn)' },
+  { key:'nao_liberada', label:'Operação Não Liberada', dot:'🔴', color:'var(--crit)' }
 ];
 
 function raDefaultState(){
   return {
     dataMissao:new Date().toISOString().slice(0,10), cliente:'', proposta:'', ordemServico:'', localAtivo:'', descAtivo:'',
     contatoNome:'', contatoTelefone:'', contatoFuncao:'',
-    equip:{elios3:false,elios2:false,quadrupede:false,quadrupedeQual:'',humanoide:false,humanoideQual:'',rover:false,outro:false,outroQual:''},
+    equip:{elios3:false,elios2:false,go2:false,go2wheels:false,g1:false,rover:false,outro:false,outroQual:''},
     local:{confinada:false,aguaPoeira:false,ultrapassarGaiola:false,cairSobre:false,ambienteExplosivo:false,ventos:false,outros:false,outrosDesc:''},
     subst:{toxico:false,nocivo:false,corrosivo:false,comburente:false,explosivo:false,biologico:false,outros:false,outrosDesc:''},
     epi:{capacete:false,oculos:false,protetorAuditivo:false,luvas:false,calcado:false,macacao:false,altaVisibilidade:false,outros:false,outrosDesc:''},
-    aspectos:RA_ASPECTOS.map(()=>''),
+    aspectos:RA_ASPECTOS_ELIOS.map(()=>''), aspectosEquipKey:'elios3',
     recuperacao:RA_RECUPERACAO.map(()=>''),
+    controles:{areaIsolada:false,vigiaExterno:false,detectorGases:false,permissaoTrabalho:false,linhaVida:false,monitoramentoContinuo:false,outros:false,outrosDesc:''},
+    observacoes:'',
+    statusFinal:'',
     agree:false, declLocal:'', declData:new Date().toISOString().slice(0,10), declNome:'', assinaturaImg:null
   };
 }
@@ -3702,8 +3872,8 @@ function renderRiskAssessment(n, overrideState, lockedAtIso){
       <div class="lb-head-main">
         <div class="lb-ic">${IC.shield}</div>
         <div>
-          <h1>Risk Assessment — Avaliação de Risco Digital</h1>
-          <div class="lb-sub">Avaliação de risco pré-missão do local, equipamento e condições de operação — em substituição ao preenchimento manual em papel.</div>
+          <h1>Risk Assessment</h1>
+          <div class="lb-sub">Avaliação de risco antes da missão.</div>
           <div class="lb-docmeta">
             <span class="lb-chip">DOC <b>FO-OPE-002</b></span>
             <span class="lb-chip">REV <b>01</b></span>
@@ -3721,22 +3891,7 @@ function renderRiskAssessment(n, overrideState, lockedAtIso){
     </div>
 
     <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>Nível de Risco Estimado</h3>
-      <div class="ra-risk low" id="raRiskBox">
-        <div class="badge"><span class="n" id="raRiskScore">0</span><span class="u">pts</span></div>
-        <div class="ra-risk-main">
-          <div class="ra-risk-top">
-            <span class="ra-risk-label">Calculado a partir dos riscos e das respostas marcadas abaixo</span>
-            <span class="ra-risk-level" id="raRiskLevel">Baixo</span>
-          </div>
-          <div class="ra-risk-bar"><div class="fill" id="raRiskFill" style="width:0%;background:var(--ok)"></div></div>
-          <div class="ra-risk-hint">Este indicador é apenas um apoio visual e não substitui o julgamento do piloto/observador responsável.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Dados do Cliente</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Dados da Missão</h3>
       <div class="lb-grid">
         <div class="lb-field"><label>Data da Missão</label><input id="raDataMissao" type="date" value="${RA_STATE.dataMissao}" onchange="raSyncField('dataMissao',this.value)"></div>
         <div class="lb-field"><label>Cliente / Empresa</label><input id="raCliente" placeholder="Nome do cliente" onchange="raSyncField('cliente',this.value)"></div>
@@ -3745,10 +3900,7 @@ function renderRiskAssessment(n, overrideState, lockedAtIso){
         <div class="lb-field"><label>Local do Ativo</label><input id="raLocalAtivo" onchange="raSyncField('localAtivo',this.value)"></div>
         <div class="lb-field"><label>Descrição do Ativo</label><input id="raDescAtivo" onchange="raSyncField('descAtivo',this.value)"></div>
       </div>
-    </div>
-
-    <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Contato no Local</h3>
+      <div class="ra-subhead">Contato no Local</div>
       <div class="lb-grid">
         <div class="lb-field"><label>Nome</label><input id="raContatoNome" onchange="raSyncField('contatoNome',this.value)"></div>
         <div class="lb-field"><label>Telefone</label><input id="raContatoTelefone" placeholder="(00) 00000-0000" onchange="raSyncField('contatoTelefone',this.value)"></div>
@@ -3762,35 +3914,52 @@ function renderRiskAssessment(n, overrideState, lockedAtIso){
     </div>
 
     <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Avaliação do Local — Elementos que Podem Danificar o Equipamento</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Riscos do Local</h3>
       <div id="raLocalBody"></div>
     </div>
 
     <div class="lb-section">
-      <h3>${IC.droplet}Substâncias Perigosas no Local do Ativo</h3>
+      <h3>${IC.droplet}Substâncias Perigosas</h3>
       <div id="raSubstBody"></div>
-      <div class="lb-hint" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Anexar FISPQ ao enviar este formulário, caso necessário.</div>
+      <div class="lb-hint" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Anexar FISPQ, se aplicável.</div>
     </div>
 
     <div class="lb-section">
-      <h3>${IC.shield}Equipamentos de Proteção Individual (EPI's) Obrigatórios</h3>
+      <h3>${IC.shield}EPIs Obrigatórios</h3>
       <div id="raEpiBody"></div>
     </div>
 
     <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 9-8 10-4.5-1-8-5-8-10V7l8-4z"/></svg>Aspectos Gerais</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 9-8 10-4.5-1-8-5-8-10V7l8-4z"/></svg>Verificações Pré-Operacionais<span class="ra-equiplabel" id="raAspectosEquipLabel"></span></h3>
       <div id="raAspectosBody"></div>
     </div>
 
     <div class="lb-section">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Recuperação do Equipamento em Caso de Acidente / Incidente</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Plano de Recuperação do Equipamento</h3>
       <div id="raRecupBody"></div>
     </div>
 
     <div class="lb-section">
-      <h3>${IC.grad}Declaração de Anuência</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Procedimento em Caso de Acidente</h3>
+      <ol class="ra-steps">${RA_ACIDENTE_STEPS.map((s,i)=>`<li><span class="n">${i+1}</span>${s}</li>`).join('')}</ol>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Aprovação da Operação</h3>
+
+      <div class="ra-subhead">Controles Mitigatórios Adotados</div>
+      <div id="raControlesBody"></div>
+
+      <div class="ra-subhead" style="margin-top:20px">Observações da Missão</div>
+      <textarea class="ra-obs" id="raObservacoes" placeholder="Exceções, condições específicas do local ou combinados com o cliente…" onchange="raSyncField('observacoes',this.value)">${RA_STATE.observacoes}</textarea>
+
+      <div class="ra-subhead" style="margin-top:20px">Status da Operação</div>
+      <div class="ra-status-hint" id="raStatusSuggestion"></div>
+      <div id="raStatusBody"></div>
+
+      <div class="ra-subhead" style="margin-top:20px">Declaração Final</div>
       <div class="ra-declare">
-        Declaro que as informações acima estão devidamente preenchidas e que não existem outros riscos conhecidos que não tenham sido citados. Declaro, ainda, que no momento da atividade a área estará devidamente isolada e sinalizada, e as pessoas envolvidas, direta e indiretamente, estarão cientes e anuentes com a presença do drone/robô na área de operação.
+        Confirmo que os riscos conhecidos desta operação foram avaliados, que os controles mitigatórios necessários foram implementados, e que a operação está autorizada conforme a classificação de status definida acima.
       </div>
       <div class="ra-agree" id="raAgree" onclick="raToggleAgree()"><div class="box">${RA_ICOK}</div><span>Li e estou de acordo com a declaração acima</span></div>
       <div class="lb-grid" style="margin-top:16px">
@@ -3830,10 +3999,12 @@ function renderRiskAssessment(n, overrideState, lockedAtIso){
   raRenderEpi();
   raRenderAspectos();
   raRenderRecuperacao();
+  raRenderControles();
+  raRenderStatus();
   raRenderSigPad();
-  raUpdateRiskMeter();
   raInitCloud();
 }
+
 
 function raChipHTML(group, item, checked, qualVal, hazardStyle){
   const qual = item.qual ? `<input class="ra-qual" placeholder="Qual?" value="${qualVal||''}" onclick="event.stopPropagation()" onchange="raSetQual('${group}','${item.key}Qual',this.value)">` : '';
@@ -3872,33 +4043,66 @@ function raRenderEpi(){
 }
 function raRenderAspectos(){
   const box = document.getElementById('raAspectosBody'); if(!box) return;
-  box.innerHTML = RA_ASPECTOS.map((q,i)=>`<div class="ra-qa">
-    <div class="q"><b>${String(i+1).padStart(2,'0')}</b>${q}</div>
-    <div class="ra-yn">
-      <button class="${RA_STATE.aspectos[i]==='sim'?'sel-sim':''}" onclick="raSetChoice('aspectos',${i},'sim')">Sim</button>
-      <button class="${RA_STATE.aspectos[i]==='nao'?'sel-nao':''}" onclick="raSetChoice('aspectos',${i},'nao')">Não</button>
-      <button class="${RA_STATE.aspectos[i]==='na'?'sel-na':''}" onclick="raSetChoice('aspectos',${i},'na')">N/A</button>
-    </div>
-  </div>`).join('');
+  const activeKey = raActiveEquipKey();
+  const list = raActiveAspectos();
+  if(RA_STATE.aspectosEquipKey !== activeKey){
+    RA_STATE.aspectosEquipKey = activeKey;
+    RA_STATE.aspectos = list.map(()=>'');
+  }
+  const label = document.getElementById('raAspectosEquipLabel');
+  if(label){ const it = RA_EQUIP_ITEMS.find(e=>e.key===activeKey); label.textContent = it ? it.label : ''; }
+  box.innerHTML = RA_ASPECTOS_GRUPOS.map(g=>{
+    const rows = list.map((item,i)=>({item,i})).filter(x=>x.item.grp===g.key).map(({item,i})=>`<div class="ra-qa">
+      <div class="q">${item.q}</div>
+      <div class="ra-yn">
+        <button class="${RA_STATE.aspectos[i]==='sim'?'sel-sim':''}" onclick="raSetChoice('aspectos',${i},'sim')">Sim</button>
+        <button class="${RA_STATE.aspectos[i]==='nao'?'sel-nao':''}" onclick="raSetChoice('aspectos',${i},'nao')">Não</button>
+        <button class="${RA_STATE.aspectos[i]==='na'?'sel-na':''}" onclick="raSetChoice('aspectos',${i},'na')">N/A</button>
+      </div>
+    </div>`).join('');
+    if(!rows) return '';
+    return `<div class="ra-grp">
+      <div class="ra-grp-head">${IC[g.icon]||''}<span>${g.label}</span></div>
+      ${rows}
+    </div>`;
+  }).join('');
 }
 function raRenderRecuperacao(){
   const box = document.getElementById('raRecupBody'); if(!box) return;
   box.innerHTML = RA_RECUPERACAO.map((q,i)=>`<div class="ra-qa">
-    <div class="q"><b>${String(i+1).padStart(2,'0')}</b>${q}</div>
+    <div class="q">${q}</div>
     <div class="ra-yn">
       <button class="${RA_STATE.recuperacao[i]==='sim'?'sel-sim':''}" onclick="raSetChoice('recuperacao',${i},'sim')">Sim</button>
       <button class="${RA_STATE.recuperacao[i]==='nao'?'sel-nao':''}" onclick="raSetChoice('recuperacao',${i},'nao')">Não</button>
     </div>
   </div>`).join('');
 }
+function raRenderControles(){
+  const box = document.getElementById('raControlesBody'); if(!box) return;
+  const c = RA_STATE.controles;
+  box.innerHTML = `<div class="ra-chipgrid">${RA_CONTROLES_ITEMS.map(it=>raChipHTML('controles', it, c[it.key], null, false)).join('')}${raOutrosChipHTML('controles', c.outros, c.outrosDesc, false)}</div>`;
+}
+function raRenderStatus(){
+  const box = document.getElementById('raStatusBody'); if(!box) return;
+  const hint = document.getElementById('raStatusSuggestion');
+  const r = raComputeRisk();
+  if(hint){
+    hint.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Sugestão com base nas respostas acima: <b style="color:${r.color}">${r.suggested==='liberada'?'Operação Liberada':r.suggested==='restricoes'?'Liberada com Restrições':'Operação Não Liberada'}</b>. A decisão final é sempre do responsável pela operação.`;
+  }
+  box.innerHTML = `<div class="ra-statusgrid">${RA_STATUS_OPTS.map(o=>`
+    <button type="button" class="ra-statusbtn ${o.key} ${RA_STATE.statusFinal===o.key?'sel':''}" onclick="raSetStatusFinal('${o.key}')">
+      <span class="dot">${o.dot}</span><span class="lbl">${o.label}</span>
+    </button>`).join('')}</div>`;
+}
 
 function raToggleChip(group, key){
   RA_STATE[group][key] = !RA_STATE[group][key];
-  if(group==='equip') raRenderEquip();
+  if(group==='equip'){ raRenderEquip(); raRenderAspectos(); }
   else if(group==='local') raRenderLocal();
   else if(group==='subst') raRenderSubst();
   else if(group==='epi') raRenderEpi();
-  raUpdateRiskMeter();
+  else if(group==='controles') raRenderControles();
+  raRenderStatus();
   raMarkDirty();
 }
 function raSetQual(group, key, val){
@@ -3908,7 +4112,12 @@ function raSetQual(group, key, val){
 function raSetChoice(group, i, val){
   RA_STATE[group][i] = (RA_STATE[group][i]===val) ? '' : val;
   if(group==='aspectos') raRenderAspectos(); else raRenderRecuperacao();
-  raUpdateRiskMeter();
+  raRenderStatus();
+  raMarkDirty();
+}
+function raSetStatusFinal(key){
+  RA_STATE.statusFinal = (RA_STATE.statusFinal===key) ? '' : key;
+  raRenderStatus();
   raMarkDirty();
 }
 function raSyncField(field, val){ RA_STATE[field] = val; raUpdateTailstrip(); raMarkDirty(); }
@@ -3921,11 +4130,16 @@ function raRenderSigPad(){
   const pad=document.getElementById('raSigPad'); if(!pad) return;
   if(RA_STATE.assinaturaImg){
     pad.classList.add('signed');
-    pad.innerHTML=`<img src="${RA_STATE.assinaturaImg}" alt="assinatura">`;
+    pad.innerHTML=`<img src="${RA_STATE.assinaturaImg}" alt="assinatura"><button type="button" class="ra-sig-del" onclick="event.stopPropagation();raClearSig()" title="Excluir assinatura" aria-label="Excluir assinatura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
   } else {
     pad.classList.remove('signed');
     pad.innerHTML=`<span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21c4-1 7-3 10-6 3-3 4-6 3-7s-4 0-7 3c-3 3-5 6-6 10z"/><path d="M14 8l2 2"/></svg>Toque para assinar (dedo ou caneta)</span>`;
   }
+}
+function raClearSig(){
+  RA_STATE.assinaturaImg=null;
+  raRenderSigPad();
+  raMarkDirty();
 }
 function raOpenSig(){
   openSignaturePad('Assinatura — Declaração de Anuência', dataUrl=>{
@@ -3959,6 +4173,30 @@ function raYnBlock(title, questions, values){
     const cls = v==='sim'?'sim':v==='nao'?'nao':v==='na'?'na':'blank';
     return `<tr><td class="rp-qnum">${String(i+1).padStart(2,'0')}</td><td>${raEsc(q)}</td><td><span class="rp-pill ${cls}">${label}</span></td></tr>`;
   }).join('');
+  return `<div class="rp-section"><h3>${raEsc(title)}</h3><table class="rp-table"><tbody>${rows}</tbody></table></div>`;
+}
+
+/* mesma lógica do raYnBlock, mas os itens vêm agrupados por contexto
+   (Pessoas / Área / Atmosfera / Equipamentos), com uma linha de
+   cabeçalho de grupo entre eles — usado nas Verificações Pré-Operacionais. */
+function raYnBlockGrouped(title, groupsMeta, items, values){
+  let rows = '';
+  groupsMeta.forEach(g=>{
+    const subset = items.map((it,i)=>({it,i})).filter(x=>x.it.grp===g.key);
+    if(!subset.length) return;
+    rows += `<tr class="rp-grouprow"><td colspan="3">${raEsc(g.label)}</td></tr>`;
+    subset.forEach(({it,i})=>{
+      const v = values[i];
+      const label = v==='sim'?'SIM':v==='nao'?'NÃO':v==='na'?'N/A':'—';
+      const cls = v==='sim'?'sim':v==='nao'?'nao':v==='na'?'na':'blank';
+      rows += `<tr><td class="rp-qnum"></td><td>${raEsc(it.q)}</td><td><span class="rp-pill ${cls}">${label}</span></td></tr>`;
+    });
+  });
+  return `<div class="rp-section"><h3>${raEsc(title)}</h3><table class="rp-table"><tbody>${rows}</tbody></table></div>`;
+}
+
+function raStepsBlock(title, steps){
+  const rows = steps.map((s,i)=>`<tr><td class="rp-qnum">${i+1}</td><td>${raEsc(s)}</td></tr>`).join('');
   return `<div class="rp-section"><h3>${raEsc(title)}</h3><table class="rp-table"><tbody>${rows}</tbody></table></div>`;
 }
 
@@ -4018,6 +4256,10 @@ function rpStyles(){
   .rp-sigcell{text-align:center;width:38px}
   .rp-sigcell img{height:22px;max-width:52px;object-fit:contain;vertical-align:middle}
   .rp-sigcell .chk{color:#1E7B4F;font-weight:700}
+  .rp-grouprow td{background:#EEF3F9;color:#134074;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;padding:6px 6px}
+  .rp-status-final{display:flex;align-items:center;gap:10px;border:1.5px solid #ccc;border-radius:9px;padding:12px 16px}
+  .rp-status-final .dot{font-size:20px;line-height:1}
+  .rp-status-final .lbl{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
   .rp-declare{background:#FAFAFA;border:1px solid #E4EAF1;border-radius:8px;padding:13px 15px;font-size:11.5px;color:#5A6B7F;line-height:1.65}
   .rp-declfields{margin-top:14px}
   .rp-signblock{margin-top:32px;display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
@@ -4125,13 +4367,14 @@ async function gerarPdfBlob(headHtml, bodyHtml){
 function raBuildReport(){
   const risk = raComputeRisk();
   const clienteNome = raEsc(RA_STATE.cliente || 'sem cliente');
+  const statusOpt = RA_STATUS_OPTS.find(o=>o.key===RA_STATE.statusFinal);
 
   const headHtml = `
   <div class="rp-header">
     <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
     <div class="rp-title">
-      <h1>Risk Assessment — Avaliação de Risco</h1>
-      <div class="sub">Avaliação de risco pré-missão · ${raEsc(RA_STATE.cliente)||'—'} · ${raEsc(RA_STATE.dataMissao)||'—'}</div>
+      <h1>Risk Assessment</h1>
+      <div class="sub">Avaliação de risco antes da missão · ${raEsc(RA_STATE.cliente)||'—'} · ${raEsc(RA_STATE.dataMissao)||'—'}</div>
       <div class="rp-meta">
         <span class="rp-chip">DOC FO-OPE-002</span>
         <span class="rp-chip">REV 01</span>
@@ -4142,11 +4385,11 @@ function raBuildReport(){
   </div>
   <div class="rp-risk" style="background:${risk.bg};border-color:${risk.color}">
     <div class="n" style="color:${risk.color}">${risk.score}</div>
-    <div class="t"><b style="color:${risk.color}">Nível de risco: ${risk.label}</b><div>Baseado em ${risk.hazardCount} risco(s) identificado(s) no local/substâncias e ${risk.gapCount} item(ns) não conforme(s) nos aspectos gerais.</div></div>
+    <div class="t"><b style="color:${risk.color}">Indicador de risco: ${risk.label}</b><div>Baseado em ${risk.hazardCount} risco(s) identificado(s) no local/substâncias e ${risk.gapCount} item(ns) não conforme(s) nas verificações e no plano de recuperação.</div></div>
   </div>`;
 
   const bodyHtml = `
-  <div class="rp-section"><h3>Dados do Cliente</h3>
+  <div class="rp-section"><h3>Dados da Missão</h3>
     <div class="rp-grid">
       <div class="rp-field"><div class="k">Data da Missão</div><div class="v">${raEsc(RA_STATE.dataMissao)||'—'}</div></div>
       <div class="rp-field"><div class="k">Cliente / Empresa</div><div class="v">${raEsc(RA_STATE.cliente)||'—'}</div></div>
@@ -4166,15 +4409,29 @@ function raBuildReport(){
   </div>
 
   ${raChecklistBlock('Equipamento', RA_EQUIP_ITEMS, RA_STATE.equip)}
-  ${raChecklistBlock('Avaliação do Local — Elementos que Podem Danificar o Equipamento', RA_LOCAL_ITEMS, RA_STATE.local)}
-  ${raChecklistBlock('Substâncias Perigosas no Local do Ativo', RA_SUBST_ITEMS, RA_STATE.subst)}
-  ${raChecklistBlock("Equipamentos de Proteção Individual (EPI's) Obrigatórios", RA_EPI_ITEMS, RA_STATE.epi)}
+  ${raChecklistBlock('Riscos do Local', RA_LOCAL_ITEMS, RA_STATE.local)}
+  ${raChecklistBlock('Substâncias Perigosas', RA_SUBST_ITEMS, RA_STATE.subst)}
+  ${raChecklistBlock('EPIs Obrigatórios', RA_EPI_ITEMS, RA_STATE.epi)}
 
-  ${raYnBlock('Aspectos Gerais', RA_ASPECTOS, RA_STATE.aspectos)}
-  ${raYnBlock('Recuperação do Equipamento em Caso de Acidente / Incidente', RA_RECUPERACAO, RA_STATE.recuperacao)}
+  ${raYnBlockGrouped('Verificações Pré-Operacionais — '+(RA_EQUIP_ITEMS.find(e=>e.key===raActiveEquipKey())||{}).label, RA_ASPECTOS_GRUPOS, raActiveAspectos(), RA_STATE.aspectos)}
+  ${raYnBlock('Plano de Recuperação do Equipamento', RA_RECUPERACAO, RA_STATE.recuperacao)}
+  ${raStepsBlock('Procedimento em Caso de Acidente', RA_ACIDENTE_STEPS)}
 
-  <div class="rp-section"><h3>Declaração de Anuência</h3>
-    <div class="rp-declare">Declaro que as informações acima estão devidamente preenchidas e que não existem outros riscos conhecidos que não tenham sido citados. Declaro, ainda, que no momento da atividade a área estará devidamente isolada e sinalizada, e as pessoas envolvidas, direta e indiretamente, estarão cientes e anuentes com a presença do drone/robô na área de operação.</div>
+  ${raChecklistBlock('Controles Mitigatórios Adotados', RA_CONTROLES_ITEMS, RA_STATE.controles)}
+
+  <div class="rp-section"><h3>Observações da Missão</h3>
+    <div class="rp-field"><div class="v">${raEsc(RA_STATE.observacoes)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Status da Operação</h3>
+    <div class="rp-status-final" style="border-color:${statusOpt?statusOpt.color:'#ccc'}">
+      <span class="dot">${statusOpt?statusOpt.dot:'—'}</span>
+      <span class="lbl" style="color:${statusOpt?statusOpt.color:'#5A6B7F'}">${statusOpt?statusOpt.label:'Status não definido'}</span>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Declaração Final</h3>
+    <div class="rp-declare">Confirmo que os riscos conhecidos desta operação foram avaliados, que os controles mitigatórios necessários foram implementados, e que a operação está autorizada conforme a classificação de status definida acima.</div>
     <div class="rp-grid rp-declfields">
       <div class="rp-field"><div class="k">Local</div><div class="v">${raEsc(RA_STATE.declLocal)||'—'}</div></div>
       <div class="rp-field"><div class="k">Data</div><div class="v">${raEsc(RA_STATE.declData)||'—'}</div></div>
@@ -4212,21 +4469,13 @@ function raComputeRisk(){
     + (RA_STATE.local.outros?1:0)
     + RA_SUBST_ITEMS.filter(it=>RA_STATE.subst[it.key]).length
     + (RA_STATE.subst.outros?1:0);
-  const gapCount = RA_STATE.aspectos.filter(v=>v==='nao').length;
+  const gapCount = RA_STATE.aspectos.filter(v=>v==='nao').length
+    + RA_STATE.recuperacao.filter(v=>v==='nao').length;
   const score = Math.min(100, hazardCount*10 + gapCount*15);
-  let level='low', label='Baixo', color='#1E7B4F', bg='#E7F4EC';
-  if(score>=50){ level='high'; label='Alto'; color='#B42318'; bg='#FBEAE8'; }
-  else if(score>=20){ level='med'; label='Médio'; color='#B5820A'; bg='#FBF3DE'; }
-  return {score,level,label,color,bg,hazardCount,gapCount};
-}
-function raUpdateRiskMeter(){
-  const r = raComputeRisk();
-  const cssColor = r.level==='high' ? 'var(--crit)' : r.level==='med' ? 'var(--warn)' : 'var(--ok)';
-  const boxEl=document.getElementById('raRiskBox');
-  if(boxEl) boxEl.className = 'ra-risk '+r.level;
-  const scoreEl=document.getElementById('raRiskScore'); if(scoreEl) scoreEl.textContent = r.score;
-  const levelEl=document.getElementById('raRiskLevel'); if(levelEl) levelEl.textContent = r.label;
-  const fillEl=document.getElementById('raRiskFill'); if(fillEl){ fillEl.style.width = r.score+'%'; fillEl.style.background = cssColor; }
+  let level='low', label='Baixo', color='#1E7B4F', bg='#E7F4EC', suggested='liberada';
+  if(score>=50){ level='high'; label='Alto'; color='#B42318'; bg='#FBEAE8'; suggested='nao_liberada'; }
+  else if(score>=20){ level='med'; label='Médio'; color='#B5820A'; bg='#FBF3DE'; suggested='restricoes'; }
+  return {score,level,label,color,bg,hazardCount,gapCount,suggested};
 }
 function raMarkDirty(){
   const s = document.getElementById('raStatus');
