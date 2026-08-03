@@ -1366,7 +1366,7 @@ const TREE = [
                 ]}
             ]}
         ]},
-      { id:'ativos', label:'<b>Ativos</b>', icon:'box', type:'group', status:'ok', sidebarLeaf:true, root:true,
+      { id:'ativos', label:'<b>Ativos</b>', icon:'box', type:'group', status:'ok', sidebarLeaf:true, root:true, hidden:true,
         children:[
           { id:'ativos-mineracao', label:'Mineração', icon:'mountain', type:'group', status:'draft', desc:'Barragens, correias e britadores', children:[] },
           { id:'ativos-petroleo-gas', label:'Petróleo e Gás', icon:'flame', type:'group', status:'draft', desc:'Plataformas, tanques e dutos', children:[] },
@@ -1471,11 +1471,10 @@ function stripHTML(s){ return s.replace(/<[^>]+>/g,''); }
 const RAIL_SECTIONS = [
   { id:'home', label:'Dashboard', icon:'home' },
   { id:'org', label:'Estrutura Documental', icon:'org', node:'org' },
-  { id:'ativos', label:'Ativos', icon:'factory' },
-  { id:'equip', label:'Equipamentos', icon:'fleet' },
-  { id:'conhecimento', label:'Conhecimento', icon:'book' },
   { id:'gestao', label:'Gestão', icon:'org' },
-  { id:'admin', label:'Administração', icon:'wrench' }
+  { id:'conhecimento', label:'Conhecimento', icon:'book' },
+  { id:'equip', label:'Equipamentos', icon:'fleet' },
+  { id:'ativos', label:'Ativos', icon:'factory' }
 ];
 const OP_TYPES = [
   { id:'insp-int', label:'Inspeção Interna', icon:'pin', desc:'Inspeção de ativos em áreas internas da planta.' },
@@ -1488,8 +1487,8 @@ const HUB_DEFS = {
   // ----- topo do rail -----
   operacoes:{ title:'Operações', icon:'shield', kind:'ops',
     sub:'Inicie uma operação escolhendo o tipo e o equipamento — o sistema leva você direto ao Risk Assessment, checklist e diário certos.' },
-  ativos:{ title:'Ativos', icon:'factory', kind:'ativos',
-    sub:'Os objetos inspecionados — tanques, caldeiras, dutos, chaminés. Cada ativo é independente do equipamento usado pra inspecioná-lo.' },
+  ativos:{ title:'Ativos', icon:'factory', kind:'landing',
+    sub:'Os objetos inspecionados — tanques, caldeiras, dutos, chaminés — organizados por segmento industrial. Cada ativo é independente do equipamento usado pra inspecioná-lo.' },
   equip:{ title:'Equipamentos', icon:'fleet', kind:'equip',
     sub:'Os recursos usados para operar — drones, robôs e veículos. Cada equipamento referencia procedimentos, não é dono deles.' },
   conhecimento:{ title:'Conhecimento', icon:'book', kind:'landing',
@@ -1508,7 +1507,18 @@ const HUB_DEFS = {
   biblioteca:{ title:'Fabricantes · Biblioteca Técnica', icon:'book', kind:'lib', parentHub:'conhecimento',
     sub:'Manuais originais dos fabricantes, por equipamento.' },
   normas:{ title:'Normas', icon:'shield', kind:'soon', parentHub:'conhecimento',
-    sub:'Normas regulatórias e técnicas aplicáveis às operações (ANAC, NRs, ISO).' }
+    sub:'Normas regulatórias e técnicas aplicáveis às operações (ANAC, NRs, ISO).' },
+  // ----- sub-hubs dentro de Ativos (por segmento industrial) -----
+  'ativos-celulose':{ title:'Celulose', icon:'leaf', kind:'ativos', parentHub:'ativos', groupId:'ativos-celulose',
+    sub:'Tanques, torres, chaminés e transportadores mapeados na planta de celulose.' },
+  'ativos-mineracao':{ title:'Mineração', icon:'mountain', kind:'ativos', parentHub:'ativos', groupId:'ativos-mineracao',
+    sub:'Barragens, correias e britadores.' },
+  'ativos-petroleo-gas':{ title:'Petróleo e Gás', icon:'flame', kind:'ativos', parentHub:'ativos', groupId:'ativos-petroleo-gas',
+    sub:'Plataformas, tanques e dutos.' },
+  'ativos-energia':{ title:'Energia', icon:'bolt', kind:'ativos', parentHub:'ativos', groupId:'ativos-energia',
+    sub:'Subestações, linhas e transformadores.' },
+  'ativos-siderurgia':{ title:'Siderurgia', icon:'factory', kind:'ativos', parentHub:'ativos', groupId:'ativos-siderurgia',
+    sub:'Altos-fornos, coquerias e convertedores.' }
 };
 Object.keys(HUB_DEFS).forEach(k=>{ BYID['hub-'+k]={ id:'hub-'+k, type:'hub', hub:k, label:HUB_DEFS[k].title }; });
 Object.keys(HUB_DEFS).forEach(k=>{ PARENT['hub-'+k] = HUB_DEFS[k].parentHub ? BYID['hub-'+HUB_DEFS[k].parentHub] : null; });
@@ -1538,7 +1548,17 @@ function classifyFamily(n){
 function walkTree(fn){ (function w(nodes){ nodes.forEach(n=>{ fn(n); if(n.children) w(n.children); }); })(TREE); }
 function collectByFamily(fam){ const out=[]; walkTree(n=>{ if(classifyFamily(n)===fam) out.push(n); }); return out; }
 function collectEquip(){ return collectVehicles(); } // "Equipamentos" = recursos operacionais (veículos), não inclui ativos
-function collectAtivosList(){ const out=[]; walkTree(n=>{ if(n.type==='asset') out.push(n); }); return out; }
+function collectAtivosList(groupId){
+  const out=[];
+  if(groupId){
+    const root=BYID[groupId];
+    if(!root) return out;
+    (function walk(list){ (list||[]).forEach(n=>{ if(n.type==='asset') out.push(n); if(n.children) walk(n.children); }); })(root.children);
+    return out;
+  }
+  walkTree(n=>{ if(n.type==='asset') out.push(n); });
+  return out;
+}
 function collectVehicles(){ const out=[]; walkTree(n=>{ if(n.type==='vehicle') out.push(n); }); return out; }
 function collectLibrary(){
   const out=[];
@@ -1606,6 +1626,7 @@ function landingCard(hubKey){
   let count=null;
   if(m.kind==='family') count=collectByFamily(m.fam).length;
   else if(m.kind==='lib') count=collectLibrary().length;
+  else if(m.kind==='ativos') count=collectAtivosList(m.groupId).length;
   return `
     <div class="doc-hub-card" onclick="selectNode('hub-${hubKey}')">
       <div class="dh-ic">${IC[m.icon]||IC.folder}</div>
@@ -1724,7 +1745,7 @@ function renderHub(key){
   let items, cardsHTML;
   if(meta.kind==='family'){ items = collectByFamily(meta.fam); cardsHTML = items.map(hubCard).join(''); }
   else if(meta.kind==='equip'){ items = collectEquip(); cardsHTML = items.map(equipCard).join(''); }
-  else if(meta.kind==='ativos'){ items = collectAtivosList(); cardsHTML = items.map(ativoCard).join(''); }
+  else if(meta.kind==='ativos'){ items = collectAtivosList(meta.groupId); cardsHTML = items.map(ativoCard).join(''); }
   else { items = collectLibrary(); cardsHTML = items.map(libCard).join(''); }
   const count = items.length;
   viewDoc.innerHTML=`
@@ -2019,7 +2040,6 @@ function renderHome(){
 
     <div class="home-actions">
       <button class="home-action-btn primary" onclick="selectNode('org')">${IC.org}<span>Estrutura Documental</span></button>
-      <button class="home-action-btn" onclick="selectNode('hub-ativos')">${IC.factory}<span>Ativos</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-equip')">${IC.fleet}<span>Equipamentos</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-fo')">${IC.pdf}<span>Abrir Formulário</span></button>
       <button class="home-action-btn" onclick="selectNode('hub-conhecimento')">${IC.book}<span>Biblioteca</span></button>
@@ -2029,10 +2049,10 @@ function renderHome(){
     <div class="home-actions">
       <button class="home-action-btn" onclick="selectNode('mgo')">${IC.book}<span>MGO</span></button>
       <button class="home-action-btn" onclick="selectNode('mgm')">${IC.wrench}<span>MGM</span></button>
+      <button class="home-action-btn" onclick="selectNode('risk-assessment')">${IC.shield}<span>Risk Assessment</span></button>
+      <button class="home-action-btn" onclick="selectNode('plano-captura')">${IC.shield}<span>Plano de Captura</span></button>
       <button class="home-action-btn" onclick="selectNode('diarios')">${IC.file}<span>Diário de Bordo</span></button>
       <button class="home-action-btn" onclick="selectNode('diarios-manut')">${IC.wrench}<span>Diário de Manutenção</span></button>
-      <button class="home-action-btn" onclick="selectNode('plano-captura')">${IC.shield}<span>Plano de Captura</span></button>
-      <button class="home-action-btn" onclick="selectNode('risk-assessment')">${IC.shield}<span>Risk Assessment</span></button>
     </div>
 
     <div class="dash-grid">
