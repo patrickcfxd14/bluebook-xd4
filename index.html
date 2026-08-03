@@ -1381,7 +1381,7 @@ const TREE = [
               { id:'ativos-celulose-chamine-caldeira-1', label:'Chaminé da Caldeira 1', icon:'factory', type:'asset', status:'ok',
                 children:[ { id:'ativos-celulose-chamine-caldeira-1-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-chamine-caldeira' } ] },
               { id:'ativos-celulose-chamine-forno-lama-cal', label:'Chaminé do Forno de Lama de Cal', icon:'factory', type:'asset', status:'ok',
-                children:[ { id:'ativos-celulose-chamine-forno-lama-cal-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-chamine-caldeira' } ] },
+                children:[ { id:'ativos-celulose-chamine-forno-lama-cal-pop', label:'POP — Inspeção Interna (Elios 3)', icon:'file', code:'POP', status:'ok', type:'pop-elios3-chamine-forno-lama-cal' } ] },
               { id:'ativos-celulose-dutos-precipitadores', label:'Dutos dos Precipitadores', icon:'pipe', type:'asset', status:'warn' },
               { id:'ativos-celulose-tanque-licor-preto-fraco', label:'Tanque Armaz. Licor Preto Fraco', icon:'droplet', type:'asset', status:'warn',
                 children:[ { id:'ativos-celulose-tanque-licor-preto-fraco-pop', label:'POP — Estratégia de Voo para Tanques e Silos Cilíndricos', icon:'file', code:'POP', status:'ok', type:'pop-tanques' } ] },
@@ -1841,6 +1841,15 @@ function routeTo(id){
       title:'Estratégia de Voo — Tanques e Silos Cilíndricos', subtitle:'Procedimento Operacional · Inspeção Interna com Elios 3',
       tag:'Metodologia padronizada de voo para inspeção interna de tanques e silos cilíndricos com o drone Elios 3 — cobertura integral do ativo, estratégias por região (teto, costado, fundo, soldas, agitadores) e critérios de segurança e interrupção de missão.',
       footer:'Estratégia de Voo — Tanques e Silos Cilíndricos'
+    });
+    show(viewDoc); return;
+  }
+  if(n.type==='pop-elios3-chamine-forno-lama-cal'){
+    renderDocFromKey('pop-elios3-chamine-forno-lama-cal', {
+      idPrefix:'chflc', crumbId:n.id, icon:'file', code:'POP',
+      title:'POP — Chaminé do Forno de Lama de Cal (Elios 3)', subtitle:'Procedimento Operacional Padrão · Inspeção Interna',
+      tag:'Procedimento Operacional Padrão para inspeção interna da chaminé do Forno de Lama de Cal, utilizando o Flyability Elios 3 — cobre entrada, subida, inspeção da região superior, descida helicoidal, região crítica de transição forno/chaminé e inspeção de depósitos de pó de cal.',
+      footer:'POP Chaminé do Forno de Lama de Cal — Elios 3'
     });
     show(viewDoc); return;
   }
