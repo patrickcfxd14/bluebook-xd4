@@ -3822,7 +3822,8 @@ const RA_EQUIP_ITEMS = [
 ];
 const RA_LOCAL_ITEMS = [
   { key:'confinada', label:'Área confinada' },
-  { key:'aguaPoeira', label:'Presença de água e poeira' },
+  { key:'agua', label:'Presença de água' },
+  { key:'poeira', label:'Presença de poeira' },
   { key:'ultrapassarGaiola', label:'Elementos que podem atingir o equipamento' },
   { key:'cairSobre', label:'Elementos que podem cair sobre o equipamento' },
   { key:'ambienteExplosivo', label:'Ambiente explosivo' },
@@ -3992,7 +3993,7 @@ function raDefaultState(){
     dataMissao:new Date().toISOString().slice(0,10), cliente:'', proposta:'', ordemServico:'', localAtivo:'', descAtivo:'',
     contatoNome:'', contatoTelefone:'', contatoFuncao:'',
     equip:{elios3:false,elios2:false,go2:false,go2wheels:false,g1:false,rover:false,outro:false,outroQual:''},
-    local:{confinada:false,aguaPoeira:false,ultrapassarGaiola:false,cairSobre:false,ambienteExplosivo:false,ventos:false,outros:false,outrosDesc:''},
+    local:{confinada:false,agua:false,poeira:false,ultrapassarGaiola:false,cairSobre:false,ambienteExplosivo:false,ventos:false,outros:false,outrosDesc:''},
     subst:{toxico:false,nocivo:false,corrosivo:false,comburente:false,explosivo:false,biologico:false,outros:false,outrosDesc:''},
     epi:{capacete:false,oculos:false,protetorAuditivo:false,luvas:false,calcado:false,macacao:false,altaVisibilidade:false,outros:false,outrosDesc:''},
     aspectos:RA_ASPECTOS_ELIOS.map(()=>''), aspectosEquipKey:'elios3',
