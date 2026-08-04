@@ -1436,11 +1436,11 @@ const TREE = [
       { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
         files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] },
       { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'file', code:'FO-OPE-005', badge:'Novo', status:'ok', type:'epiform' },
-      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico' },
-      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'file', code:'FO-OPE-018', status:'ok', type:'digital-relatorio-missao' },
-      { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'file', code:'FO-OPE-021', status:'ok', type:'digital-relatorio-peritagem' },
-      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'file', code:'OD-OPE-001', status:'ok', type:'digital-tabela-preservacao' },
-      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'file', code:'OD-OPE-003', status:'ok', type:'digital-certificado-treino' }
+      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'file', code:'FO-OPE-006', badge:'Novo', status:'ok', type:'digital-ordem-servico' },
+      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'file', code:'FO-OPE-018', badge:'Novo', status:'ok', type:'digital-relatorio-missao' },
+      { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'file', code:'FO-OPE-021', badge:'Novo', status:'ok', type:'digital-relatorio-peritagem' },
+      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'file', code:'OD-OPE-001', badge:'Novo', status:'ok', type:'digital-tabela-preservacao' },
+      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'file', code:'OD-OPE-003', badge:'Novo', status:'ok', type:'digital-certificado-treino' }
     ]}
 ];
 
@@ -1897,11 +1897,11 @@ function routeTo(id){
   if(n.type==='digital-servico-nao-conforme'){ renderDocFromKey('it-ope-002-servico-nao-conforme', { idPrefix:'itsnc', crumbId:n.id, icon:'file', code:'IT-OPE-002', title:'Serviço Não Conforme', subtitle:'Instrução de Trabalho · Qualidade', tag:'Define os critérios para identificação, tratamento e registro de não conformidades em produtos e serviços, incluindo os cenários específicos de inspeção/captura de imagens, treinamento e venda de drones.', footer:'IT-OPE-002 · Serviço Não Conforme' }); show(viewDoc); return; }
   if(n.type==='digital-ordem-servico-nr01'){ renderDocFromKey('it-ope-008-ordem-servico-nr01', { idPrefix:'itos01', crumbId:n.id, icon:'file', code:'IT-OPE-008', title:'Ordem de Serviço NR-01', subtitle:'Instrução de Trabalho · Segurança do Trabalho', tag:'Ordem de serviço obrigatória por força da NR-1, detalhando atividades, obrigações do colaborador e da empresa, riscos da operação, EPI obrigatórios, proibições e procedimento disciplinar.', footer:'IT-OPE-008 · Ordem de Serviço NR-01' }); show(viewDoc); return; }
   if(n.type==='epiform'){ renderEpiForm(n); show(viewDoc); return; }
-  if(n.type==='digital-ordem-servico'){ renderDocFromKey('fo-ope-006-ordem-servico', { idPrefix:'foos', crumbId:n.id, icon:'file', code:'FO-OPE-006', title:'Ordem de Serviço', subtitle:'Formulário · Operações', tag:'Formulário de abertura e fechamento de Ordem de Serviço, cobrindo operação em campo, declaração de anuência, processamento de dados e tempo de serviço.', footer:'FO-OPE-006 · Ordem de Serviço' }); show(viewDoc); return; }
-  if(n.type==='digital-relatorio-missao'){ renderDocFromKey('fo-ope-018-relatorio-missao', { idPrefix:'form', crumbId:n.id, icon:'file', code:'FO-OPE-018', title:'Relatório de Missão', subtitle:'Formulário · Operações', tag:'Formulário de encerramento de missão (Rel Mis), com indicadores de desempenho, processamento dos dados, riscos, debriefing com o cliente e inteligência de campo.', footer:'FO-OPE-018 · Relatório de Missão' }); show(viewDoc); return; }
-  if(n.type==='digital-relatorio-peritagem'){ renderDocFromKey('fo-ope-021-relatorio-preliminar-peritagem', { idPrefix:'foper', crumbId:n.id, icon:'file', code:'FO-OPE-021', title:'Relatório Preliminar de Peritagem', subtitle:'Formulário · Manutenção', tag:'Modelo de relatório preliminar de peritagem de equipamento, cobrindo recebimento, plano de ação técnico e próximos passos até a liberação para retorno operacional.', footer:'FO-OPE-021 · Relatório Preliminar de Peritagem' }); show(viewDoc); return; }
-  if(n.type==='digital-tabela-preservacao'){ renderDocFromKey('od-ope-001-tabela-preservacao-produtos', { idPrefix:'odtab', crumbId:n.id, icon:'file', code:'OD-OPE-001', title:'Tabela de Preservação de Produtos', subtitle:'Outros Documentos · Qualidade', tag:'Regras de identificação, proteção, embalagem, armazenamento e transporte para os equipamentos em uso e descontinuados da frota.', footer:'OD-OPE-001 · Tabela de Preservação de Produtos' }); show(viewDoc); return; }
-  if(n.type==='digital-certificado-treino'){ renderDocFromKey('od-ope-003-certificado-treino-introdutorio', { idPrefix:'odcert', crumbId:n.id, icon:'file', code:'OD-OPE-003', title:'Certificado de Treino Introdutório', subtitle:'Outros Documentos · Treinamento', tag:'Certificado de conclusão do treinamento introdutório de técnicas de pilotagem remota para Operador de Inspeção de Qualidade, com o conteúdo programático ministrado.', footer:'OD-OPE-003 · Certificado de Treino Introdutório' }); show(viewDoc); return; }
+  if(n.type==='digital-ordem-servico'){ renderOrdemServico(n); show(viewDoc); return; }
+  if(n.type==='digital-relatorio-missao'){ renderRelatorioMissao(n); show(viewDoc); return; }
+  if(n.type==='digital-relatorio-peritagem'){ renderRelatorioPeritagem(n); show(viewDoc); return; }
+  if(n.type==='digital-tabela-preservacao'){ renderTabelaPreservacao(n); show(viewDoc); return; }
+  if(n.type==='digital-certificado-treino'){ renderCertificadoTreino(n); show(viewDoc); return; }
   if(n.type==='pop-g1'){ renderPOPG1(); show(viewDoc); return; }
   if(n.type==='pop-go2'){ renderPOPGO2(); show(viewDoc); return; }
   if(n.type==='pop-rover'){ renderPOPRover(); show(viewDoc); return; }
@@ -4661,6 +4661,1702 @@ async function raSave(){
     cliente: RA_STATE.cliente||null, local_ativo: RA_STATE.localAtivo||null,
     data: RA_STATE.dataMissao||null, state: RA_STATE
   });
+}
+
+/* ================================================================
+   ORDEM DE SERVIÇO — FO-OPE-006 — Registro Digital
+   ================================================================ */
+let OS_STATE = null;
+let OS_NODE = null;
+let OS_LOCKED_AT = null;
+
+function osDefaultState(){
+  return {
+    proposta:'', cliente:'', codigoOS:'',
+    campoLocal:'', campoDataInicio:'', campoDataTermino:'',
+    equipeExecucao:[{nome:'',funcao:''},{nome:'',funcao:''}],
+    servicoExecutado:'', aprovadoPor:'Chief Operational Officer',
+    anuenciaAgree:false, anuenciaSig:false,
+    dadosLocal:'', dadosDataInicio:'', dadosDataTermino:'',
+    equipeProcessamento:[{nome:'',funcao:''},{nome:'',funcao:''}],
+    prodCaptura:false, prodModelagem:false, prodRelatorio:false,
+    relatoMissao:'', processamentoDados:'',
+    tsOpEst:'', tsOpReal:'', tsProcEst:'', tsProcReal:''
+  };
+}
+const OS_ANUENCIA_TEXTO = `Declaro, que as informações respondidas no documento RISK ASSESSMENT foram confirmadas pelo Operador de Inspeção de Qualidade, em conjunto com o responsável do ativo a ser inspecionado.
+
+Declaro, ainda, que no momento da atividade, a área está devidamente isolada e sinalizada, e as pessoas envolvidas, direta e indiretamente, estão cientes e anuentes com a presença do drone na área de operação.
+
+NOTA: Caso o ambiente NÃO esteja adequado à inspeção ou sejam identificados riscos no local que não foram considerados no Risk Assessment, a contratada se compromete a prezar pela segurança da operação, assumindo a responsabilidade de realizar ou de interromper o serviço.
+
+Se for comprovado que o serviço foi executado até o ponto em que os operadores conseguiram deslocar o equipamento, mantendo a segurança de voo, e por motivos externos à empresa, o escopo da missão não foi concluído, a contratada não se compromete a oferecer descontos extras no serviço ou não receber o pagamento, tendo em vista que a operação foi realizada dentro das normas de segurança, não expondo o equipamento ou o próprio ativo a riscos maiores.`;
+
+function renderOrdemServico(n, overrideState, lockedAtIso){
+  OS_NODE = n;
+  OS_LOCKED_AT = lockedAtIso || null;
+  OS_STATE = overrideState || osDefaultState();
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap${OS_LOCKED_AT?' locked':''}" style="max-width:1040px">
+    ${OS_LOCKED_AT ? lockBannerHtml(OS_LOCKED_AT, 'osUnlockCopy') : ''}
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Ordem de Serviço</h1>
+          <div class="lb-sub">Formulário digital de abertura e fechamento de Ordem de Serviço — operação em campo, declaração de anuência e processamento de dados.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-006</b></span>
+            <span class="lb-chip">REV <b>03</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="osStatus"><span class="d"></span><span id="osStatusText">Rascunho não salvo</span></div>
+      </div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Proposta</div><div class="v">${raEsc(OS_STATE.proposta)||'—'}</div></div>
+        <div class="cell"><div class="k">Cliente</div><div class="v">${raEsc(OS_STATE.cliente)||'—'}</div></div>
+        <div class="cell"><div class="k">Código da OS</div><div class="v">${raEsc(OS_STATE.codigoOS)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Identificação</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Proposta</label><input id="osProposta" value="${raEsc(OS_STATE.proposta)}"></div>
+        <div class="lb-field"><label>Cliente</label><input id="osCliente" value="${raEsc(OS_STATE.cliente)}"></div>
+        <div class="lb-field"><label>Código da OS</label><input id="osCodigoOS" value="${raEsc(OS_STATE.codigoOS)}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Operação em Campo</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Local</label><input id="osCampoLocal" value="${raEsc(OS_STATE.campoLocal)}"></div>
+        <div class="lb-field"><label>Data de início</label><input id="osCampoDataInicio" type="date" value="${OS_STATE.campoDataInicio}"></div>
+        <div class="lb-field"><label>Data de término</label><input id="osCampoDataTermino" type="date" value="${OS_STATE.campoDataTermino}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Equipe Responsável pela Execução do Serviço</h3>
+      <div id="osEquipeExecucaoBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="osAddPessoa('equipeExecucao')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar pessoa</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Serviço a ser Executado</h3>
+      <div class="lb-field full"><textarea id="osServicoExecutado" class="tall" placeholder="Descreva o serviço a ser executado…">${OS_STATE.servicoExecutado}</textarea></div>
+      <div class="lb-field" style="margin-top:12px;max-width:340px"><label>Aprovado por</label><input id="osAprovadoPor" value="${raEsc(OS_STATE.aprovadoPor)}"></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Declaração de Anuência</h3>
+      <div class="ra-declare" style="white-space:pre-wrap">${OS_ANUENCIA_TEXTO}</div>
+      <div class="agree-row ${OS_STATE.anuenciaAgree?'on':''}" onclick="osToggleAgree()" style="margin-top:14px">
+        <div class="box">${OS_STATE.anuenciaAgree?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div>
+        <span>Declaro estar de acordo com os termos acima</span>
+      </div>
+      <div class="lb-ops" style="margin-top:14px">
+        <div class="lb-op-card">
+          <div class="tag">Assinatura do Responsável</div>
+          <div class="lb-sig ${OS_STATE.anuenciaSig?'on':''}" style="height:70px" onclick="osOpenSig('anuenciaSig','Assinatura do Responsável')">${sigMark(OS_STATE.anuenciaSig)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Processamento de Dados</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Local</label><input id="osDadosLocal" value="${raEsc(OS_STATE.dadosLocal)}"></div>
+        <div class="lb-field"><label>Data de início</label><input id="osDadosDataInicio" type="date" value="${OS_STATE.dadosDataInicio}"></div>
+        <div class="lb-field"><label>Data de término</label><input id="osDadosDataTermino" type="date" value="${OS_STATE.dadosDataTermino}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Equipe Responsável pelo Processamento dos Dados</h3>
+      <div id="osEquipeProcessamentoBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="osAddPessoa('equipeProcessamento')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar pessoa</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Produtos Adquiridos</h3>
+      <div class="ra-chipgrid">
+        <div class="ra-chip ${OS_STATE.prodCaptura?'on':''}" onclick="osToggleProd('prodCaptura')"><div class="box">${OS_STATE.prodCaptura?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div><span class="lbl">Captura de Imagens</span></div>
+        <div class="ra-chip ${OS_STATE.prodModelagem?'on':''}" onclick="osToggleProd('prodModelagem')"><div class="box">${OS_STATE.prodModelagem?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div><span class="lbl">Modelagem 3D</span></div>
+        <div class="ra-chip ${OS_STATE.prodRelatorio?'on':''}" onclick="osToggleProd('prodRelatorio')"><div class="box">${OS_STATE.prodRelatorio?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div><span class="lbl">Relatório Técnico</span></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Relato da Missão</h3>
+      <div class="lb-field full"><textarea id="osRelatoMissao" class="tall" placeholder="Relato da missão…">${OS_STATE.relatoMissao}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg>Processamento dos Dados</h3>
+      <div class="lb-field full"><textarea id="osProcessamentoDados" placeholder="Observações sobre o processamento dos dados…">${OS_STATE.processamentoDados}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Tempo de Serviço</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th style="text-align:left">Tempo de serviço</th><th>Estimado</th><th>Real</th></tr></thead>
+          <tbody>
+            <tr><td class="lb-local" style="text-align:left">Operação em Campo</td><td><input value="${raEsc(OS_STATE.tsOpEst)}" onchange="osSetField('tsOpEst',this.value)"></td><td><input value="${raEsc(OS_STATE.tsOpReal)}" onchange="osSetField('tsOpReal',this.value)"></td></tr>
+            <tr><td class="lb-local" style="text-align:left">Processamento de Dados</td><td><input value="${raEsc(OS_STATE.tsProcEst)}" onchange="osSetField('tsProcEst',this.value)"></td><td><input value="${raEsc(OS_STATE.tsProcReal)}" onchange="osSetField('tsProcReal',this.value)"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="lb-section" id="osCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Ordens salvas na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="osCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="osCloudListWrap" style="display:none">
+        <label>Abrir uma ordem já salva</label>
+        <select id="osCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="osSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Ordem de Serviço</button>
+        <button class="lb-print" onclick="osExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar PDF (layout completo)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="osToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="osToastText">Ordem salva</span></div>
+  `;
+  osRenderPessoas('equipeExecucao','osEquipeExecucaoBody');
+  osRenderPessoas('equipeProcessamento','osEquipeProcessamentoBody');
+  osInitCloud();
+}
+
+function osRenderPessoas(key, elId){
+  const body = document.getElementById(elId);
+  if(!body) return;
+  body.innerHTML = OS_STATE[key].map((p,i)=>`
+    <div class="lb-2col" style="align-items:end;margin-bottom:10px">
+      <div class="lb-field"><label>Nome</label><input value="${raEsc(p.nome)}" onchange="osSetPessoa('${key}',${i},'nome',this.value)"></div>
+      <div class="lb-field" style="display:flex;gap:8px;align-items:end">
+        <div style="flex:1"><label>Função</label><input value="${raEsc(p.funcao)}" onchange="osSetPessoa('${key}',${i},'funcao',this.value)"></div>
+        <div class="lb-rowdel" onclick="osDelPessoa('${key}',${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+      </div>
+    </div>`).join('');
+}
+function osSetPessoa(key,i,field,val){ OS_STATE[key][i][field]=val; osMarkDirty(); }
+function osAddPessoa(key){ OS_STATE[key].push({nome:'',funcao:''}); osRenderPessoas(key, key==='equipeExecucao'?'osEquipeExecucaoBody':'osEquipeProcessamentoBody'); osMarkDirty(); }
+function osDelPessoa(key,i){ OS_STATE[key].splice(i,1); osRenderPessoas(key, key==='equipeExecucao'?'osEquipeExecucaoBody':'osEquipeProcessamentoBody'); osMarkDirty(); }
+function osToggleProd(field){ OS_STATE[field]=!OS_STATE[field]; if(OS_NODE) renderOrdemServico(OS_NODE, OS_STATE, OS_LOCKED_AT); }
+function osToggleAgree(){ OS_STATE.anuenciaAgree=!OS_STATE.anuenciaAgree; if(OS_NODE) renderOrdemServico(OS_NODE, OS_STATE, OS_LOCKED_AT); }
+function osOpenSig(field,title){
+  openSignaturePad(title, dataUrl=>{
+    osGatherFields();
+    OS_STATE[field]=dataUrl;
+    renderOrdemServico(OS_NODE, OS_STATE, OS_LOCKED_AT);
+  });
+}
+function osSetField(field,val){ OS_STATE[field]=val; osMarkDirty(); }
+function osMarkDirty(){
+  const s = document.getElementById('osStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('osStatusText').textContent='Rascunho não salvo'; }
+}
+function osToast(msg){
+  const t = document.getElementById('osToast'); if(!t) return;
+  document.getElementById('osToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function osGatherFields(){
+  const map = {osProposta:'proposta',osCliente:'cliente',osCodigoOS:'codigoOS',osCampoLocal:'campoLocal',
+    osCampoDataInicio:'campoDataInicio',osCampoDataTermino:'campoDataTermino',osServicoExecutado:'servicoExecutado',
+    osAprovadoPor:'aprovadoPor',osDadosLocal:'dadosLocal',osDadosDataInicio:'dadosDataInicio',osDadosDataTermino:'dadosDataTermino',
+    osRelatoMissao:'relatoMissao',osProcessamentoDados:'processamentoDados'};
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el) OS_STATE[map[id]]=el.value; });
+}
+async function osSave(){
+  osGatherFields();
+  const s = document.getElementById('osStatus');
+  s.classList.add('saved');
+  document.getElementById('osStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const rel = osBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+
+  const r = await sendToDrive('ordem_servico', OS_STATE, extra);
+  if(r.reason==='timeout_assumed_ok'){ osToast('Ordem de Serviço enviada ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ osToast('Ordem de Serviço salva e enviada ao Google Drive'); }
+  else if(r.reason==='not_configured'){ osToast('Ordem de Serviço salva localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); osToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('ordens_servico', { cliente: OS_STATE.cliente||null, codigo_os: OS_STATE.codigoOS||null, local: OS_STATE.campoLocal||null, state: OS_STATE });
+}
+function osInitCloud(){
+  sbFillCloudList('ordens_servico', 'id,cliente,codigo_os,local,created_at',
+    r => `${r.cliente||'Sem cliente'}${r.codigo_os? ' — '+r.codigo_os:''}${r.local? ' ('+r.local+')':''}`,
+    'osCloudStatus', 'osCloudListWrap', 'osCloudList', osLoadCloud);
+}
+async function osLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('ordens_servico').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(OS_NODE) renderOrdemServico(OS_NODE, data.state, data.created_at);
+    osToast('Ordem de Serviço carregada da nuvem');
+  }catch(err){ console.error('osLoadCloud:', err); }
+}
+function osUnlockCopy(){
+  if(OS_NODE) renderOrdemServico(OS_NODE, OS_STATE);
+  osToast('Cópia liberada para edição — salve pra criar um novo registro');
+}
+function osBuildReport(){
+  osGatherFields();
+  const pessoasRows = (arr)=>arr.map(p=>`<div class="rp-field"><div class="k">${raEsc(p.funcao)||'Função'}</div><div class="v">${raEsc(p.nome)||'—'}</div></div>`).join('');
+
+  const headHtml = `
+  <div class="rp-header">
+    <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+    <div class="rp-title">
+      <h1>Ordem de Serviço</h1>
+      <div class="sub">${raEsc(OS_STATE.cliente)||'—'} · ${raEsc(OS_STATE.codigoOS)||'—'}</div>
+      <div class="rp-meta">
+        <span class="rp-chip">DOC FO-OPE-006</span>
+        <span class="rp-chip">REV 03</span>
+        ${OS_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(OS_LOCKED_AT)}</span>` : ''}
+        <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  </div>`;
+
+  const bodyHtml = `
+  <div class="rp-section"><h3>Identificação</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Proposta</div><div class="v">${raEsc(OS_STATE.proposta)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Cliente</div><div class="v">${raEsc(OS_STATE.cliente)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Código da OS</div><div class="v">${raEsc(OS_STATE.codigoOS)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Operação em Campo</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Local</div><div class="v">${raEsc(OS_STATE.campoLocal)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de início</div><div class="v">${raEsc(OS_STATE.campoDataInicio)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de término</div><div class="v">${raEsc(OS_STATE.campoDataTermino)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Equipe Responsável pela Execução do Serviço</h3>
+    <div class="rp-grid cols3">${pessoasRows(OS_STATE.equipeExecucao)||'<div class="rp-field"><div class="v">—</div></div>'}</div>
+  </div>
+
+  <div class="rp-section"><h3>Serviço a ser Executado</h3>
+    <div class="rp-declare">${raEsc(OS_STATE.servicoExecutado)||'—'}</div>
+    <div class="rp-field" style="margin-top:8px"><div class="k">Aprovado por</div><div class="v">${raEsc(OS_STATE.aprovadoPor)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Declaração de Anuência</h3>
+    <div class="rp-declare" style="white-space:pre-wrap">${raEsc(OS_ANUENCIA_TEXTO)}</div>
+    <div class="rp-signblock">
+      <div class="rp-signinner">
+        <div class="rp-signline">${rpSigCell(OS_STATE.anuenciaSig)}</div>
+        <div class="rp-signcap"><b>Assinatura do Responsável</b>${OS_STATE.anuenciaAgree?' · Declaração confirmada':''}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Processamento de Dados</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Local</div><div class="v">${raEsc(OS_STATE.dadosLocal)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de início</div><div class="v">${raEsc(OS_STATE.dadosDataInicio)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de término</div><div class="v">${raEsc(OS_STATE.dadosDataTermino)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Equipe Responsável pelo Processamento dos Dados</h3>
+    <div class="rp-grid cols3">${pessoasRows(OS_STATE.equipeProcessamento)||'<div class="rp-field"><div class="v">—</div></div>'}</div>
+  </div>
+
+  <div class="rp-section"><h3>Produtos Adquiridos</h3>
+    <div class="rp-checkgrid">
+      <span class="rp-check ${OS_STATE.prodCaptura?'on':''}"><span class="mark">${OS_STATE.prodCaptura?'✓':''}</span>Captura de Imagens</span>
+      <span class="rp-check ${OS_STATE.prodModelagem?'on':''}"><span class="mark">${OS_STATE.prodModelagem?'✓':''}</span>Modelagem 3D</span>
+      <span class="rp-check ${OS_STATE.prodRelatorio?'on':''}"><span class="mark">${OS_STATE.prodRelatorio?'✓':''}</span>Relatório Técnico</span>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Relato da Missão</h3><div class="rp-declare">${raEsc(OS_STATE.relatoMissao)||'—'}</div></div>
+  <div class="rp-section"><h3>Processamento dos Dados</h3><div class="rp-declare">${raEsc(OS_STATE.processamentoDados)||'—'}</div></div>
+
+  <div class="rp-section"><h3>Tempo de Serviço</h3>
+    <table class="rp-table">
+      <thead><tr><th>Tempo de serviço</th><th>Estimado</th><th>Real</th></tr></thead>
+      <tbody>
+        <tr><td>Operação em Campo</td><td>${raEsc(OS_STATE.tsOpEst)||'—'}</td><td>${raEsc(OS_STATE.tsOpReal)||'—'}</td></tr>
+        <tr><td>Processamento de Dados</td><td>${raEsc(OS_STATE.tsProcEst)||'—'}</td><td>${raEsc(OS_STATE.tsProcReal)||'—'}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-006 · Ordem de Serviço</span></div>`;
+
+  return { headHtml, bodyHtml, title:'Ordem de Serviço — '+(raEsc(OS_STATE.codigoOS)||'sem código'), filename:'Ordem_Servico_'+(raEsc(OS_STATE.codigoOS)||'sem_codigo').replace(/\s+/g,'_') };
+}
+function osExportReport(){
+  const r = osBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
+}
+/* ================================================================
+   RELATÓRIO DE MISSÃO — FO-OPE-018 — Registro Digital
+   ================================================================ */
+let RM_STATE = null;
+let RM_NODE = null;
+let RM_LOCKED_AT = null;
+
+function rmDefaultState(){
+  return {
+    cliente:'', ordemServico:'',
+    dataExecucao:'', dataTermino:'', local:'',
+    operadores:[{nome:'',funcao:''},{nome:'',funcao:''}],
+    briefing:'',
+    nBateriasEst:'', nBateriasReal:'', tempoOpEst:'', tempoOpReal:'',
+    tempoAtivo:'', tempoInativo:'', intercorrencia:'',
+    comentarios:'',
+    nAtivos:'', nAtivosLiberados:'', nAtivosInspecionados:'', nAtivosDescartados:'', motivosObservados:'',
+    incompatibilidadesRA:'', oportunidades:'', riscos:'',
+    debriefClientePos:'', debriefClienteNeg:'',
+    debriefXd4Pos:'', debriefXd4Neg:'',
+    fatores:[{causa:'',efeito:'',resolucao:''},{causa:'',efeito:'',resolucao:''}]
+  };
+}
+
+function renderRelatorioMissao(n, overrideState, lockedAtIso){
+  RM_NODE = n;
+  RM_LOCKED_AT = lockedAtIso || null;
+  RM_STATE = overrideState || rmDefaultState();
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap${RM_LOCKED_AT?' locked':''}" style="max-width:1040px">
+    ${RM_LOCKED_AT ? lockBannerHtml(RM_LOCKED_AT, 'rmUnlockCopy') : ''}
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Relatório de Missão</h1>
+          <div class="lb-sub">Rel Mis — encerramento de missão: indicadores de desempenho, processamento dos dados, riscos, debriefing e inteligência de campo.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-018</b></span>
+            <span class="lb-chip">REV <b>01</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="rmStatus"><span class="d"></span><span id="rmStatusText">Rascunho não salvo</span></div>
+      </div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Cliente</div><div class="v">${raEsc(RM_STATE.cliente)||'—'}</div></div>
+        <div class="cell"><div class="k">Ordem de Serviço</div><div class="v">${raEsc(RM_STATE.ordemServico)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Identificação</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Cliente</label><input id="rmCliente" value="${raEsc(RM_STATE.cliente)}"></div>
+        <div class="lb-field"><label>Ordem de Serviço</label><input id="rmOrdemServico" value="${raEsc(RM_STATE.ordemServico)}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Operação em Campo</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Data da execução</label><input id="rmDataExecucao" type="date" value="${RM_STATE.dataExecucao}"></div>
+        <div class="lb-field"><label>Data de término</label><input id="rmDataTermino" type="date" value="${RM_STATE.dataTermino}"></div>
+        <div class="lb-field"><label>Local</label><input id="rmLocal" value="${raEsc(RM_STATE.local)}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Operadores de Campo</h3>
+      <div id="rmOperadoresBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="rmAddOperador()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar operador</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Briefing do Serviço</h3>
+      <div class="lb-field full"><textarea id="rmBriefing" class="tall" placeholder="Briefing do serviço…">${RM_STATE.briefing}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>Indicadores de Desempenho</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th style="text-align:left">Indicador</th><th>Estimado</th><th>Real</th></tr></thead>
+          <tbody>
+            <tr><td class="lb-local" style="text-align:left">Nº de baterias utilizadas</td><td><input value="${raEsc(RM_STATE.nBateriasEst)}" onchange="rmSetField('nBateriasEst',this.value)"></td><td><input value="${raEsc(RM_STATE.nBateriasReal)}" onchange="rmSetField('nBateriasReal',this.value)"></td></tr>
+            <tr><td class="lb-local" style="text-align:left">Tempo de operação</td><td><input value="${raEsc(RM_STATE.tempoOpEst)}" onchange="rmSetField('tempoOpEst',this.value)"></td><td><input value="${raEsc(RM_STATE.tempoOpReal)}" onchange="rmSetField('tempoOpReal',this.value)"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="lb-grid" style="margin-top:14px">
+        <div class="lb-field"><label>Tempo Ativo</label><input id="rmTempoAtivo" value="${raEsc(RM_STATE.tempoAtivo)}"></div>
+        <div class="lb-field"><label>Tempo Inativo</label><input id="rmTempoInativo" value="${raEsc(RM_STATE.tempoInativo)}"></div>
+        <div class="lb-field">
+          <label>Intercorrência</label>
+          <div class="ra-yn">
+            <button class="${RM_STATE.intercorrencia==='S'?'sel-nao':''}" onclick="rmSetIntercorrencia('S')">SIM</button>
+            <button class="${RM_STATE.intercorrencia==='N'?'sel-sim':''}" onclick="rmSetIntercorrencia('N')">NÃO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Comentários</h3>
+      <div class="lb-field full"><textarea id="rmComentarios" placeholder="Comentários…">${RM_STATE.comentarios}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Processamento dos Dados</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Nº de Ativos</label><input id="rmNAtivos" value="${raEsc(RM_STATE.nAtivos)}"></div>
+        <div class="lb-field"><label>Nº de Ativos Liberados</label><input id="rmNAtivosLiberados" value="${raEsc(RM_STATE.nAtivosLiberados)}"></div>
+        <div class="lb-field"><label>Nº de Ativos Inspecionados</label><input id="rmNAtivosInspecionados" value="${raEsc(RM_STATE.nAtivosInspecionados)}"></div>
+        <div class="lb-field"><label>Nº de Ativos Descartados</label><input id="rmNAtivosDescartados" value="${raEsc(RM_STATE.nAtivosDescartados)}"></div>
+        <div class="lb-field full"><label>Motivos observados</label><input id="rmMotivosObservados" value="${raEsc(RM_STATE.motivosObservados)}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>Incompatibilidades com o Risk Assessment</h3>
+      <div class="lb-field full"><textarea id="rmIncompatibilidades" placeholder="Incompatibilidades observadas…">${RM_STATE.incompatibilidadesRA}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M15 2a6 6 0 016 6c0 3-2 4-3 6H8c-1-2-3-3-3-6a6 6 0 016-6z"/></svg>Oportunidades Observadas</h3>
+      <div class="lb-field full"><textarea id="rmOportunidades" placeholder="Oportunidades observadas…">${RM_STATE.oportunidades}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>Riscos</h3>
+      <div class="lb-field full"><textarea id="rmRiscos" placeholder="Riscos identificados…">${RM_STATE.riscos}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/></svg>Debriefing do Serviço — Cliente</h3>
+      <div class="lb-2col">
+        <div class="lb-field"><label>Pontos Positivos</label><textarea id="rmDebriefClientePos">${RM_STATE.debriefClientePos}</textarea></div>
+        <div class="lb-field"><label>Pontos Negativos</label><textarea id="rmDebriefClienteNeg">${RM_STATE.debriefClienteNeg}</textarea></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/></svg>Debriefing do Serviço — XD4Solutions</h3>
+      <div class="lb-2col">
+        <div class="lb-field"><label>Pontos Positivos</label><textarea id="rmDebriefXd4Pos">${RM_STATE.debriefXd4Pos}</textarea></div>
+        <div class="lb-field"><label>Pontos Negativos</label><textarea id="rmDebriefXd4Neg">${RM_STATE.debriefXd4Neg}</textarea></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.2L12 16.4 5.7 20.8 8 13.6l-6-4.4h7.6z"/></svg>Inteligência de Campo — Fatores de Inconsistência</h3>
+      <div id="rmFatoresBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="rmAddFator()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar fator</div></div>
+    </div>
+
+    <div class="lb-section" id="rmCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Relatórios salvos na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="rmCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="rmCloudListWrap" style="display:none">
+        <label>Abrir um relatório já salvo</label>
+        <select id="rmCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="rmSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Relatório de Missão</button>
+        <button class="lb-print" onclick="rmExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar PDF (layout completo)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="rmToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="rmToastText">Relatório salvo</span></div>
+  `;
+  rmRenderOperadores();
+  rmRenderFatores();
+  rmInitCloud();
+}
+
+function rmRenderOperadores(){
+  const body = document.getElementById('rmOperadoresBody');
+  if(!body) return;
+  body.innerHTML = RM_STATE.operadores.map((p,i)=>`
+    <div class="lb-2col" style="align-items:end;margin-bottom:10px">
+      <div class="lb-field"><label>Nome</label><input value="${raEsc(p.nome)}" onchange="rmSetOperador(${i},'nome',this.value)"></div>
+      <div class="lb-field" style="display:flex;gap:8px;align-items:end">
+        <div style="flex:1"><label>Função</label><input value="${raEsc(p.funcao)}" onchange="rmSetOperador(${i},'funcao',this.value)"></div>
+        <div class="lb-rowdel" onclick="rmDelOperador(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+      </div>
+    </div>`).join('');
+}
+function rmSetOperador(i,field,val){ RM_STATE.operadores[i][field]=val; rmMarkDirty(); }
+function rmAddOperador(){ RM_STATE.operadores.push({nome:'',funcao:''}); rmRenderOperadores(); rmMarkDirty(); }
+function rmDelOperador(i){ RM_STATE.operadores.splice(i,1); rmRenderOperadores(); rmMarkDirty(); }
+
+function rmRenderFatores(){
+  const body = document.getElementById('rmFatoresBody');
+  if(!body) return;
+  body.innerHTML = RM_STATE.fatores.map((f,i)=>`
+    <div class="lb-3col" style="align-items:end;margin-bottom:10px">
+      <div class="lb-field"><label>Causa</label><input value="${raEsc(f.causa)}" onchange="rmSetFator(${i},'causa',this.value)"></div>
+      <div class="lb-field"><label>Efeito</label><input value="${raEsc(f.efeito)}" onchange="rmSetFator(${i},'efeito',this.value)"></div>
+      <div class="lb-field" style="display:flex;gap:8px;align-items:end">
+        <div style="flex:1"><label>Resolução</label><input value="${raEsc(f.resolucao)}" onchange="rmSetFator(${i},'resolucao',this.value)"></div>
+        <div class="lb-rowdel" onclick="rmDelFator(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+      </div>
+    </div>`).join('');
+}
+function rmSetFator(i,field,val){ RM_STATE.fatores[i][field]=val; rmMarkDirty(); }
+function rmAddFator(){ RM_STATE.fatores.push({causa:'',efeito:'',resolucao:''}); rmRenderFatores(); rmMarkDirty(); }
+function rmDelFator(i){ RM_STATE.fatores.splice(i,1); rmRenderFatores(); rmMarkDirty(); }
+
+function rmSetIntercorrencia(val){ RM_STATE.intercorrencia = (RM_STATE.intercorrencia===val)?'':val; if(RM_NODE) renderRelatorioMissao(RM_NODE, RM_STATE, RM_LOCKED_AT); }
+function rmSetField(field,val){ RM_STATE[field]=val; rmMarkDirty(); }
+function rmMarkDirty(){
+  const s = document.getElementById('rmStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('rmStatusText').textContent='Rascunho não salvo'; }
+}
+function rmToast(msg){
+  const t = document.getElementById('rmToast'); if(!t) return;
+  document.getElementById('rmToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function rmGatherFields(){
+  const map = {rmCliente:'cliente',rmOrdemServico:'ordemServico',rmDataExecucao:'dataExecucao',rmDataTermino:'dataTermino',
+    rmLocal:'local',rmBriefing:'briefing',rmTempoAtivo:'tempoAtivo',rmTempoInativo:'tempoInativo',rmComentarios:'comentarios',
+    rmNAtivos:'nAtivos',rmNAtivosLiberados:'nAtivosLiberados',rmNAtivosInspecionados:'nAtivosInspecionados',
+    rmNAtivosDescartados:'nAtivosDescartados',rmMotivosObservados:'motivosObservados',rmIncompatibilidades:'incompatibilidadesRA',
+    rmOportunidades:'oportunidades',rmRiscos:'riscos',rmDebriefClientePos:'debriefClientePos',rmDebriefClienteNeg:'debriefClienteNeg',
+    rmDebriefXd4Pos:'debriefXd4Pos',rmDebriefXd4Neg:'debriefXd4Neg'};
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el) RM_STATE[map[id]]=el.value; });
+}
+async function rmSave(){
+  rmGatherFields();
+  const s = document.getElementById('rmStatus');
+  s.classList.add('saved');
+  document.getElementById('rmStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const rel = rmBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+
+  const r = await sendToDrive('relatorio_missao', RM_STATE, extra);
+  if(r.reason==='timeout_assumed_ok'){ rmToast('Relatório de Missão enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ rmToast('Relatório de Missão salvo e enviado ao Google Drive'); }
+  else if(r.reason==='not_configured'){ rmToast('Relatório de Missão salvo localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); rmToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('relatorios_missao', { cliente: RM_STATE.cliente||null, ordem_servico: RM_STATE.ordemServico||null, local: RM_STATE.local||null, data: RM_STATE.dataExecucao||null, state: RM_STATE });
+}
+function rmInitCloud(){
+  sbFillCloudList('relatorios_missao', 'id,cliente,ordem_servico,local,data,created_at',
+    r => `${r.cliente||'Sem cliente'}${r.ordem_servico? ' — '+r.ordem_servico:''}${r.data? ' ('+r.data+')':''}`,
+    'rmCloudStatus', 'rmCloudListWrap', 'rmCloudList', rmLoadCloud);
+}
+async function rmLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('relatorios_missao').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(RM_NODE) renderRelatorioMissao(RM_NODE, data.state, data.created_at);
+    rmToast('Relatório carregado da nuvem');
+  }catch(err){ console.error('rmLoadCloud:', err); }
+}
+function rmUnlockCopy(){
+  if(RM_NODE) renderRelatorioMissao(RM_NODE, RM_STATE);
+  rmToast('Cópia liberada para edição — salve pra criar um novo registro');
+}
+function rmBuildReport(){
+  rmGatherFields();
+  const pessoasRows = (arr)=>arr.map(p=>`<div class="rp-field"><div class="k">${raEsc(p.funcao)||'Função'}</div><div class="v">${raEsc(p.nome)||'—'}</div></div>`).join('');
+  const fatoresRows = RM_STATE.fatores.map(f=>`<tr><td>${raEsc(f.causa)||'—'}</td><td>${raEsc(f.efeito)||'—'}</td><td>${raEsc(f.resolucao)||'—'}</td></tr>`).join('');
+
+  const headHtml = `
+  <div class="rp-header">
+    <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+    <div class="rp-title">
+      <h1>Relatório de Missão</h1>
+      <div class="sub">${raEsc(RM_STATE.cliente)||'—'} · ${raEsc(RM_STATE.ordemServico)||'—'}</div>
+      <div class="rp-meta">
+        <span class="rp-chip">DOC FO-OPE-018</span>
+        <span class="rp-chip">REV 01</span>
+        ${RM_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(RM_LOCKED_AT)}</span>` : ''}
+        <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  </div>`;
+
+  const bodyHtml = `
+  <div class="rp-section"><h3>Operação em Campo</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Data da execução</div><div class="v">${raEsc(RM_STATE.dataExecucao)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Data de término</div><div class="v">${raEsc(RM_STATE.dataTermino)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Local</div><div class="v">${raEsc(RM_STATE.local)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Operadores de Campo</h3>
+    <div class="rp-grid cols3">${pessoasRows(RM_STATE.operadores)||'<div class="rp-field"><div class="v">—</div></div>'}</div>
+  </div>
+
+  <div class="rp-section"><h3>Briefing do Serviço</h3><div class="rp-declare">${raEsc(RM_STATE.briefing)||'—'}</div></div>
+
+  <div class="rp-section"><h3>Indicadores de Desempenho</h3>
+    <table class="rp-table">
+      <thead><tr><th>Indicador</th><th>Estimado</th><th>Real</th></tr></thead>
+      <tbody>
+        <tr><td>Nº de baterias utilizadas</td><td>${raEsc(RM_STATE.nBateriasEst)||'—'}</td><td>${raEsc(RM_STATE.nBateriasReal)||'—'}</td></tr>
+        <tr><td>Tempo de operação</td><td>${raEsc(RM_STATE.tempoOpEst)||'—'}</td><td>${raEsc(RM_STATE.tempoOpReal)||'—'}</td></tr>
+      </tbody>
+    </table>
+    <div class="rp-grid cols3" style="margin-top:10px">
+      <div class="rp-field"><div class="k">Tempo Ativo</div><div class="v">${raEsc(RM_STATE.tempoAtivo)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Tempo Inativo</div><div class="v">${raEsc(RM_STATE.tempoInativo)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Intercorrência</div><div class="v">${RM_STATE.intercorrencia==='S'?'Sim':RM_STATE.intercorrencia==='N'?'Não':'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Comentários</h3><div class="rp-declare">${raEsc(RM_STATE.comentarios)||'—'}</div></div>
+
+  <div class="rp-section"><h3>Processamento dos Dados</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Nº de Ativos</div><div class="v">${raEsc(RM_STATE.nAtivos)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Nº de Ativos Liberados</div><div class="v">${raEsc(RM_STATE.nAtivosLiberados)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Nº de Ativos Inspecionados</div><div class="v">${raEsc(RM_STATE.nAtivosInspecionados)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Nº de Ativos Descartados</div><div class="v">${raEsc(RM_STATE.nAtivosDescartados)||'—'}</div></div>
+    </div>
+    <div class="rp-field" style="margin-top:8px"><div class="k">Motivos observados</div><div class="v">${raEsc(RM_STATE.motivosObservados)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Incompatibilidades com o Risk Assessment</h3><div class="rp-declare">${raEsc(RM_STATE.incompatibilidadesRA)||'—'}</div></div>
+  <div class="rp-section"><h3>Oportunidades Observadas</h3><div class="rp-declare">${raEsc(RM_STATE.oportunidades)||'—'}</div></div>
+  <div class="rp-section"><h3>Riscos</h3><div class="rp-declare">${raEsc(RM_STATE.riscos)||'—'}</div></div>
+
+  <div class="rp-section"><h3>Debriefing do Serviço — Cliente</h3>
+    <div class="rp-grid">
+      <div class="rp-field"><div class="k">Pontos Positivos</div><div class="v">${raEsc(RM_STATE.debriefClientePos)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Pontos Negativos</div><div class="v">${raEsc(RM_STATE.debriefClienteNeg)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Debriefing do Serviço — XD4Solutions</h3>
+    <div class="rp-grid">
+      <div class="rp-field"><div class="k">Pontos Positivos</div><div class="v">${raEsc(RM_STATE.debriefXd4Pos)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Pontos Negativos</div><div class="v">${raEsc(RM_STATE.debriefXd4Neg)||'—'}</div></div>
+    </div>
+  </div>
+
+  <div class="rp-section"><h3>Inteligência de Campo — Fatores de Inconsistência</h3>
+    <table class="rp-table">
+      <thead><tr><th>Causa</th><th>Efeito</th><th>Resolução</th></tr></thead>
+      <tbody>${fatoresRows||'<tr><td colspan="3">—</td></tr>'}</tbody>
+    </table>
+  </div>
+
+  <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-018 · Relatório de Missão</span></div>`;
+
+  return { headHtml, bodyHtml, title:'Relatório de Missão — '+(raEsc(RM_STATE.cliente)||'sem cliente'), filename:'Relatorio_Missao_'+(raEsc(RM_STATE.cliente)||'sem_cliente').replace(/\s+/g,'_') };
+}
+function rmExportReport(){
+  const r = rmBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
+}
+/* ================================================================
+   TABELA DE PRESERVAÇÃO DE PRODUTOS — OD-OPE-001 — Registro Digital
+   ================================================================ */
+let TP_STATE = null;
+let TP_NODE = null;
+
+const TP_PROTECAO_PADRAO = 'Embalagem sensível ao calor, umidade e sol excessivo. Mantenha seco. Empilhamento máximo 03 cases. Não deixe cair. Não subir, sentar-se, pisar ou usar de apoio. Manuseie com extremo cuidado.';
+const TP_ARMAZENAMENTO_PADRAO = 'Manter em local seguro de impactos. Não subir, sentar-se, pisar ou usar de apoio. Empilhamento máximo 03 cases.';
+const TP_IDENTIFICACAO_PADRAO = 'Etiqueta de Identificação contendo logo da empresa, nome, número do patrimônio.';
+
+function tpSeedAtivos(){
+  return [
+    { produto:'MATRICE 210 V2', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de alça de transporte.' },
+    { produto:'ELIOS 2 (Acrescentado)', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de rodas de transporte.' },
+    { produto:'ELIOS 3 (Acrescentado)', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de rodas de transporte.' }
+  ];
+}
+function tpSeedDescontinuados(){
+  const protSimples = 'Embalagem sensível ao calor, umidade e sol excessivo. Mantenha seco. Não deixe cair. Não subir, sentar-se, pisar ou usar de apoio. Manuseie com extremo cuidado.';
+  const armazSimples = 'Manter em local seguro de impactos. Não subir, sentar-se, pisar ou usar de apoio.';
+  return [
+    { produto:'PHANTOM 4', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:protSimples, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:armazSimples, transporte:'Manual com auxílio de alça de transporte.' },
+    { produto:'BATMAP 1', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:protSimples, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:armazSimples, transporte:'Manual com auxílio de rodas de transporte.' },
+    { produto:'INSPIRE 1', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:protSimples, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:armazSimples, transporte:'Manual com auxílio de alça de transporte.' },
+    { produto:'FALCON 8+', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de alça de transporte.' },
+    { produto:'ELIOS', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de rodas de transporte.' },
+    { produto:'MAVIC PRO', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'Manual com auxílio de rodas de transporte.' }
+  ];
+}
+function tpDefaultState(){
+  return { ativos: tpSeedAtivos(), descontinuados: tpSeedDescontinuados(), atualizadoEm:'', responsavel:'Clenio Magalhães - CQO', sigResponsavel:false };
+}
+
+function renderTabelaPreservacao(n, overrideState){
+  TP_NODE = n;
+  TP_STATE = overrideState || tpDefaultState();
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap" style="max-width:1180px">
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Tabela de Preservação de Produtos</h1>
+          <div class="lb-sub">Regras de identificação, proteção, embalagem, armazenamento e transporte para os equipamentos em uso e descontinuados da frota. Editável pela equipe de Qualidade.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>OD-OPE-001</b></span>
+            <span class="lb-chip">REV <b>03</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="tpStatus"><span class="d"></span><span id="tpStatusText">Rascunho não salvo</span></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9M14 17H5M17 3v4M9 13v4M3 7h4M17 17h4"/></svg>Produtos em Uso</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table" style="min-width:1080px">
+          <thead><tr><th style="width:11%">Produto</th><th style="width:15%">Identificação</th><th style="width:26%">Proteção</th><th style="width:14%">Embalagem</th><th style="width:19%">Armazenamento</th><th style="width:15%">Transporte</th><th style="width:34px"></th></tr></thead>
+          <tbody id="tpAtivosBody"></tbody>
+        </table>
+      </div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="tpAddRow('ativos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar produto</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M4.9 4.9l14.2 14.2"/></svg>Produtos Descontinuados</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table" style="min-width:1080px">
+          <thead><tr><th style="width:11%">Produto</th><th style="width:15%">Identificação</th><th style="width:26%">Proteção</th><th style="width:14%">Embalagem</th><th style="width:19%">Armazenamento</th><th style="width:15%">Transporte</th><th style="width:34px"></th></tr></thead>
+          <tbody id="tpDescontinuadosBody"></tbody>
+        </table>
+      </div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="tpAddRow('descontinuados')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar produto descontinuado</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Controle de Atualização</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Atualização em</label><input id="tpAtualizadoEm" type="date" value="${TP_STATE.atualizadoEm}"></div>
+        <div class="lb-field"><label>Responsável</label><input id="tpResponsavel" value="${raEsc(TP_STATE.responsavel)}"></div>
+        <div class="lb-field">
+          <label>Assinatura</label>
+          <div class="lb-sig ${TP_STATE.sigResponsavel?'on':''}" style="height:44px" onclick="tpOpenSig()">${sigMark(TP_STATE.sigResponsavel)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section" id="tpCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Versões salvas na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="tpCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="tpCloudListWrap" style="display:none">
+        <label>Abrir uma versão já salva</label>
+        <select id="tpCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="tpSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Tabela</button>
+        <button class="lb-print" onclick="tpExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar PDF (layout completo)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="tpToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="tpToastText">Tabela salva</span></div>
+  `;
+  tpRenderRows('ativos');
+  tpRenderRows('descontinuados');
+  tpInitCloud();
+}
+
+function tpRowHTML(section, it, i){
+  return `<tr>
+    <td class="lb-local"><textarea style="min-height:40px;font-weight:700" onchange="tpSetField('${section}',${i},'produto',this.value)">${raEsc(it.produto)}</textarea></td>
+    <td class="lb-local"><textarea style="min-height:40px" onchange="tpSetField('${section}',${i},'identificacao',this.value)">${raEsc(it.identificacao)}</textarea></td>
+    <td class="lb-local"><textarea style="min-height:40px" onchange="tpSetField('${section}',${i},'protecao',this.value)">${raEsc(it.protecao)}</textarea></td>
+    <td class="lb-local"><textarea style="min-height:40px" onchange="tpSetField('${section}',${i},'embalagem',this.value)">${raEsc(it.embalagem)}</textarea></td>
+    <td class="lb-local"><textarea style="min-height:40px" onchange="tpSetField('${section}',${i},'armazenamento',this.value)">${raEsc(it.armazenamento)}</textarea></td>
+    <td class="lb-local"><textarea style="min-height:40px" onchange="tpSetField('${section}',${i},'transporte',this.value)">${raEsc(it.transporte)}</textarea></td>
+    <td><div class="lb-rowdel" onclick="tpDelRow('${section}',${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div></td>
+  </tr>`;
+}
+function tpRenderRows(section){
+  const body = document.getElementById(section==='ativos'?'tpAtivosBody':'tpDescontinuadosBody');
+  if(!body) return;
+  body.innerHTML = TP_STATE[section].map((it,i)=>tpRowHTML(section,it,i)).join('');
+}
+function tpSetField(section,i,field,val){ TP_STATE[section][i][field]=val; tpMarkDirty(); }
+function tpAddRow(section){
+  TP_STATE[section].push({ produto:'', identificacao:TP_IDENTIFICACAO_PADRAO, protecao:TP_PROTECAO_PADRAO, embalagem:'Frágil. Etiqueta de cuidados a serem seguidos.', armazenamento:TP_ARMAZENAMENTO_PADRAO, transporte:'' });
+  tpRenderRows(section); tpMarkDirty();
+}
+function tpDelRow(section,i){ TP_STATE[section].splice(i,1); tpRenderRows(section); tpMarkDirty(); }
+function tpOpenSig(){
+  openSignaturePad('Assinatura do Responsável', dataUrl=>{
+    tpGatherFields();
+    TP_STATE.sigResponsavel=dataUrl;
+    renderTabelaPreservacao(TP_NODE, TP_STATE);
+  });
+}
+function tpMarkDirty(){
+  const s = document.getElementById('tpStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('tpStatusText').textContent='Rascunho não salvo'; }
+}
+function tpToast(msg){
+  const t = document.getElementById('tpToast'); if(!t) return;
+  document.getElementById('tpToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function tpGatherFields(){
+  const atualizadoEm = document.getElementById('tpAtualizadoEm');
+  const responsavel = document.getElementById('tpResponsavel');
+  if(atualizadoEm) TP_STATE.atualizadoEm = atualizadoEm.value;
+  if(responsavel) TP_STATE.responsavel = responsavel.value;
+}
+async function tpSave(){
+  tpGatherFields();
+  const s = document.getElementById('tpStatus');
+  s.classList.add('saved');
+  document.getElementById('tpStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const rel = tpBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+
+  const r = await sendToDrive('tabela_preservacao', TP_STATE, extra);
+  if(r.reason==='timeout_assumed_ok'){ tpToast('Tabela enviada ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ tpToast('Tabela salva e enviada ao Google Drive'); }
+  else if(r.reason==='not_configured'){ tpToast('Tabela salva localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); tpToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('tabelas_preservacao', { responsavel: TP_STATE.responsavel||null, atualizado_em: TP_STATE.atualizadoEm||null, state: TP_STATE });
+}
+function tpInitCloud(){
+  sbFillCloudList('tabelas_preservacao', 'id,responsavel,atualizado_em,created_at',
+    r => `${r.responsavel||'Sem responsável'}${r.atualizado_em? ' ('+r.atualizado_em+')':''}`,
+    'tpCloudStatus', 'tpCloudListWrap', 'tpCloudList', tpLoadCloud);
+}
+async function tpLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('tabelas_preservacao').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(TP_NODE) renderTabelaPreservacao(TP_NODE, data.state);
+    tpToast('Tabela carregada da nuvem');
+  }catch(err){ console.error('tpLoadCloud:', err); }
+}
+function tpBuildReport(){
+  tpGatherFields();
+  const rows = (arr)=>arr.map(it=>`<tr>
+      <td><b>${raEsc(it.produto)||'—'}</b></td><td>${raEsc(it.identificacao)||'—'}</td><td>${raEsc(it.protecao)||'—'}</td>
+      <td>${raEsc(it.embalagem)||'—'}</td><td>${raEsc(it.armazenamento)||'—'}</td><td>${raEsc(it.transporte)||'—'}</td>
+    </tr>`).join('');
+
+  const headHtml = `
+  <div class="rp-header">
+    <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+    <div class="rp-title">
+      <h1>Tabela de Preservação de Produtos</h1>
+      <div class="sub">Produtos em uso e descontinuados</div>
+      <div class="rp-meta">
+        <span class="rp-chip">DOC OD-OPE-001</span>
+        <span class="rp-chip">REV 03</span>
+        <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  </div>`;
+
+  const bodyHtml = `
+  <div class="rp-section"><h3>Produtos em Uso</h3>
+    <table class="rp-table">
+      <thead><tr><th>Produto</th><th>Identificação</th><th>Proteção</th><th>Embalagem</th><th>Armazenamento</th><th>Transporte</th></tr></thead>
+      <tbody>${rows(TP_STATE.ativos)}</tbody>
+    </table>
+  </div>
+  <div class="rp-section"><h3>Produtos Descontinuados</h3>
+    <table class="rp-table">
+      <thead><tr><th>Produto</th><th>Identificação</th><th>Proteção</th><th>Embalagem</th><th>Armazenamento</th><th>Transporte</th></tr></thead>
+      <tbody>${rows(TP_STATE.descontinuados)}</tbody>
+    </table>
+  </div>
+  <div class="rp-section"><h3>Controle de Atualização</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Atualização em</div><div class="v">${raEsc(TP_STATE.atualizadoEm)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Responsável</div><div class="v">${raEsc(TP_STATE.responsavel)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Assinatura</div><div class="v rp-sigcell">${rpSigCell(TP_STATE.sigResponsavel)}</div></div>
+    </div>
+  </div>
+  <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>OD-OPE-001 · Tabela de Preservação de Produtos</span></div>`;
+
+  return { headHtml, bodyHtml, title:'Tabela de Preservação de Produtos', filename:'Tabela_Preservacao_Produtos' };
+}
+function tpExportReport(){
+  const r = tpBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
+}
+/* ================================================================
+   CERTIFICADO DE TREINO INTRODUTÓRIO — OD-OPE-003 — Gerador
+   ================================================================ */
+let CERT_STATE = null;
+let CERT_NODE = null;
+
+function certDefaultState(){
+  return {
+    operadorNome:'', operadorCPF:'',
+    cursoTitulo:'xd4solutions Introductory Remote Pilot Techniques - Quality Inspection Operator',
+    equipamentoTitulo:'ELIOS 3 - Introductory Remote Pilot Training Techniques',
+    instrutorNome:'', instrutorCPF:'',
+    cargoInstrutor:'Chief Operation Officer', licencaInstrutor:'PLH - 01772 ANAC-102726',
+    localTreinamento:'Sao Paulo - SP', dataTreinamento:'',
+    cidadeDataEmissao:'São Paulo-SP, Brazil', dataEmissao:'',
+    sigInstrutor:false,
+    conteudo:[
+      { data:'', treinamento:'INTRODUTÓRIO\nTeoria', cargaHoraria:'08 horas de treinamento (Manhã/Tarde)',
+        detalhamento:'Introdução à Operação do ELIOS 3\nResponsabilidades Legais e Regulação (Anatel/Sisant/Sarpas)\nELIOS 3 – Especificações técnicas\nELIOS 3 – Introdução ao Comando e Controle\nELIOS 3 – Modos de Voo\nELIOS 3 – Limitações a serem respeitadas\nELIOS 3 – Técnicas Básicas de Voo\nELIOS 3 – Manutenção Preventiva/Corretiva\nELIOS 3 – Inspeções (Pré/Inter/Pós)\nAplicação do software INSPECTOR\nSegurança de voo' },
+      { data:'', treinamento:'INTRODUTÓRIO\nPrática', cargaHoraria:'',
+        detalhamento:'ELIOS 3 – Carregamento da Bateria (procedimentos)\nELIOS 3 – Acionamento/Corte\nELIOS 3 – Pré Voo\nELIOS 3 – Navegação básica\nELIOS 3 – Identificar Riscos Potenciais\nELIOS 3 – Extraindo dados para o software INSPECTOR' }
+    ]
+  };
+}
+
+function renderCertificadoTreino(n, overrideState){
+  CERT_NODE = n;
+  CERT_STATE = overrideState || certDefaultState();
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap" style="max-width:1040px">
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Certificado de Treino Introdutório</h1>
+          <div class="lb-sub">Gerador do certificado de conclusão de treinamento introdutório, no layout oficial xd4solutions.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>OD-OPE-003</b></span>
+            <span class="lb-chip">REV <b>00</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="certStatus"><span class="d"></span><span id="certStatusText">Rascunho não salvo</span></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Dados do Operador</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Nome do operador</label><input id="certOperadorNome" value="${raEsc(CERT_STATE.operadorNome)}" placeholder="NOME COMPLETO"></div>
+        <div class="lb-field"><label>CPF</label><input id="certOperadorCPF" value="${raEsc(CERT_STATE.operadorCPF)}" placeholder="000.000.000-00"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5zM6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>Dados do Treinamento</h3>
+      <div class="lb-grid">
+        <div class="lb-field full"><label>Título do curso</label><input id="certCursoTitulo" value="${raEsc(CERT_STATE.cursoTitulo)}"></div>
+        <div class="lb-field full"><label>Módulo / Equipamento</label><input id="certEquipamentoTitulo" value="${raEsc(CERT_STATE.equipamentoTitulo)}"></div>
+        <div class="lb-field"><label>Local do treinamento</label><input id="certLocalTreinamento" value="${raEsc(CERT_STATE.localTreinamento)}"></div>
+        <div class="lb-field"><label>Data do treinamento</label><input id="certDataTreinamento" type="date" value="${CERT_STATE.dataTreinamento}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Instrutor Responsável</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Nome do instrutor</label><input id="certInstrutorNome" value="${raEsc(CERT_STATE.instrutorNome)}"></div>
+        <div class="lb-field"><label>CPF do instrutor</label><input id="certInstrutorCPF" value="${raEsc(CERT_STATE.instrutorCPF)}"></div>
+        <div class="lb-field"><label>Cargo</label><input id="certCargoInstrutor" value="${raEsc(CERT_STATE.cargoInstrutor)}"></div>
+        <div class="lb-field"><label>Licença</label><input id="certLicencaInstrutor" value="${raEsc(CERT_STATE.licencaInstrutor)}"></div>
+        <div class="lb-field"><label>Cidade/data de emissão</label><input id="certCidadeDataEmissao" value="${raEsc(CERT_STATE.cidadeDataEmissao)}"></div>
+        <div class="lb-field"><label>Data de emissão</label><input id="certDataEmissao" type="date" value="${CERT_STATE.dataEmissao}"></div>
+      </div>
+      <div class="lb-ops" style="margin-top:14px">
+        <div class="lb-op-card">
+          <div class="tag">Assinatura do Instrutor</div>
+          <div class="lb-sig ${CERT_STATE.sigInstrutor?'on':''}" style="height:70px" onclick="certOpenSig()">${sigMark(CERT_STATE.sigInstrutor)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Conteúdo Programático</h3>
+      <div id="certConteudoBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="certAddConteudo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar linha</div></div>
+    </div>
+
+    <div class="lb-section" id="certCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Certificados salvos na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="certCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="certCloudListWrap" style="display:none">
+        <label>Abrir um certificado já salvo</label>
+        <select id="certCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="certSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar dados</button>
+        <button class="lb-print" onclick="certExportCertificate()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar Certificado (PDF)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="certToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="certToastText">Certificado salvo</span></div>
+  `;
+  certRenderConteudo();
+  certInitCloud();
+}
+
+function certRenderConteudo(){
+  const body = document.getElementById('certConteudoBody');
+  if(!body) return;
+  body.innerHTML = CERT_STATE.conteudo.map((row,i)=>`
+    <div class="card" style="margin-bottom:12px;position:relative">
+      <div class="lb-grid">
+        <div class="lb-field"><label>Data</label><input value="${raEsc(row.data)}" onchange="certSetConteudo(${i},'data',this.value)" placeholder="27 JAN"></div>
+        <div class="lb-field"><label>Treinamento</label><input value="${raEsc(row.treinamento).replace(/\n/g,' / ')}" onchange="certSetConteudo(${i},'treinamento',this.value)"></div>
+        <div class="lb-field"><label>Carga horária</label><input value="${raEsc(row.cargaHoraria)}" onchange="certSetConteudo(${i},'cargaHoraria',this.value)"></div>
+      </div>
+      <div class="lb-field full" style="margin-top:10px"><label>Detalhamento (uma linha por item)</label><textarea class="tall" onchange="certSetConteudo(${i},'detalhamento',this.value)">${raEsc(row.detalhamento)}</textarea></div>
+      <div class="lb-rowdel" style="position:absolute;top:12px;right:12px" onclick="certDelConteudo(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+    </div>`).join('');
+}
+function certSetConteudo(i,field,val){ CERT_STATE.conteudo[i][field]=val; certMarkDirty(); }
+function certAddConteudo(){ CERT_STATE.conteudo.push({data:'',treinamento:'',cargaHoraria:'',detalhamento:''}); certRenderConteudo(); certMarkDirty(); }
+function certDelConteudo(i){ CERT_STATE.conteudo.splice(i,1); certRenderConteudo(); certMarkDirty(); }
+function certOpenSig(){
+  openSignaturePad('Assinatura do Instrutor', dataUrl=>{
+    certGatherFields();
+    CERT_STATE.sigInstrutor=dataUrl;
+    renderCertificadoTreino(CERT_NODE, CERT_STATE);
+  });
+}
+function certMarkDirty(){
+  const s = document.getElementById('certStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('certStatusText').textContent='Rascunho não salvo'; }
+}
+function certToast(msg){
+  const t = document.getElementById('certToast'); if(!t) return;
+  document.getElementById('certToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function certGatherFields(){
+  const map = {certOperadorNome:'operadorNome',certOperadorCPF:'operadorCPF',certCursoTitulo:'cursoTitulo',
+    certEquipamentoTitulo:'equipamentoTitulo',certLocalTreinamento:'localTreinamento',certDataTreinamento:'dataTreinamento',
+    certInstrutorNome:'instrutorNome',certInstrutorCPF:'instrutorCPF',certCargoInstrutor:'cargoInstrutor',
+    certLicencaInstrutor:'licencaInstrutor',certCidadeDataEmissao:'cidadeDataEmissao',certDataEmissao:'dataEmissao'};
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el) CERT_STATE[map[id]]=el.value; });
+}
+async function certSave(){
+  certGatherFields();
+  const s = document.getElementById('certStatus');
+  s.classList.add('saved');
+  document.getElementById('certStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const r = await sendToDrive('certificado_treino', CERT_STATE);
+  if(r.reason==='timeout_assumed_ok'){ certToast('Certificado enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ certToast('Certificado salvo e enviado ao Google Drive'); }
+  else if(r.reason==='not_configured'){ certToast('Certificado salvo localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); certToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('certificados_treino', { operador: CERT_STATE.operadorNome||null, curso: CERT_STATE.cursoTitulo||null, state: CERT_STATE });
+}
+function certInitCloud(){
+  sbFillCloudList('certificados_treino', 'id,operador,curso,created_at',
+    r => `${r.operador||'Sem operador'}${r.curso? ' — '+r.curso:''}`,
+    'certCloudStatus', 'certCloudListWrap', 'certCloudList', certLoadCloud);
+}
+async function certLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('certificados_treino').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(CERT_NODE) renderCertificadoTreino(CERT_NODE, data.state);
+    certToast('Certificado carregado da nuvem');
+  }catch(err){ console.error('certLoadCloud:', err); }
+}
+
+/* ---------- layout impresso, fiel ao modelo docx original ---------- */
+function certFmtData(iso){
+  if(!iso) return '';
+  try{
+    const d = new Date(iso+'T12:00:00');
+    const dias=['1st','2nd','3rd'];
+    const day = d.getDate();
+    const suf = (day>=11&&day<=13) ? 'th' : (day%10===1?'st':day%10===2?'nd':day%10===3?'rd':'th');
+    const meses=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return `${day}<sup>${suf}</sup> ${meses[d.getMonth()]} ${d.getFullYear()}`;
+  }catch(e){ return iso; }
+}
+function certStyles(){
+  return `
+  @page{ size:A4 landscape; margin:16mm 20mm; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#DDE4EC}
+  body{font-family:Arial,'IBM Plex Sans',sans-serif;color:#222;font-size:13px;line-height:1.6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cert-toolbar{position:sticky;top:0;z-index:10;background:#0B2545;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:'IBM Plex Sans',sans-serif}
+  .cert-toolbar span{font-size:12.5px;color:#C6D8EB}
+  .cert-toolbar button{background:#2BA9E0;color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .cert-page{max-width:297mm;min-height:175mm;margin:26px auto 60px;background:#fff;padding:16mm 20mm;box-shadow:0 6px 28px rgba(11,37,69,.18);position:relative}
+  .cert-logo{height:40px;display:block;margin-bottom:12px}
+  .cert-rule{height:2px;background:#2BA9E0;margin:0 0 26px}
+  .cert-title{text-align:center;font-size:26px;color:#3A6EA5;font-weight:400;letter-spacing:.3px;margin:0 0 26px}
+  .cert-course{text-align:center;font-size:14px;font-weight:700;color:#222;margin:0 0 18px}
+  .cert-certify{text-align:center;font-size:13.5px;color:#222;margin:0 0 12px}
+  .cert-name{text-align:center;font-size:14.5px;font-weight:700;color:#222;margin:0 0 20px}
+  .cert-para{text-align:justify;margin:0 auto 14px;font-size:13px;color:#333;max-width:220mm}
+  .cert-signrow{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px;gap:30px}
+  .cert-signblock{width:280px}
+  .cert-signline{border-bottom:1px solid #333;height:52px;display:flex;align-items:flex-end;justify-content:center}
+  .cert-signline img{max-height:50px;max-width:100%;object-fit:contain}
+  .cert-signname{text-align:center;font-weight:700;font-size:12.5px;margin-top:6px}
+  .cert-signrole{text-align:center;font-style:italic;font-size:11px;color:#333}
+  .cert-datebox{font-size:13px;color:#222;padding-bottom:8px}
+  .cert-footnote{margin-top:26px;text-align:center;font-style:italic;font-size:9.5px;color:#666}
+  .cert-page2-title{font-size:15px;font-weight:700;color:#222;margin:0 0 22px}
+  table.cert-table{width:100%;border-collapse:collapse;font-size:11px}
+  table.cert-table th{border:1px solid #444;background:#fff;color:#222;padding:7px 8px;font-weight:700;text-align:center}
+  table.cert-table td{border:1px solid #444;padding:8px;vertical-align:top}
+  table.cert-table td.center{text-align:center;vertical-align:middle}
+  table.cert-table .det-line{padding:1px 0}
+  @media print{
+    html,body{background:#fff}
+    .cert-toolbar{display:none}
+    .cert-page{max-width:none;margin:0;padding:16mm 20mm;box-shadow:none;page-break-after:always}
+    .cert-page:last-child{page-break-after:auto}
+  }`;
+}
+function certBuildCertificateHTML(){
+  certGatherFields();
+  const c = CERT_STATE;
+  const dataTreinoFmt = certFmtData(c.dataTreinamento) || raEsc(c.localTreinamento);
+  const dataEmissaoFmt = certFmtData(c.dataEmissao);
+
+  const rows = c.conteudo.map(row=>{
+    const treinoLines = String(row.treinamento||'').split('\n').map(l=>`<div class="det-line">${raEsc(l)}</div>`).join('');
+    const detLines = String(row.detalhamento||'').split('\n').filter(l=>l.trim()).map(l=>`<div class="det-line">${raEsc(l)}</div>`).join('');
+    return `<tr>
+      <td class="center">${raEsc(row.data)||'—'}</td>
+      <td class="center">${treinoLines||'—'}</td>
+      <td class="center">${raEsc(row.cargaHoraria)||''}</td>
+      <td>${detLines||'—'}</td>
+    </tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Certificado — ${raEsc(c.operadorNome)||'xd4solutions'}</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>${certStyles()}</style></head>
+<body>
+  <div class="cert-toolbar"><span>Pré-visualização — o PDF final não mostra esta barra</span><button onclick="window.print()">Imprimir / Salvar como PDF</button></div>
+
+  <div class="cert-page">
+    <img class="cert-logo" src="${XD4_LOGO}" alt="xd4solutions">
+    <div class="cert-rule"></div>
+    <div class="cert-title">CERTIFICATE OF COMPLETION</div>
+    <div class="cert-course">${raEsc(c.cursoTitulo)}</div>
+    <div class="cert-certify">This is to certify that:</div>
+    <div class="cert-name">${raEsc((c.operadorNome||'').toUpperCase())}${c.operadorCPF?' – CPF: '+raEsc(c.operadorCPF):''}</div>
+    <p class="cert-para">The above operator has successfully completed the Introductory Remote Pilot Techniques Training Course under the xd4solutions Training curriculum, in accordance with the company standard operation safety procedures.</p>
+    <p class="cert-para">The training was conducted by the xd4solutions Certified Operator, ${raEsc(c.instrutorNome)||'—'}${c.instrutorCPF?', CPF '+raEsc(c.instrutorCPF):''}, at the xd4solutions site, located at ${raEsc(c.localTreinamento)||'—'}${dataTreinoFmt?', date '+dataTreinoFmt:''}.</p>
+
+    <div class="cert-signrow">
+      <div class="cert-signblock">
+        <div class="cert-signline">${c.sigInstrutor && typeof c.sigInstrutor==='string' && c.sigInstrutor.indexOf('data:image')===0 ? `<img src="${c.sigInstrutor}">` : ''}</div>
+        <div class="cert-signname">${raEsc(c.instrutorNome)||'—'}</div>
+        <div class="cert-signrole">${raEsc(c.cargoInstrutor)}</div>
+        <div class="cert-signrole">${raEsc(c.licencaInstrutor)}</div>
+      </div>
+      <div class="cert-datebox">${raEsc(c.cidadeDataEmissao)}${dataEmissaoFmt?', '+dataEmissaoFmt:''}.</div>
+    </div>
+
+    <div class="cert-footnote">This document certifies that the certificate is suitable for carrying out an activity imposed by the Quality Inspection Operator, whose activities are described in document CBO 3912-15.</div>
+  </div>
+
+  <div class="cert-page">
+    <div class="cert-page2-title">${raEsc(c.equipamentoTitulo)}</div>
+    <table class="cert-table">
+      <thead><tr><th style="width:9%">DATA</th><th style="width:14%">TREINAMENTO</th><th style="width:16%">CARGA HORÁRIA</th><th>DETALHAMENTO</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+</body></html>`;
+}
+function certExportCertificate(){
+  rpOpenWindow(certBuildCertificateHTML());
+}
+
+/* ================================================================
+   RELATÓRIO PRELIMINAR DE PERITAGEM DE EQUIPAMENTO — FO-OPE-021
+   ================================================================ */
+let PER_STATE = null;
+let PER_NODE = null;
+let PER_LOCKED_AT = null;
+
+function perSeedProcedimentos(){
+  return [
+    { numero:'4.1', titulo:'Limpeza Geral Inicial', descricao:'' },
+    { numero:'4.2', titulo:'Verificação Visual', descricao:'' },
+    { numero:'4.3', titulo:'Atualização de Firmware e Software', descricao:'' },
+    { numero:'4.4', titulo:'Verificação dos Sensores', descricao:'' },
+    { numero:'4.5', titulo:'Regulagem da Trimagem', descricao:'' },
+    { numero:'4.6', titulo:'Verificação dos LEDs', descricao:'' },
+    { numero:'4.7', titulo:'Verificação da Fixação dos Motores', descricao:'' },
+    { numero:'4.8', titulo:'Horas de Voo dos Motores', descricao:'' },
+    { numero:'4.9', titulo:'Diagnóstico das Causas Identificadas', descricao:'' },
+    { numero:'4.10', titulo:'Voos de Ensaio', descricao:'' }
+  ];
+}
+function perSeedMotoresFixacao(){
+  return [1,2,3,4].map(i=>({ motor:'Motor '+i, aperto:'', folga:'', ruido:'', temperatura:'', resultado:'' }));
+}
+function perSeedMotoresHoras(){
+  return [1,2,3,4].map(i=>({ motor:'M'+i, horas:'', limite:'25 h', situacao:'' }));
+}
+function perDefaultState(){
+  return {
+    equipamento:'', site:'', cliente:'', dataAtividade:'',
+    relatosCliente:'',
+    recebimentoTexto:'',
+    equipamentosRecebidos:[
+      {qtd:'',item:'',serie:''},{qtd:'',item:'',serie:''},{qtd:'',item:'',serie:''}
+    ],
+    analiseRecebido:'',
+    registros:[{titulo:'IMAGEM 01',legenda:''}],
+    procedimentos: perSeedProcedimentos(),
+    motoresFixacao: perSeedMotoresFixacao(),
+    motoresHoras: perSeedMotoresHoras(),
+    causas:[''],
+    diagnosticoTecnico:'',
+    conclusao:'',
+    numPaginas:'', cidadeDataEmissao:'São Paulo-SP', dataEmissao:'',
+    cooNome:'', cooCargo:'Chief Operating Officer', cooSig:false,
+    respNome:'', respCargo:'Operador de Inspeção de Qualidade', respSig:false
+  };
+}
+
+function renderRelatorioPeritagem(n, overrideState, lockedAtIso){
+  PER_NODE = n;
+  PER_LOCKED_AT = lockedAtIso || null;
+  PER_STATE = overrideState || perDefaultState();
+
+  viewDoc.innerHTML = `
+  <div class="doc lb-section-wrap${PER_LOCKED_AT?' locked':''}" style="max-width:1080px">
+    ${PER_LOCKED_AT ? lockBannerHtml(PER_LOCKED_AT, 'perUnlockCopy') : ''}
+    ${crumbsHTML(n.id)}
+    <div class="lb-head">
+      <div class="lb-head-main">
+        <div class="lb-ic">${IC.file}</div>
+        <div>
+          <h1>Relatório de Peritagem de Equipamento</h1>
+          <div class="lb-sub">Relatório técnico de peritagem — recebimento, procedimentos executados, diagnóstico técnico e conclusão.</div>
+          <div class="lb-docmeta">
+            <span class="lb-chip">DOC <b>FO-OPE-021</b></span>
+            <span class="lb-chip">REV <b>00</b></span>
+          </div>
+        </div>
+        <div class="lb-status" id="perStatus"><span class="d"></span><span id="perStatusText">Rascunho não salvo</span></div>
+      </div>
+      <div class="lb-tailstrip">
+        <div class="cell"><div class="k">Equipamento</div><div class="v">${raEsc(PER_STATE.equipamento)||'—'}</div></div>
+        <div class="cell"><div class="k">Cliente / Site</div><div class="v">${raEsc(PER_STATE.cliente)||'—'}</div></div>
+        <div class="cell"><div class="k">Data da atividade</div><div class="v">${raEsc(PER_STATE.dataAtividade)||'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Identificação</h3>
+      <div class="lb-grid">
+        <div class="lb-field"><label>Equipamento</label><input id="perEquipamento" value="${raEsc(PER_STATE.equipamento)}" placeholder="Ex.: ELIOS 2"></div>
+        <div class="lb-field"><label>Cliente</label><input id="perCliente" value="${raEsc(PER_STATE.cliente)}" placeholder="Ex.: VALE S.A."></div>
+        <div class="lb-field"><label>Site / Local</label><input id="perSite" value="${raEsc(PER_STATE.site)}" placeholder="Ex.: Mina Cauê — Itabira - MG"></div>
+        <div class="lb-field"><label>Data da atividade</label><input id="perDataAtividade" type="date" value="${PER_STATE.dataAtividade}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Relatos do Cliente</h3>
+      <div class="lb-field full"><textarea id="perRelatosCliente" class="tall" placeholder="Descreva a ocorrência relatada pelo cliente…">${PER_STATE.relatosCliente}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 010-4h12v4M4 6v14a2 2 0 002 2h14v-4M18 12a2 2 0 000 4h4v-4z"/></svg>Recebimento</h3>
+      <div class="lb-field full"><label>Contexto do recebimento</label><textarea id="perRecebimentoTexto" placeholder="Onde e como o equipamento foi recebido…">${PER_STATE.recebimentoTexto}</textarea></div>
+      <div style="margin-top:14px">
+        <label class="hint" style="display:block;margin-bottom:8px">Tabela 01 — Listagem de equipamento</label>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead><tr><th style="width:14%">Quantidade</th><th>Item</th><th style="width:30%">Número de Série / Modelo</th><th style="width:34px"></th></tr></thead>
+            <tbody id="perEquipamentosBody"></tbody>
+          </table>
+        </div>
+        <div class="etapas-addbar"><div class="tbl-addrow" onclick="perAddEquipamento()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar item</div></div>
+      </div>
+      <div class="lb-field full" style="margin-top:14px"><label>Análise do material recebido e conferido</label><textarea id="perAnaliseRecebido" placeholder="Estado de conservação, danos aparentes…">${PER_STATE.analiseRecebido}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Registros Capturados</h3>
+      <div class="hint" style="margin-bottom:10px">Legendas dos registros fotográficos anexados ao relatório físico/PDF do laudo (as imagens em si ficam no arquivo original do laudo).</div>
+      <div id="perRegistrosBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="perAddRegistro()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar registro</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Procedimentos Executados</h3>
+      <div id="perProcedimentosBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="perAddProcedimento()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar procedimento</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.6-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.6V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.6 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.6 1z"/></svg>Verificação da Fixação dos Motores</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th>Item</th><th>Aperto</th><th>Folga</th><th>Ruído</th><th>Temperatura</th><th>Resultado</th></tr></thead>
+          <tbody id="perMotoresFixacaoBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Horas de Voo dos Motores</h3>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th>Motor</th><th>Horas</th><th>Limite recomendado</th><th>Situação</th></tr></thead>
+          <tbody id="perMotoresHorasBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>Diagnóstico das Causas Identificadas</h3>
+      <div id="perCausasBody"></div>
+      <div class="etapas-addbar"><div class="tbl-addrow" onclick="perAddCausa()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Adicionar causa</div></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Diagnóstico Técnico</h3>
+      <div class="lb-field full"><textarea id="perDiagnosticoTecnico" class="tall" placeholder="Análise técnica consolidada…">${PER_STATE.diagnosticoTecnico}</textarea></div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Conclusão da Peritagem</h3>
+      <div class="lb-field full"><textarea id="perConclusao" class="tall" placeholder="Conclusão e recomendações…">${PER_STATE.conclusao}</textarea></div>
+      <div class="lb-grid" style="margin-top:14px">
+        <div class="lb-field"><label>Nº de páginas do relatório</label><input id="perNumPaginas" value="${raEsc(PER_STATE.numPaginas)}"></div>
+        <div class="lb-field"><label>Cidade de emissão</label><input id="perCidadeDataEmissao" value="${raEsc(PER_STATE.cidadeDataEmissao)}"></div>
+        <div class="lb-field"><label>Data de emissão</label><input id="perDataEmissao" type="date" value="${PER_STATE.dataEmissao}"></div>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Assinaturas</h3>
+      <div class="lb-ops">
+        <div class="lb-op-card">
+          <div class="lb-grid" style="margin-bottom:10px">
+            <div class="lb-field"><label>Chief Operating Officer</label><input id="perCooNome" value="${raEsc(PER_STATE.cooNome)}" placeholder="Nome completo"></div>
+            <div class="lb-field"><label>Cargo / Registro</label><input id="perCooCargo" value="${raEsc(PER_STATE.cooCargo)}"></div>
+          </div>
+          <div class="lb-sig ${PER_STATE.cooSig?'on':''}" style="height:70px" onclick="perOpenSig('cooSig','Assinatura — Chief Operating Officer')">${sigMark(PER_STATE.cooSig)}</div>
+        </div>
+        <div class="lb-op-card">
+          <div class="lb-grid" style="margin-bottom:10px">
+            <div class="lb-field"><label>Responsável pelo relatório</label><input id="perRespNome" value="${raEsc(PER_STATE.respNome)}" placeholder="Nome completo"></div>
+            <div class="lb-field"><label>Cargo</label><input id="perRespCargo" value="${raEsc(PER_STATE.respCargo)}"></div>
+          </div>
+          <div class="lb-sig ${PER_STATE.respSig?'on':''}" style="height:70px" onclick="perOpenSig('respSig','Assinatura — Responsável pelo relatório')">${sigMark(PER_STATE.respSig)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-section" id="perCloudSection">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Relatórios salvos na nuvem</h3>
+      <div class="lb-field full"><span class="hint" id="perCloudStatus">Conectando…</span></div>
+      <div class="lb-field full" id="perCloudListWrap" style="display:none">
+        <label>Abrir um relatório já salvo</label>
+        <select id="perCloudList"><option value="">Selecione…</option></select>
+      </div>
+    </div>
+
+    <div class="lb-section">
+      <div class="lb-actions">
+        <button class="lb-save" onclick="perSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Relatório de Peritagem</button>
+        <button class="lb-print" onclick="perExportReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Gerar PDF (layout completo)</button>
+        <span class="lb-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>${GAS_ENDPOINT ? "Sincronização com Google Drive ativa." : "Google Drive ainda não configurado nesta cópia do painel (fala com o time de TI)."}</span>
+      </div>
+    </div>
+  </div>
+  <div class="lb-toast" id="perToast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="perToastText">Relatório salvo</span></div>
+  `;
+  perRenderEquipamentos();
+  perRenderRegistros();
+  perRenderProcedimentos();
+  perRenderMotoresFixacao();
+  perRenderMotoresHoras();
+  perRenderCausas();
+  perInitCloud();
+}
+
+/* ---- Tabela 01: equipamento recebido ---- */
+function perRenderEquipamentos(){
+  const body = document.getElementById('perEquipamentosBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.equipamentosRecebidos.map((it,i)=>`<tr>
+    <td><input value="${raEsc(it.qtd)}" style="text-align:center;width:70px" onchange="perSetEquipamento(${i},'qtd',this.value)"></td>
+    <td><input value="${raEsc(it.item)}" onchange="perSetEquipamento(${i},'item',this.value)"></td>
+    <td><input value="${raEsc(it.serie)}" onchange="perSetEquipamento(${i},'serie',this.value)"></td>
+    <td><div class="lb-rowdel" onclick="perDelEquipamento(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div></td>
+  </tr>`).join('');
+}
+function perSetEquipamento(i,field,val){ PER_STATE.equipamentosRecebidos[i][field]=val; perMarkDirty(); }
+function perAddEquipamento(){ PER_STATE.equipamentosRecebidos.push({qtd:'',item:'',serie:''}); perRenderEquipamentos(); perMarkDirty(); }
+function perDelEquipamento(i){ PER_STATE.equipamentosRecebidos.splice(i,1); perRenderEquipamentos(); perMarkDirty(); }
+
+/* ---- Registros capturados (legendas) ---- */
+function perRenderRegistros(){
+  const body = document.getElementById('perRegistrosBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.registros.map((r,i)=>`
+    <div class="lb-2col" style="align-items:end;margin-bottom:10px">
+      <div class="lb-field"><label>Identificação</label><input value="${raEsc(r.titulo)}" onchange="perSetRegistro(${i},'titulo',this.value)" placeholder="Ex.: IMAGEM 01"></div>
+      <div class="lb-field" style="display:flex;gap:8px;align-items:end">
+        <div style="flex:1"><label>Legenda</label><input value="${raEsc(r.legenda)}" onchange="perSetRegistro(${i},'legenda',this.value)" placeholder="Ex.: Equipamento pertencente a…"></div>
+        <div class="lb-rowdel" onclick="perDelRegistro(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+      </div>
+    </div>`).join('');
+}
+function perSetRegistro(i,field,val){ PER_STATE.registros[i][field]=val; perMarkDirty(); }
+function perAddRegistro(){ PER_STATE.registros.push({titulo:'IMAGEM '+String(PER_STATE.registros.length+1).padStart(2,'0'),legenda:''}); perRenderRegistros(); perMarkDirty(); }
+function perDelRegistro(i){ PER_STATE.registros.splice(i,1); perRenderRegistros(); perMarkDirty(); }
+
+/* ---- Procedimentos executados ---- */
+function perRenderProcedimentos(){
+  const body = document.getElementById('perProcedimentosBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.procedimentos.map((p,i)=>`
+    <div class="card" style="margin-bottom:12px;position:relative">
+      <div class="lb-grid" style="grid-template-columns:100px 1fr">
+        <div class="lb-field"><label>Nº</label><input value="${raEsc(p.numero)}" onchange="perSetProcedimento(${i},'numero',this.value)"></div>
+        <div class="lb-field"><label>Título</label><input value="${raEsc(p.titulo)}" onchange="perSetProcedimento(${i},'titulo',this.value)"></div>
+      </div>
+      <div class="lb-field full" style="margin-top:10px"><label>Descrição</label><textarea onchange="perSetProcedimento(${i},'descricao',this.value)">${raEsc(p.descricao)}</textarea></div>
+      <div class="lb-rowdel" style="position:absolute;top:12px;right:12px" onclick="perDelProcedimento(${i})" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+    </div>`).join('');
+}
+function perSetProcedimento(i,field,val){ PER_STATE.procedimentos[i][field]=val; perMarkDirty(); }
+function perAddProcedimento(){ PER_STATE.procedimentos.push({numero:'',titulo:'',descricao:''}); perRenderProcedimentos(); perMarkDirty(); }
+function perDelProcedimento(i){ PER_STATE.procedimentos.splice(i,1); perRenderProcedimentos(); perMarkDirty(); }
+
+/* ---- Fixação dos motores ---- */
+function perRenderMotoresFixacao(){
+  const body = document.getElementById('perMotoresFixacaoBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.motoresFixacao.map((m,i)=>`<tr>
+    <td class="lb-local">${raEsc(m.motor)}</td>
+    <td><input value="${raEsc(m.aperto)}" onchange="perSetMotorFixacao(${i},'aperto',this.value)"></td>
+    <td><input value="${raEsc(m.folga)}" onchange="perSetMotorFixacao(${i},'folga',this.value)"></td>
+    <td><input value="${raEsc(m.ruido)}" onchange="perSetMotorFixacao(${i},'ruido',this.value)"></td>
+    <td><input value="${raEsc(m.temperatura)}" onchange="perSetMotorFixacao(${i},'temperatura',this.value)"></td>
+    <td><input value="${raEsc(m.resultado)}" onchange="perSetMotorFixacao(${i},'resultado',this.value)"></td>
+  </tr>`).join('');
+}
+function perSetMotorFixacao(i,field,val){ PER_STATE.motoresFixacao[i][field]=val; perMarkDirty(); }
+
+/* ---- Horas de voo dos motores ---- */
+function perRenderMotoresHoras(){
+  const body = document.getElementById('perMotoresHorasBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.motoresHoras.map((m,i)=>`<tr>
+    <td class="lb-local">${raEsc(m.motor)}</td>
+    <td><input value="${raEsc(m.horas)}" onchange="perSetMotorHoras(${i},'horas',this.value)" placeholder="Ex.: 20h56m33s"></td>
+    <td><input value="${raEsc(m.limite)}" onchange="perSetMotorHoras(${i},'limite',this.value)"></td>
+    <td><input value="${raEsc(m.situacao)}" onchange="perSetMotorHoras(${i},'situacao',this.value)" placeholder="Ex.: Dentro do limite"></td>
+  </tr>`).join('');
+}
+function perSetMotorHoras(i,field,val){ PER_STATE.motoresHoras[i][field]=val; perMarkDirty(); }
+
+/* ---- Causas identificadas ---- */
+function perRenderCausas(){
+  const body = document.getElementById('perCausasBody');
+  if(!body) return;
+  body.innerHTML = PER_STATE.causas.map((c,i)=>`
+    <div class="lb-field full" style="display:flex;gap:8px;align-items:flex-end;margin-bottom:8px">
+      <div style="flex:1"><textarea onchange="perSetCausa(${i},this.value)" placeholder="Descreva a causa identificada…">${raEsc(c)}</textarea></div>
+      <div class="lb-rowdel" onclick="perDelCausa(${i})" title="Remover" style="margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg></div>
+    </div>`).join('');
+}
+function perSetCausa(i,val){ PER_STATE.causas[i]=val; perMarkDirty(); }
+function perAddCausa(){ PER_STATE.causas.push(''); perRenderCausas(); perMarkDirty(); }
+function perDelCausa(i){ PER_STATE.causas.splice(i,1); perRenderCausas(); perMarkDirty(); }
+
+function perOpenSig(field,title){
+  openSignaturePad(title, dataUrl=>{
+    perGatherFields();
+    PER_STATE[field]=dataUrl;
+    renderRelatorioPeritagem(PER_NODE, PER_STATE, PER_LOCKED_AT);
+  });
+}
+function perMarkDirty(){
+  const s = document.getElementById('perStatus');
+  if(s && s.classList.contains('saved')){ s.classList.remove('saved'); document.getElementById('perStatusText').textContent='Rascunho não salvo'; }
+}
+function perToast(msg){
+  const t = document.getElementById('perToast'); if(!t) return;
+  document.getElementById('perToastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), msg.length>60 ? 7000 : 3200);
+}
+function perGatherFields(){
+  const map = {perEquipamento:'equipamento',perCliente:'cliente',perSite:'site',perDataAtividade:'dataAtividade',
+    perRelatosCliente:'relatosCliente',perRecebimentoTexto:'recebimentoTexto',perAnaliseRecebido:'analiseRecebido',
+    perDiagnosticoTecnico:'diagnosticoTecnico',perConclusao:'conclusao',perNumPaginas:'numPaginas',
+    perCidadeDataEmissao:'cidadeDataEmissao',perDataEmissao:'dataEmissao',
+    perCooNome:'cooNome',perCooCargo:'cooCargo',perRespNome:'respNome',perRespCargo:'respCargo'};
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el) PER_STATE[map[id]]=el.value; });
+}
+async function perSave(){
+  perGatherFields();
+  const s = document.getElementById('perStatus');
+  s.classList.add('saved');
+  document.getElementById('perStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const rel = perBuildReport();
+  const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+
+  const r = await sendToDrive('relatorio_peritagem', PER_STATE, extra);
+  if(r.reason==='timeout_assumed_ok'){ perToast('Relatório de Peritagem enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
+  else if(r.ok){ perToast('Relatório de Peritagem salvo e enviado ao Google Drive'); }
+  else if(r.reason==='not_configured'){ perToast('Relatório de Peritagem salvo localmente (Google Drive não configurado)'); }
+  else { console.error('Detalhe do erro de envio:', r); perToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
+
+  sbSaveSnapshot('relatorios_peritagem', { equipamento: PER_STATE.equipamento||null, cliente: PER_STATE.cliente||null, site: PER_STATE.site||null, data: PER_STATE.dataAtividade||null, state: PER_STATE });
+}
+function perInitCloud(){
+  sbFillCloudList('relatorios_peritagem', 'id,equipamento,cliente,site,data,created_at',
+    r => `${r.equipamento||'Sem equipamento'}${r.cliente? ' — '+r.cliente:''}${r.data? ' ('+r.data+')':''}`,
+    'perCloudStatus', 'perCloudListWrap', 'perCloudList', perLoadCloud);
+}
+async function perLoadCloud(id){
+  try{
+    const { data, error } = await sb.from('relatorios_peritagem').select('state,created_at').eq('id', id).single();
+    if(error) throw error;
+    if(PER_NODE) renderRelatorioPeritagem(PER_NODE, data.state, data.created_at);
+    perToast('Relatório carregado da nuvem');
+  }catch(err){ console.error('perLoadCloud:', err); }
+}
+function perUnlockCopy(){
+  if(PER_NODE) renderRelatorioPeritagem(PER_NODE, PER_STATE);
+  perToast('Cópia liberada para edição — salve pra criar um novo registro');
+}
+function perBuildReport(){
+  perGatherFields();
+  const equipRows = PER_STATE.equipamentosRecebidos.map(it=>`<tr><td>${raEsc(it.qtd)||'—'}</td><td>${raEsc(it.item)||'—'}</td><td>${raEsc(it.serie)||'—'}</td></tr>`).join('');
+  const registrosRows = PER_STATE.registros.map(r=>`<div class="rp-field"><div class="k">${raEsc(r.titulo)||'—'}</div><div class="v">${raEsc(r.legenda)||'—'}</div></div>`).join('');
+  const procHtml = PER_STATE.procedimentos.map(p=>`<div style="margin-bottom:10px"><b>${raEsc(p.numero)} ${raEsc(p.titulo)}</b><div style="margin-top:3px;color:#333">${raEsc(p.descricao)||'—'}</div></div>`).join('');
+  const fixacaoRows = PER_STATE.motoresFixacao.map(m=>`<tr><td>${raEsc(m.motor)}</td><td>${raEsc(m.aperto)||'—'}</td><td>${raEsc(m.folga)||'—'}</td><td>${raEsc(m.ruido)||'—'}</td><td>${raEsc(m.temperatura)||'—'}</td><td>${raEsc(m.resultado)||'—'}</td></tr>`).join('');
+  const horasRows = PER_STATE.motoresHoras.map(m=>`<tr><td>${raEsc(m.motor)}</td><td>${raEsc(m.horas)||'—'}</td><td>${raEsc(m.limite)||'—'}</td><td>${raEsc(m.situacao)||'—'}</td></tr>`).join('');
+  const causasHtml = '<ul style="margin:0;padding-left:18px">' + PER_STATE.causas.map(c=>`<li style="margin-bottom:5px">${raEsc(c)||'—'}</li>`).join('') + '</ul>';
+
+  const headHtml = `
+  <div class="rp-header">
+    <div class="rp-logo"><img src="${XD4_SYMBOL}" alt="XD4"></div>
+    <div class="rp-title">
+      <h1>Relatório de Peritagem de Equipamento</h1>
+      <div class="sub">${raEsc(PER_STATE.equipamento)||'—'} · ${raEsc(PER_STATE.cliente)||'—'}${PER_STATE.site?' — '+raEsc(PER_STATE.site):''}</div>
+      <div class="rp-meta">
+        <span class="rp-chip">DOC FO-OPE-021</span>
+        <span class="rp-chip">REV 00</span>
+        ${PER_LOCKED_AT ? `<span class="rp-chip">Criado em ${fmtCriadoEm(PER_LOCKED_AT)}</span>` : ''}
+        <span class="rp-chip">Gerado em ${new Date().toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  </div>`;
+
+  const bodyHtml = `
+  <div class="rp-section"><h3>Identificação</h3>
+    <div class="rp-grid cols3">
+      <div class="rp-field"><div class="k">Equipamento</div><div class="v">${raEsc(PER_STATE.equipamento)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Cliente</div><div class="v">${raEsc(PER_STATE.cliente)||'—'}</div></div>
+      <div class="rp-field"><div class="k">Site / Local</div><div class="v">${raEsc(PER_STATE.site)||'—'}</div></div>
+    </div>
+    <div class="rp-field" style="margin-top:8px"><div class="k">Data da atividade</div><div class="v">${raEsc(PER_STATE.dataAtividade)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Relatos do Cliente</h3><div class="rp-declare">${raEsc(PER_STATE.relatosCliente)||'—'}</div></div>
+
+  <div class="rp-section"><h3>Recebimento</h3>
+    <div class="rp-declare">${raEsc(PER_STATE.recebimentoTexto)||'—'}</div>
+    <table class="rp-table" style="margin-top:10px">
+      <thead><tr><th>Quantidade</th><th>Item</th><th>Número de Série / Modelo</th></tr></thead>
+      <tbody>${equipRows}</tbody>
+    </table>
+    <div class="rp-field" style="margin-top:10px"><div class="k">Análise do material recebido e conferido</div><div class="v">${raEsc(PER_STATE.analiseRecebido)||'—'}</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Registros Capturados</h3><div class="rp-grid">${registrosRows||'<div class="rp-field"><div class="v">—</div></div>'}</div></div>
+
+  <div class="rp-section"><h3>Procedimentos Executados</h3>${procHtml}</div>
+
+  <div class="rp-section"><h3>Verificação da Fixação dos Motores</h3>
+    <table class="rp-table">
+      <thead><tr><th>Item</th><th>Aperto</th><th>Folga</th><th>Ruído</th><th>Temperatura</th><th>Resultado</th></tr></thead>
+      <tbody>${fixacaoRows}</tbody>
+    </table>
+  </div>
+
+  <div class="rp-section"><h3>Horas de Voo dos Motores</h3>
+    <table class="rp-table">
+      <thead><tr><th>Motor</th><th>Horas</th><th>Limite recomendado</th><th>Situação</th></tr></thead>
+      <tbody>${horasRows}</tbody>
+    </table>
+  </div>
+
+  <div class="rp-section"><h3>Diagnóstico das Causas Identificadas</h3>${causasHtml}</div>
+  <div class="rp-section"><h3>Diagnóstico Técnico</h3><div class="rp-declare">${raEsc(PER_STATE.diagnosticoTecnico)||'—'}</div></div>
+  <div class="rp-section"><h3>Conclusão da Peritagem</h3>
+    <div class="rp-declare">${raEsc(PER_STATE.conclusao)||'—'}</div>
+    <div class="rp-field" style="margin-top:8px"><div class="k">Emissão</div><div class="v">Relatório com ${raEsc(PER_STATE.numPaginas)||'—'} página(s), assinado digitalmente. ${raEsc(PER_STATE.cidadeDataEmissao)||''}${PER_STATE.dataEmissao?', em '+raEsc(PER_STATE.dataEmissao):''}.</div></div>
+  </div>
+
+  <div class="rp-section"><h3>Assinaturas</h3>
+    <div class="rp-signblock">
+      <div class="rp-signinner">
+        <div class="rp-signline">${rpSigCell(PER_STATE.cooSig)}</div>
+        <div class="rp-signcap"><b>${raEsc(PER_STATE.cooNome)||'—'}</b><br>${raEsc(PER_STATE.cooCargo)||''}</div>
+      </div>
+      <div class="rp-signinner">
+        <div class="rp-signline">${rpSigCell(PER_STATE.respSig)}</div>
+        <div class="rp-signcap"><b>${raEsc(PER_STATE.respNome)||'—'}</b><br>${raEsc(PER_STATE.respCargo)||''}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-021 · Relatório Preliminar de Peritagem</span></div>`;
+
+  return { headHtml, bodyHtml, title:'Relatório de Peritagem — '+(raEsc(PER_STATE.equipamento)||'sem equipamento'), filename:'Relatorio_Peritagem_'+(raEsc(PER_STATE.equipamento)||'sem_equipamento').replace(/\s+/g,'_') };
+}
+function perExportReport(){
+  const r = perBuildReport();
+  rpOpenWindow(rpShell(r.title, r.headHtml, r.bodyHtml));
 }
 
 function titleCase(s){
