@@ -1423,10 +1423,16 @@ const TREE = [
         ]},
   { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
-  { id:'diarios', label:'<b>Diário de Bordo</b> — Digital', icon:'file', code:'DB', badge:'Novo', status:'ok', type:'logbook', root:true },
-  { id:'diarios-manut', label:'<b>Diário de Manutenção</b> — Digital', icon:'wrench', code:'DM', badge:'Novo', status:'ok', type:'maintlog', root:true },
-  { id:'plano-captura', label:'<b>Plano de Captura</b> — Digital', icon:'shield', code:'PC', badge:'Novo', status:'ok', type:'planocaptura', root:true },
-  { id:'risk-assessment', label:'<b>Risk Assessment</b> — Digital', icon:'shield', code:'FO-OPE-002', badge:'Novo', status:'ok', type:'riskassessment', root:true },
+  { id:'diarios', label:'<b>Diário de Bordo</b>', icon:'file', code:'DB', status:'ok', type:'logbook', root:true },
+  { id:'diarios-manut', label:'<b>Diário de Manutenção</b>', icon:'wrench', code:'DM', status:'ok', type:'maintlog', root:true },
+  { id:'plano-captura', label:'<b>Plano de Captura</b>', icon:'shield', code:'PC', status:'ok', type:'planocaptura', root:true },
+  { id:'risk-assessment', label:'<b>Risk Assessment</b>', icon:'shield', code:'FO-OPE-002', status:'ok', type:'riskassessment', root:true },
+  { id:'doc-ficha-epi', label:'<b>Ficha de Controle de EPI</b>', icon:'file', code:'FO-OPE-005', status:'ok', type:'epiform', root:true },
+  { id:'doc-ordem-servico', label:'<b>Ordem de Serviço</b>', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico', root:true },
+  { id:'doc-relatorio-missao', label:'<b>Relatório de Missão</b>', icon:'file', code:'FO-OPE-018', status:'ok', type:'digital-relatorio-missao', root:true },
+  { id:'doc-relatorio-preliminar-peritagem', label:'<b>Relatório Preliminar de Peritagem</b>', icon:'file', code:'FO-OPE-021', status:'ok', type:'digital-relatorio-peritagem', root:true },
+  { id:'doc-tabela-preservacao', label:'<b>Tabela de Preservação de Produtos</b>', icon:'file', code:'OD-OPE-001', status:'ok', type:'digital-tabela-preservacao', root:true },
+  { id:'doc-certificado-treino', label:'<b>Certificado de Treino Introdutório</b>', icon:'file', code:'OD-OPE-003', status:'ok', type:'digital-certificado-treino', root:true },
   { id:'docs-gerais', label:'Documentos Gerais', icon:'folder', type:'group', status:'ok', hidden:true,
     children:[
       { id:'doc-servico-nao-conforme', label:'Serviço não conforme', icon:'file', code:'IT-OPE-002', status:'ok', type:'digital-servico-nao-conforme' },
@@ -1434,13 +1440,7 @@ const TREE = [
       { id:'doc-transporte-bateria', label:'Transporte de bateria via modal aéreo', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
         files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] },
       { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] },
-      { id:'doc-ficha-epi', label:'Ficha de controle de EPI', icon:'file', code:'FO-OPE-005', badge:'Novo', status:'ok', type:'epiform' },
-      { id:'doc-ordem-servico', label:'Ordem de Serviço', icon:'file', code:'FO-OPE-006', badge:'Novo', status:'ok', type:'digital-ordem-servico' },
-      { id:'doc-relatorio-missao', label:'Relatório de Missão', icon:'file', code:'FO-OPE-018', badge:'Novo', status:'ok', type:'digital-relatorio-missao' },
-      { id:'doc-relatorio-preliminar-peritagem', label:'Relatório Preliminar de Peritagem', icon:'file', code:'FO-OPE-021', badge:'Novo', status:'ok', type:'digital-relatorio-peritagem' },
-      { id:'doc-tabela-preservacao', label:'Tabela de preservação de produtos', icon:'file', code:'OD-OPE-001', badge:'Novo', status:'ok', type:'digital-tabela-preservacao' },
-      { id:'doc-certificado-treino', label:'Certificado de treino introdutório', icon:'file', code:'OD-OPE-003', badge:'Novo', status:'ok', type:'digital-certificado-treino' }
+        files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] }
     ]}
 ];
 
@@ -2261,16 +2261,14 @@ const ORG_DOCS={
         ]}
       ]},
     { id:'fo', short:'FO', title:'Formulários', icon:'pdf', accent:'var(--warn)',
-      desc:'O que se preenche em cada atividade — formulários digitais e registros da operação.',
+      desc:'O que se preenche em cada atividade — todos os formulários já em versão digital.',
       sections:[
-        { label:'Formulários digitais', items:[
+        { label:'Formulários', items:[
           {label:'Risk Assessment', code:'FO-OPE-002', ref:'risk-assessment'},
           {label:'Ficha de Controle de EPI', code:'FO-OPE-005', ref:'doc-ficha-epi'},
           {label:'Diário de Bordo', code:'FO-OPE-011', ref:'diarios'},
           {label:'Diário de Manutenção', code:'FO-OPE-017', ref:'diarios-manut'},
-          {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'plano-captura'}
-        ]},
-        { label:'Formulários impressos', items:[
+          {label:'Plano de Captura de dados', code:'FO-OPE-020', ref:'plano-captura'},
           {label:'Ordem de Serviço', code:'FO-OPE-006', ref:'doc-ordem-servico'},
           {label:'Relatório de Missão', code:'FO-OPE-018', ref:'doc-relatorio-missao'},
           {label:'Relatório Preliminar de Peritagem', code:'FO-OPE-021', ref:'doc-relatorio-preliminar-peritagem'}
