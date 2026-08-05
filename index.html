@@ -1423,9 +1423,9 @@ const TREE = [
         ]},
   { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
-  { id:'diarios', label:'<b>Diário de Bordo</b>', icon:'file', code:'DB', status:'ok', type:'logbook', root:true },
-  { id:'diarios-manut', label:'<b>Diário de Manutenção</b>', icon:'wrench', code:'DM', status:'ok', type:'maintlog', root:true },
-  { id:'plano-captura', label:'<b>Plano de Captura</b>', icon:'shield', code:'PC', status:'ok', type:'planocaptura', root:true },
+  { id:'diarios', label:'<b>Diário de Bordo</b>', icon:'file', code:'FO-OPE-011', status:'ok', type:'logbook', root:true },
+  { id:'diarios-manut', label:'<b>Diário de Manutenção</b>', icon:'wrench', code:'FO-OPE-017', status:'ok', type:'maintlog', root:true },
+  { id:'plano-captura', label:'<b>Plano de Captura</b>', icon:'shield', code:'FO-OPE-020', status:'ok', type:'planocaptura', root:true },
   { id:'risk-assessment', label:'<b>Risk Assessment</b>', icon:'shield', code:'FO-OPE-002', status:'ok', type:'riskassessment', root:true },
   { id:'doc-ficha-epi', label:'<b>Ficha de Controle de EPI</b>', icon:'file', code:'FO-OPE-005', status:'ok', type:'epiform', root:true },
   { id:'doc-ordem-servico', label:'<b>Ordem de Serviço</b>', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico', root:true },
@@ -1438,9 +1438,7 @@ const TREE = [
       { id:'doc-servico-nao-conforme', label:'Serviço não conforme', icon:'file', code:'IT-OPE-002', status:'ok', type:'digital-servico-nao-conforme' },
       { id:'doc-ordem-servico-nr01', label:'Ordem de serviço NR-01', icon:'file', code:'IT-OPE-008', status:'ok', type:'digital-ordem-servico-nr01' },
       { id:'doc-transporte-bateria', label:'Transporte de bateria via modal aéreo', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] },
-      { id:'doc-risk-assessment', label:'Risk Assessment', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
-        files:[ { label:'FO-OPE-002 — Risk Assessment', file:'documentos/fo-ope-002-risk-assessment.pdf' } ] }
+        files:[ { label:'Transporte de bateria via modal aéreo', file:'documentos/transporte-bateria-modal-aereo.pdf' } ] }
     ]}
 ];
 
@@ -1541,7 +1539,7 @@ function classifyFamily(n){
     return 'OD'; // MGM e afins
   }
   if(/^pop-|^pto-|^phr-/.test(n.type||'')) return 'IT';
-  if(['logbook','maintlog','planocaptura','riskassessment','epiform'].includes(n.type)) return 'FO';
+  if(['logbook','maintlog','planocaptura','riskassessment','epiform','digital-ordem-servico','digital-relatorio-missao','digital-relatorio-peritagem','digital-tabela-preservacao','digital-certificado-treino'].includes(n.type)) return 'FO';
   if(n.type==='manual'){
     const f=(n.files&&n.files[0]&&n.files[0].file)||'';
     if(f.startsWith('manuals/')) return null; // manual de fabricante → Biblioteca Técnica, não OD/IT/FO
