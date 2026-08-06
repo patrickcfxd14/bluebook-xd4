@@ -1075,6 +1075,47 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
   .pc-adv-head,.pc-quickfill,.pc-etapa-expand{display:none!important}
   .pc-adv .pc-adv-body{display:block!important}
 }
+/* ===== CHECKLIST DE MOBILIZAÇÃO ===== */
+.mob-stamp{display:flex;align-items:center;gap:18px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px 22px;margin-bottom:24px}
+.mob-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
+.mob-ring-wrap svg{width:64px;height:64px;transform:rotate(-90deg)}
+.mob-ring-bg{fill:none;stroke:var(--sky-line);stroke-width:6}
+.mob-ring-fg{fill:none;stroke:var(--xd4);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .3s ease,stroke .3s ease}
+.mob-ring-fg.done{stroke:var(--ok)}
+.mob-ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px}
+.mob-stamp-text{flex:1;min-width:0}
+.mob-stamp-text .mob-status{font-size:13px;color:var(--ink-3);margin-top:2px;font-weight:500}
+.mob-stamp-text .mob-status.done{color:var(--ok);font-weight:600}
+.mob-reset-btn{flex-shrink:0;font-size:12.5px;font-weight:600;color:var(--ink-3);border:1px solid var(--sky-line);padding:9px 14px;border-radius:9px;display:flex;align-items:center;gap:6px;transition:.15s}
+.mob-reset-btn:hover{border-color:var(--warn);color:var(--warn);background:var(--warn-bg)}
+.mob-reset-btn svg{width:13px;height:13px}
+.mob-sec-title{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 10px;padding-left:2px}
+.mob-sec-title:first-child{margin-top:0}
+.mob-list{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.mob-row{display:flex;align-items:flex-start;gap:13px;padding:14px 18px;border-bottom:1px solid var(--line);transition:background .12s;user-select:none;cursor:pointer}
+.mob-row:last-child{border-bottom:none}
+.mob-row:hover{background:var(--sky)}
+.mob-row.checked{background:var(--ok-bg)}
+.mob-chk{width:23px;height:23px;border-radius:7px;border:2px solid var(--sky-line);background:var(--paper);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.mob-chk svg{width:14px;height:14px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.5);transition:.15s}
+.mob-row.checked .mob-chk{background:var(--ok);border-color:var(--ok)}
+.mob-row.checked .mob-chk svg{opacity:1;transform:scale(1)}
+.mob-row-label{flex:1;font-size:14.5px;color:var(--ink);line-height:1.45;padding-top:2px}
+.mob-row.checked .mob-row-label{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--sky-line)}
+.mob-ut-toggle{margin-top:22px;background:var(--paper);border:1px dashed var(--sky-line);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow);cursor:pointer}
+.mob-ut-toggle .mob-ut-txt{flex:1}
+.mob-ut-toggle .mob-ut-txt b{font-size:13.5px;font-weight:600;display:block}
+.mob-ut-toggle .mob-ut-txt span{font-size:12px;color:var(--ink-3)}
+.mob-switch{width:42px;height:24px;border-radius:99px;background:var(--sky-line);position:relative;flex-shrink:0;transition:.2s}
+.mob-switch::after{content:"";position:absolute;width:18px;height:18px;border-radius:99px;background:#fff;top:3px;left:3px;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.2s}
+.mob-switch.on{background:var(--xd4)}
+.mob-switch.on::after{left:21px}
+.mob-done-banner{margin-top:20px;border-radius:14px;background:linear-gradient(135deg,var(--ok),#2FA36B);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(6px);pointer-events:none;transition:.25s}
+.mob-done-banner.show{opacity:1;transform:translateY(0)}
+.mob-done-banner svg{width:22px;height:22px;flex-shrink:0}
+.mob-done-banner b{font-size:14px;font-weight:700;display:block}
+.mob-done-banner span{font-size:12px;opacity:.9}
+.mob-note{margin-top:22px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6}
 </style>
 </head>
 <body>
@@ -1215,7 +1256,8 @@ const IC = {
    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>',
    shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>',
    pilot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/><path d="M8.5 5.5C10 3 14 3 15.5 5.5"/></svg>',
-   star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 6.5H21l-5.2 4 2 6.5L12 16.5 6.2 20l2-6.5L3 9.5h6.5z"/></svg>'
+   star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 6.5H21l-5.2 4 2 6.5L12 16.5 6.2 20l2-6.5L3 9.5h6.5z"/></svg>',
+   checklist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 2h6v3H9z"/><path d="M8 12l2 2 4-4M8 17l2 2 4-4"/></svg>'
 };
 const stName={ok:'Vigente',warn:'Em elaboração',draft:'Rascunho',crit:'Vencido'};
 
@@ -1355,6 +1397,7 @@ const TREE = [
                   { id:'elios3-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'90 seções', status:'ok', type:'pop-elios3' },
                   { id:'elios3-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', badge:'24h · 3 dias', status:'ok', type:'pto-elios3' },
                   { id:'elios3-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios3' },
+                  { id:'elios3-checklist', label:'Checklist de Mobilização', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'elios3' },
                   { id:'elios3-manual', label:'Manual do Fabricante', icon:'pdf', badge:'4 PDFs', status:'ok', type:'manual',
                     files:[
                       { label:'Elios 3 User Manual v1.3', file:'manuals/elios3-user-manual-v1.3.pdf', size:'45MB' },
@@ -1371,6 +1414,7 @@ const TREE = [
                   { id:'elios2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'88 seções', status:'ok', type:'pop-elios2' },
                   { id:'elios2-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-elios2' },
                   { id:'elios2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-elios2' },
+                  { id:'elios2-checklist', label:'Checklist de Mobilização', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'elios2' },
                   { id:'elios2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Elios 2', file:'manuals/elios2.pdf' } ] }
                 ]}
@@ -1385,6 +1429,7 @@ const TREE = [
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
                   { id:'go2-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-go2' },
                   { id:'go2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-go2' },
+                  { id:'go2-checklist', label:'Checklist de Mobilização — Go2-W', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'go2w' },
                   { id:'go2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
                 ]},
@@ -1408,6 +1453,7 @@ const TREE = [
                   { id:'rover-pop', label:'POP — Operação', icon:'file', code:'POP', status:'ok', type:'pop-rover' },
                   { id:'rover-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-rover' },
                   { id:'rover-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-rover' },
+                  { id:'rover-checklist', label:'Checklist de Mobilização', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'rover' },
                   { id:'rover-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Rover', file:'manuals/rover.pdf' } ] }
                 ]}
@@ -1952,6 +1998,7 @@ function routeTo(id){
   if(n.type==='phr-go2'){ renderPhrGO2(); show(viewDoc); return; }
   if(n.type==='phr-g1'){ renderPhrG1(); show(viewDoc); return; }
   if(n.type==='phr-rover'){ renderPhrRover(); show(viewDoc); return; }
+  if(n.type==='checklist-mob'){ renderChecklistMob(n); show(viewDoc); return; }
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
   if(n.type==='maintlog'){ renderMaintLog(n); show(viewDoc); return; }
   if(n.type==='planocaptura'){ renderPlanoCaptura(n); show(viewDoc); return; }
@@ -2739,6 +2786,186 @@ function renderPhrRover(){
     tag:'Fraseologia padronizada para comunicação entre tripulantes durante a operação do Rover — chamadas de rádio, confirmações, callouts de segurança e procedimentos de emergência.',
     footer:'Fraseologia Padrão · Rover'
   });
+}
+
+/* ---------- CHECKLIST DE MOBILIZAÇÃO (por veículo) ----------
+   Lembrete de pré-mobilização, sem cadastro — as marcações ficam
+   salvas apenas neste navegador (localStorage), por veículo. */
+const CHECKLIST_MOB = {
+  elios3: {
+    title:'Checklist de Mobilização — Flyability Elios 3',
+    items:[
+      'Drone: verificar payloads e estrutura',
+      'Controle remoto e tablet: verificar o nível de bateria de ambos e a conexão do cabo',
+      'Cinta de transporte',
+      'Baterias do drone: verificar quantidade e nível de carga',
+      'Case de armazenamento do drone',
+      'Caneta de limpeza das lentes',
+      'Soprador de ar'
+    ],
+    ut:{
+      label:'Em caso de uso de UT',
+      sub:'Ativar caso a missão envolva medição de espessura por ultrassom',
+      items:[
+        'Realizar a montagem do equipamento e verificar a fixação',
+        'Gel acoplante',
+        'Sondas de medição',
+        'Blocos de calibração'
+      ]
+    }
+  },
+  elios2: {
+    title:'Checklist de Mobilização — Flyability Elios 2',
+    items:[
+      'Drone: verificar a estrutura',
+      'Controle remoto e tablet: verificar o nível de bateria de ambos e a conexão do cabo',
+      'Baterias: verificar quantidade e nível de carga',
+      'Cartão de memória (SD) instalado',
+      'Case de armazenamento do drone',
+      'Caneta de limpeza das lentes',
+      'Soprador de ar'
+    ]
+  },
+  rover: {
+    title:'Checklist de Mobilização — Rover',
+    items:[
+      'Rover: verificar a estrutura',
+      'Controle remoto com bateria carregada',
+      'Bateria do rover carregada',
+      'Câmera GoPro, cartão de memória, case de armazenamento e bateria',
+      'Câmera Insta360, cartão de memória, case de armazenamento e bateria',
+      'Duas lanternas com bateria',
+      'Alicate de corte',
+      'Fita Hellermann',
+      'Corda de segurança',
+      'Bateria portátil (power bank)',
+      'Cabo USB-C e fonte de alimentação',
+      'Cabo para carregamento das lanternas',
+      'Notebook e respectivo carregador, quando necessário'
+    ]
+  },
+  go2w: {
+    title:'Checklist de Mobilização — Go2-W',
+    items:[
+      'Robô Go2-W: verificar a estrutura',
+      'Controles remotos, com e sem tela, com baterias carregadas',
+      'Cartão de memória do controle remoto e respectivo armazenamento',
+      'Celular utilizado no controle remoto, com bateria carregada',
+      'Baterias do robô: verificar nível de carga',
+      'Câmera térmica: verificar estrutura, conexões, cartão de memória e armazenamento',
+      'Cabo USB-C e fonte de alimentação',
+      'Cabos de segurança',
+      'Alicate de corte',
+      'Bateria portátil (power bank), com nível de carga verificado'
+    ]
+  }
+};
+const MOB_LS_PREFIX = 'xd4_mob_';
+function mobLoad(vkey){
+  try{ return JSON.parse(localStorage.getItem(MOB_LS_PREFIX+vkey) || '{}'); }catch(e){ return {}; }
+}
+function mobSave(vkey, data){
+  try{ localStorage.setItem(MOB_LS_PREFIX+vkey, JSON.stringify(data)); }catch(e){}
+}
+function mobIcon(){ return '<svg viewBox="0 0 24 24"><polyline points="5 13 10 18 19 7"/></svg>'; }
+function mobProgress(def, data){
+  let total = def.items.length, done = def.items.filter((_,i)=>data.checked&&data.checked['m'+i]).length;
+  if(def.ut && data.utOn){
+    total += def.ut.items.length;
+    done += def.ut.items.filter((_,i)=>data.checked&&data.checked['u'+i]).length;
+  }
+  return {done, total};
+}
+function renderChecklistMob(n){
+  const def = CHECKLIST_MOB[n.vkey];
+  if(!def) return;
+  const data = mobLoad(n.vkey);
+  data.checked = data.checked || {};
+  const {done,total} = mobProgress(def, data);
+  const pct = total ? done/total : 0;
+  const r = 26, c = 2*Math.PI*r;
+  const complete = total>0 && done===total;
+
+  const mainRows = def.items.map((label,i)=>{
+    const checked = !!data.checked['m'+i];
+    return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${n.vkey}','m${i}','${n.id}')">
+      <div class="mob-chk">${mobIcon()}</div>
+      <div class="mob-row-label">${label}</div>
+    </div>`;
+  }).join('');
+
+  const utBlock = def.ut ? `
+    <div class="mob-ut-toggle" onclick="mobToggleUt('${n.vkey}','${n.id}')">
+      <div class="mob-ut-txt"><b>${def.ut.label}</b><span>${def.ut.sub}</span></div>
+      <div class="mob-switch ${data.utOn?'on':''}"></div>
+    </div>
+    ${data.utOn ? `
+      <div class="mob-sec-title">Itens de UT</div>
+      <div class="mob-list">${def.ut.items.map((label,i)=>{
+        const checked = !!data.checked['u'+i];
+        return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${n.vkey}','u${i}','${n.id}')">
+          <div class="mob-chk">${mobIcon()}</div>
+          <div class="mob-row-label">${label}</div>
+        </div>`;
+      }).join('')}</div>
+    ` : ''}
+  ` : '';
+
+  viewDoc.innerHTML = `
+  <div class="grp" style="max-width:840px">
+    ${crumbsHTML(n.id)}
+    <div class="grp-head">
+      <div class="gh-ic">${IC.checklist}</div>
+      <div><h1>${def.title}</h1><div class="gh-sub">Confira cada item antes do deslocamento para campo. Lembrete pessoal, sem necessidade de login ou cadastro.</div></div>
+    </div>
+
+    <div class="mob-stamp">
+      <div class="mob-ring-wrap">
+        <svg viewBox="0 0 64 64">
+          <circle class="mob-ring-bg" cx="32" cy="32" r="${r}"></circle>
+          <circle class="mob-ring-fg ${complete?'done':''}" cx="32" cy="32" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c - pct*c}"></circle>
+        </svg>
+        <div class="mob-ring-label">${done}/${total}</div>
+      </div>
+      <div class="mob-stamp-text">
+        <div class="mob-status ${complete?'done':''}">${complete ? 'Pronto para mobilizar' : (done===0 ? 'Checklist não iniciado' : 'Conferência em andamento')}</div>
+      </div>
+      <button class="mob-reset-btn" onclick="mobReset('${n.vkey}','${n.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        Reiniciar
+      </button>
+    </div>
+
+    <div class="mob-sec-title">Itens do checklist</div>
+    <div class="mob-list">${mainRows}</div>
+
+    ${utBlock}
+
+    <div class="mob-done-banner ${complete?'show':''}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      <div><b>Checklist completo</b><span>Todos os itens foram conferidos.</span></div>
+    </div>
+
+    <div class="mob-note">As marcações são salvas automaticamente neste navegador e ficam disponíveis apenas para o usuário, sem necessidade de login ou cadastro.</div>
+  </div>`;
+}
+function mobToggle(vkey, key, nodeId){
+  const data = mobLoad(vkey);
+  data.checked = data.checked || {};
+  data.checked[key] = !data.checked[key];
+  mobSave(vkey, data);
+  renderChecklistMob(BYID[nodeId]);
+}
+function mobToggleUt(vkey, nodeId){
+  const data = mobLoad(vkey);
+  data.utOn = !data.utOn;
+  mobSave(vkey, data);
+  renderChecklistMob(BYID[nodeId]);
+}
+function mobReset(vkey, nodeId){
+  if(!confirm('Deseja reiniciar este checklist? Todos os itens marcados serão desmarcados.')) return;
+  mobSave(vkey, { checked:{}, utOn:false });
+  renderChecklistMob(BYID[nodeId]);
 }
 
 /* ============================================================
