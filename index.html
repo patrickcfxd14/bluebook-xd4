@@ -2219,7 +2219,11 @@ function renderHome(){
     {ref:'risk-assessment', ic:'shield', label:'Risk Assessment'},
     {ref:'plano-captura', ic:'shield', label:'Plano de Captura'},
     {ref:'diarios', ic:'file', label:'Diário de Bordo'},
-    {ref:'diarios-manut', ic:'wrench', label:'Diário de Manutenção'}
+    {ref:'diarios-manut', ic:'wrench', label:'Diário de Manutenção'},
+    {ref:'elios3-checklist', ic:'checklist', label:'Checklist — Elios 3'},
+    {ref:'elios2-checklist', ic:'checklist', label:'Checklist — Elios 2'},
+    {ref:'go2-checklist', ic:'checklist', label:'Checklist — Go2-W'},
+    {ref:'rover-checklist', ic:'checklist', label:'Checklist — Rover'}
   ];
   viewHome.innerHTML=`
   <div class="home">
@@ -2342,6 +2346,12 @@ const ORG_DOCS={
           {label:'Fraseologia — Unitree GO2', code:'', ref:'go2-fraseologia'},
           {label:'Fraseologia — Unitree G1', code:'', ref:'g1-fraseologia'},
           {label:'Fraseologia — Rover', code:'', ref:'rover-fraseologia'}
+        ]},
+        { label:'Checklists de Mobilização', items:[
+          {label:'Checklist de Mobilização — Elios 3', code:'', ref:'elios3-checklist'},
+          {label:'Checklist de Mobilização — Elios 2', code:'', ref:'elios2-checklist'},
+          {label:'Checklist de Mobilização — Go2-W', code:'', ref:'go2-checklist'},
+          {label:'Checklist de Mobilização — Rover', code:'', ref:'rover-checklist'}
         ]}
       ]},
     { id:'fo', short:'FO', title:'Formulários', icon:'pdf', accent:'var(--warn)',
