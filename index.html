@@ -62,7 +62,6 @@ svg{display:block}
 .rail-item.active{background:var(--sky);color:var(--xd4);font-weight:600;border-color:var(--sky-line)}
 .rail-item .ri-ic{width:19px;height:19px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .rail-item .ri-ic svg{width:16px;height:16px}
-.rail-divider{margin:12px 18px 6px;padding-top:12px;border-top:1px solid var(--sky-line);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
 
 /* elementos das páginas de hub (OD/IT/FO/Equipamentos/Biblioteca) */
 .hub-search{display:flex;align-items:center;gap:10px;height:46px;padding:0 16px;background:var(--paper);border:1px solid var(--sky-line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px}
@@ -75,10 +74,6 @@ svg{display:block}
 
 /* ===== TREE ===== */
 .tree{background:var(--paper);border-right:1px solid var(--line);overflow-y:auto;padding:8px 0 40px;transition:background .3s}
-.tree-search{margin:16px 14px;display:flex;align-items:center;gap:9px;height:40px;padding:0 13px;background:var(--sky);border:1px solid var(--sky-line);border-radius:9px;color:var(--ink-3);transition:border-color .15s,box-shadow .15s}
-.tree-search:focus-within{border-color:var(--accent);background:var(--paper);box-shadow:0 0 0 3px rgba(58,110,165,.12)}
-.tree-search input{background:none;border:none;outline:none;flex:1;font-size:13.5px;color:var(--ink)}
-.tree-search svg{width:15px;height:15px;flex-shrink:0}
 .tree-title{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:14px 18px 8px;display:flex;align-items:center;gap:7px}
 .node-row{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;border-left:3px solid transparent;transition:background .1s;font-size:14px}
 .node-row:hover{background:var(--sky)}
@@ -441,22 +436,23 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .org{max-width:1400px;margin:0 auto;padding:32px 28px 60px}
 
 /* ---- header + busca global ---- */
-.dh-header{margin-bottom:8px}
+.dh-header{margin-bottom:20px}
+.dh-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.dh-header-text{flex:1;min-width:280px}
 .dh-eyebrow{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .dh-eyebrow svg{width:14px;height:14px}
-.dh-header h1{font-size:28px;color:var(--ink);font-weight:700;letter-spacing:-.01em}
-.dh-header p{color:var(--ink-2);font-size:14.5px;line-height:1.55;margin-top:6px;max-width:680px}
+.dh-header h1{font-size:26px;color:var(--ink);font-weight:700;letter-spacing:-.01em}
+.dh-header p{color:var(--ink-2);font-size:13.5px;line-height:1.5;margin-top:5px;max-width:600px}
 
-.dh-search{position:relative;margin-top:20px;max-width:560px}
-.dh-search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ink-3);pointer-events:none}
-.dh-search input{width:100%;padding:14px 16px 14px 46px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-size:14.5px;font-family:inherit;box-shadow:var(--shadow);transition:.15s}
+.dh-header-search{width:300px;flex-shrink:0;padding-top:2px}
+.dh-search{position:relative}
+.dh-search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-3);pointer-events:none}
+.dh-search input{width:100%;padding:11px 16px 11px 42px;border:1.5px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);font-size:13.5px;font-family:inherit;box-shadow:var(--shadow);transition:.15s}
 .dh-search input:focus{outline:none;border-color:var(--xd4);box-shadow:0 0 0 4px rgba(43,169,224,.13)}
-.dh-search-kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);background:var(--sky);border:1px solid var(--sky-line);border-radius:6px;padding:3px 7px;pointer-events:none}
-.dh-search input:focus ~ .dh-search-kbd,.dh-search input:not(:placeholder-shown) ~ .dh-search-kbd{display:none}
-.dh-results-meta{font-size:12.5px;color:var(--ink-3);margin-top:10px;min-height:16px}
+.dh-results-meta{font-size:12px;color:var(--ink-3);margin-top:7px;min-height:15px;text-align:right}
 
 /* ---- árvore ---- */
-.dh-flow{padding:26px 0 20px;overflow-x:auto}
+.dh-flow{padding:10px 0 20px;overflow-x:auto}
 .dh-flow-inner{min-width:920px;display:flex;flex-direction:column;align-items:center}
 
 /* tier 1: MGO / MGM — cartões-hero, a raiz da árvore */
@@ -1116,6 +1112,14 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .mob-done-banner b{font-size:14px;font-weight:700;display:block}
 .mob-done-banner span{font-size:12px;opacity:.9}
 .mob-note{margin-top:22px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6}
+.mob-eq-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.mob-eq-tab{flex:1;min-width:150px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 16px;border-radius:12px;background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);cursor:pointer;transition:.15s;text-align:left}
+.mob-eq-tab:hover{border-color:var(--accent);transform:translateY(-1px)}
+.mob-eq-tab .eq-name{font-size:13.5px;font-weight:600;color:var(--ink)}
+.mob-eq-tab .eq-progress{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3)}
+.mob-eq-tab.active{border-color:var(--xd4);background:var(--sky);box-shadow:0 0 0 2px rgba(43,169,224,.18)}
+.mob-eq-tab.active .eq-name{color:var(--xd4)}
+.mob-eq-tab.complete .eq-progress{color:var(--ok);font-weight:600}
 </style>
 </head>
 <body>
@@ -1188,12 +1192,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 <div class="layout">
   <aside class="tree" id="tree">
     <nav class="rail" id="rail"></nav>
-    <div class="rail-divider">Estrutura completa</div>
-    <div class="tree-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="treeSearch" placeholder="Filtrar documentos, códigos…">
-    </div>
-    <div class="tree-title">Estrutura Documental</div>
+    <div class="tree-title">Formulários e Registros</div>
     <div id="treeRoot"></div>
   </aside>
 
@@ -1384,7 +1383,7 @@ const XD4_LOGO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAC5CAYAAACMaD
 const TREE = [
   { id:'home', label:'<b>Início</b> — Painel operacional', icon:'home', type:'home', status:'ok', leaf:true, hidden:true },
   { id:'org', label:'<b>Estrutura Documental</b>', icon:'org', type:'org', status:'ok', leaf:true, hidden:true },
-  { id:'mgo', label:'<b>MGO</b> — Manual Geral de Operações', icon:'book', code:'IT-OPE-003', status:'ok', type:'mgo', root:true },
+  { id:'mgo', label:'<b>MGO</b> — Manual Geral de Operações', icon:'book', code:'IT-OPE-003', status:'ok', type:'mgo', root:true, hidden:true },
   { id:'veiculos', label:'<b>Veículos</b>', icon:'fleet', type:'group', status:'ok', root:true, hidden:true,
     children:[
       { id:'aereos', label:'<b>Veículos Aéreos</b>', icon:'drone', type:'group', status:'ok', sidebarLeaf:true,
@@ -1429,7 +1428,7 @@ const TREE = [
                   { id:'go2-pop', label:'POP — Operação', icon:'file', code:'POP', badge:'65 seções', status:'ok', type:'pop-go2' },
                   { id:'go2-top', label:'TOP — Treinamento', icon:'grad', code:'PTO', status:'ok', type:'pto-go2' },
                   { id:'go2-fraseologia', label:'Fraseologia Padrão', icon:'file', code:'FRA', status:'ok', type:'phr-go2' },
-                  { id:'go2-checklist', label:'Checklist de Mobilização — Go2-W', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'go2w' },
+                  { id:'go2-checklist', label:'Checklist de Mobilização', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', vkey:'go2w' },
                   { id:'go2-manual', label:'Manual do Fabricante', icon:'pdf', badge:'PDF', status:'ok', type:'manual',
                     files:[ { label:'Manual do Fabricante — Unitree GO2', file:'manuals/go2.pdf' } ] }
                 ]},
@@ -1506,11 +1505,12 @@ const TREE = [
           { id:'ativos-energia', label:'Energia', icon:'bolt', type:'group', status:'draft', desc:'Subestações, linhas e transformadores', children:[] },
           { id:'ativos-siderurgia', label:'Siderurgia', icon:'factory', type:'group', status:'draft', desc:'Altos-fornos, coquerias e convertedores', children:[] }
         ]},
-  { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true,
+  { id:'mgm', label:'<b>MGM</b> — Manual Geral de Manutenção', icon:'wrench', code:'IT-MNT-001', rev:'Rev.00', status:'ok', type:'placeholder', root:true, hidden:true,
     phSections:['Prefácio e Fundamento Legal','Estrutura e Organização da Manutenção','Controle e Liberação de Aeronavegabilidade','Programa de Manutenção (preventiva/corretiva)','Gerenciamento de Riscos — Baterias LiPo','Diário de Manutenção e Registros','Procedimentos de Manutenção por Equipamento'],},
   { id:'diarios', label:'<b>Diário de Bordo</b>', icon:'file', code:'FO-OPE-011', status:'ok', type:'logbook', root:true },
   { id:'diarios-manut', label:'<b>Diário de Manutenção</b>', icon:'wrench', code:'FO-OPE-017', status:'ok', type:'maintlog', root:true },
   { id:'plano-captura', label:'<b>Plano de Captura</b>', icon:'shield', code:'FO-OPE-020', status:'ok', type:'planocaptura', root:true },
+  { id:'checklist-mob-geral', label:'<b>Checklist de Mobilização</b>', icon:'checklist', code:'CHK', status:'ok', type:'checklist-mob', root:true },
   { id:'risk-assessment', label:'<b>Risk Assessment</b>', icon:'shield', code:'FO-OPE-002', status:'ok', type:'riskassessment', root:true },
   { id:'doc-ficha-epi', label:'<b>Ficha de Controle de EPI</b>', icon:'file', code:'FO-OPE-005', status:'ok', type:'epiform', root:true },
   { id:'doc-ordem-servico', label:'<b>Ordem de Serviço</b>', icon:'file', code:'FO-OPE-006', status:'ok', type:'digital-ordem-servico', root:true },
@@ -2220,10 +2220,7 @@ function renderHome(){
     {ref:'plano-captura', ic:'shield', label:'Plano de Captura'},
     {ref:'diarios', ic:'file', label:'Diário de Bordo'},
     {ref:'diarios-manut', ic:'wrench', label:'Diário de Manutenção'},
-    {ref:'elios3-checklist', ic:'checklist', label:'Checklist — Elios 3'},
-    {ref:'elios2-checklist', ic:'checklist', label:'Checklist — Elios 2'},
-    {ref:'go2-checklist', ic:'checklist', label:'Checklist — Go2-W'},
-    {ref:'rover-checklist', ic:'checklist', label:'Checklist — Rover'}
+    {ref:'checklist-mob-geral', ic:'checklist', label:'Checklist de Mobilização'}
   ];
   viewHome.innerHTML=`
   <div class="home">
@@ -2347,11 +2344,8 @@ const ORG_DOCS={
           {label:'Fraseologia — Unitree G1', code:'', ref:'g1-fraseologia'},
           {label:'Fraseologia — Rover', code:'', ref:'rover-fraseologia'}
         ]},
-        { label:'Checklists de Mobilização', items:[
-          {label:'Checklist de Mobilização — Elios 3', code:'', ref:'elios3-checklist'},
-          {label:'Checklist de Mobilização — Elios 2', code:'', ref:'elios2-checklist'},
-          {label:'Checklist de Mobilização — Go2-W', code:'', ref:'go2-checklist'},
-          {label:'Checklist de Mobilização — Rover', code:'', ref:'rover-checklist'}
+        { label:'Checklist de Mobilização', items:[
+          {label:'Checklist de Mobilização — todos os equipamentos', code:'', ref:'checklist-mob-geral'}
         ]}
       ]},
     { id:'fo', short:'FO', title:'Formulários', icon:'pdf', accent:'var(--warn)',
@@ -2400,15 +2394,20 @@ function orgHeaderHTML(){
   const totalDocs = ORG_DOCS.categories.reduce((a,c)=>a+c.sections.reduce((b,s)=>b+s.items.length,0),0);
   return `
     <div class="dh-header">
-      <div class="dh-eyebrow">${IC.org}<span>Sistema de Gestão Operacional · XD4</span></div>
-      <h1>Estrutura Documental</h1>
-      <p>Todos os ${totalDocs} documentos do SGQ, em forma de árvore — do manual geral até cada procedimento. Busque pra filtrar, ou recolha um ramo que não precisa agora.</p>
-      <div class="dh-search">
-        ${ORG_ICON_SEARCH}
-        <input type="text" id="orgSearchInput" placeholder="Buscar documento ou código… (atalho: /)" autocomplete="off">
-        <span class="dh-search-kbd">/</span>
+      <div class="dh-header-row">
+        <div class="dh-header-text">
+          <div class="dh-eyebrow">${IC.org}<span>Sistema de Gestão Operacional · XD4</span></div>
+          <h1>Estrutura Documental</h1>
+          <p>Todos os ${totalDocs} documentos do SGQ, em forma de árvore — do manual geral até cada procedimento. Busque pra filtrar, ou recolha um ramo que não precisa agora.</p>
+        </div>
+        <div class="dh-header-search">
+          <div class="dh-search">
+            ${ORG_ICON_SEARCH}
+            <input type="text" id="orgSearchInput" placeholder="Buscar documento ou código…" autocomplete="off">
+          </div>
+          <div class="dh-results-meta" id="orgResultsMeta"></div>
+        </div>
       </div>
-      <div class="dh-results-meta" id="orgResultsMeta"></div>
     </div>`;
 }
 
@@ -2809,7 +2808,6 @@ const CHECKLIST_MOB = {
       'Controle remoto e tablet: verificar o nível de bateria de ambos e a conexão do cabo',
       'Cinta de transporte',
       'Baterias do drone: verificar quantidade e nível de carga',
-      'Case de armazenamento do drone',
       'Caneta de limpeza das lentes',
       'Soprador de ar'
     ],
@@ -2831,7 +2829,6 @@ const CHECKLIST_MOB = {
       'Controle remoto e tablet: verificar o nível de bateria de ambos e a conexão do cabo',
       'Baterias: verificar quantidade e nível de carga',
       'Cartão de memória (SD) instalado',
-      'Case de armazenamento do drone',
       'Caneta de limpeza das lentes',
       'Soprador de ar'
     ]
@@ -2871,6 +2868,16 @@ const CHECKLIST_MOB = {
   }
 };
 const MOB_LS_PREFIX = 'xd4_mob_';
+/* Ordem e rótulos curtos usados no seletor de equipamento — um único
+   checklist, você escolhe o equipamento no topo da tela. */
+const MOB_ORDER = ['elios3','elios2','go2w','rover'];
+const MOB_LABELS = {
+  elios3:'Flyability Elios 3',
+  elios2:'Flyability Elios 2',
+  go2w:'Unitree Go2-W',
+  rover:'Rover'
+};
+let mobActiveVkey = null; // equipamento atualmente exibido no checklist unificado
 function mobLoad(vkey){
   try{ return JSON.parse(localStorage.getItem(MOB_LS_PREFIX+vkey) || '{}'); }catch(e){ return {}; }
 }
@@ -2886,10 +2893,22 @@ function mobProgress(def, data){
   }
   return {done, total};
 }
+/* Ponto de entrada vindo da árvore/roteador: define qual equipamento
+   abre primeiro (o do item clicado) e desenha o checklist único. */
 function renderChecklistMob(n){
-  const def = CHECKLIST_MOB[n.vkey];
+  mobActiveVkey = n.vkey || mobActiveVkey || MOB_ORDER[0];
+  renderChecklistMobInner(n, mobActiveVkey);
+}
+/* Troca de equipamento dentro do MESMO checklist (sem navegar para
+   outro item da árvore) — é o "selecione o equipamento". */
+function mobSelectEquip(vkey, nodeId){
+  mobActiveVkey = vkey;
+  renderChecklistMobInner(BYID[nodeId], vkey);
+}
+function renderChecklistMobInner(n, vkey){
+  const def = CHECKLIST_MOB[vkey];
   if(!def) return;
-  const data = mobLoad(n.vkey);
+  const data = mobLoad(vkey);
   data.checked = data.checked || {};
   const {done,total} = mobProgress(def, data);
   const pct = total ? done/total : 0;
@@ -2898,14 +2917,14 @@ function renderChecklistMob(n){
 
   const mainRows = def.items.map((label,i)=>{
     const checked = !!data.checked['m'+i];
-    return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${n.vkey}','m${i}','${n.id}')">
+    return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${vkey}','m${i}','${n.id}')">
       <div class="mob-chk">${mobIcon()}</div>
       <div class="mob-row-label">${label}</div>
     </div>`;
   }).join('');
 
   const utBlock = def.ut ? `
-    <div class="mob-ut-toggle" onclick="mobToggleUt('${n.vkey}','${n.id}')">
+    <div class="mob-ut-toggle" onclick="mobToggleUt('${vkey}','${n.id}')">
       <div class="mob-ut-txt"><b>${def.ut.label}</b><span>${def.ut.sub}</span></div>
       <div class="mob-switch ${data.utOn?'on':''}"></div>
     </div>
@@ -2913,7 +2932,7 @@ function renderChecklistMob(n){
       <div class="mob-sec-title">Itens de UT</div>
       <div class="mob-list">${def.ut.items.map((label,i)=>{
         const checked = !!data.checked['u'+i];
-        return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${n.vkey}','u${i}','${n.id}')">
+        return `<div class="mob-row ${checked?'checked':''}" onclick="mobToggle('${vkey}','u${i}','${n.id}')">
           <div class="mob-chk">${mobIcon()}</div>
           <div class="mob-row-label">${label}</div>
         </div>`;
@@ -2921,13 +2940,29 @@ function renderChecklistMob(n){
     ` : ''}
   ` : '';
 
+  // Seletor de equipamento — mostra o progresso de cada um para dar
+  // contexto ao trocar de aba, sem sair do checklist único.
+  const eqSelect = `<div class="mob-eq-select">${MOB_ORDER.map(k=>{
+    const kDef = CHECKLIST_MOB[k];
+    const kData = mobLoad(k);
+    kData.checked = kData.checked || {};
+    const kProg = mobProgress(kDef, kData);
+    const kComplete = kProg.total>0 && kProg.done===kProg.total;
+    return `<div class="mob-eq-tab ${k===vkey?'active':''} ${kComplete?'complete':''}" onclick="mobSelectEquip('${k}','${n.id}')">
+      <span class="eq-name">${MOB_LABELS[k]}</span>
+      <span class="eq-progress">${kProg.done}/${kProg.total} ${kComplete?'· pronto':''}</span>
+    </div>`;
+  }).join('')}</div>`;
+
   viewDoc.innerHTML = `
   <div class="grp" style="max-width:840px">
     ${crumbsHTML(n.id)}
     <div class="grp-head">
       <div class="gh-ic">${IC.checklist}</div>
-      <div><h1>${def.title}</h1><div class="gh-sub">Confira cada item antes do deslocamento para campo. Lembrete pessoal, sem necessidade de login ou cadastro.</div></div>
+      <div><h1>Checklist de Mobilização</h1><div class="gh-sub">Selecione o equipamento e confira cada item antes do deslocamento para campo. Lembrete pessoal, sem necessidade de login ou cadastro.</div></div>
     </div>
+
+    ${eqSelect}
 
     <div class="mob-stamp">
       <div class="mob-ring-wrap">
@@ -2938,9 +2973,10 @@ function renderChecklistMob(n){
         <div class="mob-ring-label">${done}/${total}</div>
       </div>
       <div class="mob-stamp-text">
+        <div style="font-size:13.5px;font-weight:600">${def.title}</div>
         <div class="mob-status ${complete?'done':''}">${complete ? 'Pronto para mobilizar' : (done===0 ? 'Checklist não iniciado' : 'Conferência em andamento')}</div>
       </div>
-      <button class="mob-reset-btn" onclick="mobReset('${n.vkey}','${n.id}')">
+      <button class="mob-reset-btn" onclick="mobReset('${vkey}','${n.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
         Reiniciar
       </button>
@@ -2956,7 +2992,7 @@ function renderChecklistMob(n){
       <div><b>Checklist completo</b><span>Todos os itens foram conferidos.</span></div>
     </div>
 
-    <div class="mob-note">As marcações são salvas automaticamente neste navegador e ficam disponíveis apenas para o usuário, sem necessidade de login ou cadastro.</div>
+    <div class="mob-note">As marcações são salvas automaticamente neste navegador, por equipamento, e ficam disponíveis apenas para o usuário, sem necessidade de login ou cadastro.</div>
   </div>`;
 }
 function mobToggle(vkey, key, nodeId){
@@ -2964,18 +3000,18 @@ function mobToggle(vkey, key, nodeId){
   data.checked = data.checked || {};
   data.checked[key] = !data.checked[key];
   mobSave(vkey, data);
-  renderChecklistMob(BYID[nodeId]);
+  renderChecklistMobInner(BYID[nodeId], vkey);
 }
 function mobToggleUt(vkey, nodeId){
   const data = mobLoad(vkey);
   data.utOn = !data.utOn;
   mobSave(vkey, data);
-  renderChecklistMob(BYID[nodeId]);
+  renderChecklistMobInner(BYID[nodeId], vkey);
 }
 function mobReset(vkey, nodeId){
   if(!confirm('Deseja reiniciar este checklist? Todos os itens marcados serão desmarcados.')) return;
   mobSave(vkey, { checked:{}, utOn:false });
-  renderChecklistMob(BYID[nodeId]);
+  renderChecklistMobInner(BYID[nodeId], vkey);
 }
 
 /* ============================================================
@@ -2985,7 +3021,7 @@ function mobReset(vkey, nodeId){
    Enquanto estiver vazia ("" ), os diários salvam apenas
    localmente nesta sessão do navegador.
    ============================================================ */
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbymY63xOk2kcp0e2Ci51oGmsEe8G-TsqFu-zp7XaMTSOpBo4U_-P_XC1-Ry13zHCXmxjw/exec";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzNKFyOG9RUDXlZ4AhO--rOXhfu5bYCLmlKPyq--ERFhKHFlDArwTEQtmAhO3uabr9XBQ/exec";
 
 /* ============================================================
    INTEGRAÇÃO COM SUPABASE (banco de dados na nuvem)
@@ -3494,7 +3530,7 @@ function lbBuildReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-011 · Diário de Bordo</span></div>`;
 
-  return { headHtml, bodyHtml, title:'Diário de Bordo — '+(raEsc(LB_STATE.cliente)||'sem cliente'), filename:'Diario_Bordo_'+(raEsc(LB_STATE.cliente)||'sem_cliente').replace(/\s+/g,'_') };
+  return { headHtml, bodyHtml, title:'Diário de Bordo — '+(raEsc(LB_STATE.cliente)||'sem cliente'), filename:buildDriveFileName('Diario_de_Bordo', [fnData(LB_STATE.data), fnPart(LB_STATE.cliente,'sem_cliente')]) };
 }
 
 function lbExportReport(){
@@ -4072,7 +4108,7 @@ function mtBuildReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-017 · Diário de Manutenção</span></div>`;
 
-  return { headHtml, bodyHtml, title:'Diário de Manutenção — '+(raEsc(MT_STATE.equipamento)||'sem equipamento'), filename:'Diario_Manutencao_'+(raEsc(MT_STATE.numDoc)||'SN').replace(/\W+/g,'-') };
+  return { headHtml, bodyHtml, title:'Diário de Manutenção — '+(raEsc(MT_STATE.equipamento)||'sem equipamento'), filename:buildDriveFileName('Diario_de_Manutencao', [fnData(MT_STATE.respData), fnPart(MT_STATE.equipamento,'sem_equipamento')]) };
 }
 
 function mtExportReport(){
@@ -4786,6 +4822,73 @@ async function gerarPdfBlob(headHtml, bodyHtml){
   }
 }
 
+/* Igual ao gerarPdfBlob acima, mas para documentos que já vêm como uma
+   página HTML completa e independente (com seu próprio <style>), como o
+   Certificado de Treino — que tem layout/paginação próprios (paisagem,
+   2 páginas) e não usa o template rp-page dos demais relatórios. */
+async function gerarPdfBlobFullHtml(fullHtml, opts){
+  try{ await ensureHtml2Pdf(); }catch(e){ console.error('html2pdf.js não carregou:', e); return null; }
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(fullHtml, 'text/html');
+  const toolbar = doc.querySelector('.cert-toolbar'); if(toolbar) toolbar.remove();
+  const styleTags = [...doc.querySelectorAll('style')].map(s=>s.innerHTML).join('\n');
+  const bodyInner = doc.body.innerHTML;
+
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:297mm;background:#fff;z-index:-1';
+  // força a quebra de página (fora do @media print, que o html2canvas não aplica)
+  holder.innerHTML = `<style>${styleTags}
+    .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0 auto!important;max-width:none!important}
+    .cert-page:last-child{page-break-after:auto!important}
+  </style>${bodyInner}`;
+  document.body.appendChild(holder);
+
+  try{
+    const opt = {
+      margin: 0,
+      image: { type:'jpeg', quality:0.95 },
+      html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
+      jsPDF: { unit:'mm', format:'a4', orientation:(opts&&opts.orientation)||'portrait' },
+      pagebreak: { mode:'css' }
+    };
+    const blob = await window.html2pdf().set(opt).from(holder).outputPdf('blob');
+    return blob;
+  }catch(e){
+    console.error('Falha ao gerar PDF (HTML completo) com html2pdf.js:', e);
+    return null;
+  }finally{
+    document.body.removeChild(holder);
+  }
+}
+
+/* ============================================================
+   NOMENCLATURA PADRÃO DOS PDFs SALVOS NO GOOGLE DRIVE
+   Todo documento salvo no Drive vai como PDF (pdfBase64 gerado no
+   navegador), com o nome no formato pedido pra cada tipo:
+     Diário de Bordo................ nome do doc + data + cliente
+     Diário de Manutenção........... nome do doc + data + equipamento
+     Plano de Captura............... nome do doc + data + ativo
+     Risk Assessment................ nome do doc + data + cliente
+     Ordem de Serviço............... nome do doc + data + cliente
+     Relatório de Missão............ nome do doc + data + cliente
+     Certificado de Treino Introd... nome do doc + nome do operador
+   ============================================================ */
+function fnPart(v, fallback){
+  const s = String(v==null?'':v).trim();
+  if(!s) return fallback;
+  const clean = s.normalize('NFD').replace(/[\u0300-\u036f]/g,'') // remove acentos
+    .replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+  return clean || fallback;
+}
+function fnData(iso){
+  if(!iso) return 'sem_data';
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : fnPart(iso,'sem_data');
+}
+function buildDriveFileName(baseName, parts){
+  return [baseName, ...parts.filter(Boolean)].join('_') + '.pdf';
+}
+
 function raBuildReport(){
   const risk = raComputeRisk();
   const clienteNome = raEsc(RA_STATE.cliente || 'sem cliente');
@@ -4868,7 +4971,7 @@ function raBuildReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-002 · Risk Assessment</span></div>`;
 
-  return { headHtml, bodyHtml, title:'Risk Assessment — '+clienteNome, filename:'Risk_Assessment_'+clienteNome.replace(/\s+/g,'_') };
+  return { headHtml, bodyHtml, title:'Risk Assessment — '+clienteNome, filename:buildDriveFileName('Risk_Assessment', [fnData(RA_STATE.dataMissao), fnPart(RA_STATE.cliente,'sem_cliente')]) };
 }
 
 function raExportReport(){
@@ -5276,7 +5379,7 @@ function osBuildReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-006 · Ordem de Serviço</span></div>`;
 
-  return { headHtml, bodyHtml, title:'Ordem de Serviço — '+(raEsc(OS_STATE.codigoOS)||'sem código'), filename:'Ordem_Servico_'+(raEsc(OS_STATE.codigoOS)||'sem_codigo').replace(/\s+/g,'_') };
+  return { headHtml, bodyHtml, title:'Ordem de Serviço — '+(raEsc(OS_STATE.codigoOS)||'sem código'), filename:buildDriveFileName('Ordem_de_Servico', [fnData(OS_STATE.dadosDataInicio), fnPart(OS_STATE.cliente,'sem_cliente')]) };
 }
 function osExportReport(){
   const r = osBuildReport();
@@ -5641,7 +5744,7 @@ function rmBuildReport(){
 
   <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-018 · Relatório de Missão</span></div>`;
 
-  return { headHtml, bodyHtml, title:'Relatório de Missão — '+(raEsc(RM_STATE.cliente)||'sem cliente'), filename:'Relatorio_Missao_'+(raEsc(RM_STATE.cliente)||'sem_cliente').replace(/\s+/g,'_') };
+  return { headHtml, bodyHtml, title:'Relatório de Missão — '+(raEsc(RM_STATE.cliente)||'sem cliente'), filename:buildDriveFileName('Relatorio_de_Missao', [fnData(RM_STATE.dataExecucao), fnPart(RM_STATE.cliente,'sem_cliente')]) };
 }
 function rmExportReport(){
   const r = rmBuildReport();
@@ -6044,7 +6147,13 @@ async function certSave(){
   s.classList.add('saved');
   document.getElementById('certStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 
-  const r = await sendToDrive('certificado_treino', CERT_STATE);
+  const fullHtml = certBuildCertificateHTML();
+  const pdfBlob = await gerarPdfBlobFullHtml(fullHtml, {orientation:'landscape'});
+  const fileName = buildDriveFileName('Certificado_de_Treino_Introdutorio', [fnPart(CERT_STATE.operadorNome,'sem_operador')]);
+  const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: fileName } : undefined;
+  if(!pdfBlob){ console.warn('PDF do certificado não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
+
+  const r = await sendToDrive('certificado_treino', CERT_STATE, extra);
   if(r.reason==='timeout_assumed_ok'){ certToast('Certificado enviado ao Google Drive (envio confirmado; aguardando resposta de detalhes)'); }
   else if(r.ok){ certToast('Certificado salvo e enviado ao Google Drive'); }
   else if(r.reason==='not_configured'){ certToast('Certificado salvo localmente (Google Drive não configurado)'); }
@@ -7024,20 +7133,6 @@ content.addEventListener('scroll',()=>{
   s.querySelectorAll('a').forEach(a=>a.classList.toggle('active',cur&&a.dataset.t===cur.id));
 });
 
-/* ---------- BUSCA NA ÁRVORE ---------- */
-document.getElementById('treeSearch').addEventListener('input',e=>{
-  const q=e.target.value.trim().toLowerCase();
-  document.querySelectorAll('#treeRoot .node').forEach(el=>{
-    const n=BYID[el.dataset.id]; if(!n)return;
-    const hay=(stripHTML(n.label)+' '+(n.code||'')+' '+(n.badge||'')).toLowerCase();
-    const match=!q||hay.includes(q);
-    el.style.display=match||hasMatchingChild(n,q)?'':'none';
-    if(q&&(match||hasMatchingChild(n,q)))el.classList.add('open');
-  });
-});
-function hasMatchingChild(n,q){ if(!q||!n.children)return false;
-  return n.children.some(c=>{ const hay=(stripHTML(c.label)+' '+(c.code||'')+' '+(c.badge||'')).toLowerCase(); return hay.includes(q)||hasMatchingChild(c,q); }); }
-
 /* ---------- COMMAND PALETTE (Ctrl+K) ---------- */
 const cmdkOverlay=document.getElementById('cmdkOverlay');
 const cmdkInput=document.getElementById('cmdkInput');
@@ -7958,6 +8053,16 @@ renderTree();
       CLOUD_SESSION_KEY = planoCloudKey();
       STATE.cloudId = resp.data.id;
       pcSave(false);
+
+      // Envia também uma cópia em PDF pro Google Drive (mesmo padrão dos outros formulários)
+      try{
+        const rel = pcBuildReport();
+        const pdfBlob = await gerarPdfBlob(rel.headHtml, rel.bodyHtml);
+        const driveExtra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: rel.filename } : undefined;
+        if(!pdfBlob) console.warn('PDF do Plano de Captura não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.');
+        await sendToDrive('plano_captura', STATE, driveExtra);
+      }catch(driveErr){ console.error('Envio do Plano de Captura ao Google Drive:', driveErr); }
+
       toast('Plano salvo na nuvem');
       initCloud();
     }catch(err){
@@ -8654,7 +8759,7 @@ renderTree();
 
     <div class="rp-footer"><span>XD4 Blue Book — Sistema de Gestão Operacional</span><span>FO-OPE-020 · Plano de Captura</span></div>`;
 
-    return { headHtml, bodyHtml, title:'Plano de Captura — '+raEsc(empresaNome), filename:'Plano_Captura_'+raEsc(empresaNome).replace(/\s+/g,'_') };
+    return { headHtml, bodyHtml, title:'Plano de Captura — '+raEsc(empresaNome), filename:buildDriveFileName('Plano_de_Captura', [fnData(STATE.meta.data), fnPart(STATE.meta.estrutura,'sem_ativo')]) };
   }
 
   function pcExportReport(){
