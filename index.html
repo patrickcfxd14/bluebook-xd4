@@ -909,6 +909,18 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .fase-approve-btn.is-final:hover{background:rgba(255,255,255,.16)}
 .fase-approved-badge{display:none;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#eafff5;background:rgba(63,185,138,.16);border:1px solid rgba(63,185,138,.35);padding:6px 11px;border-radius:99px;white-space:nowrap}
 .fase-approved-badge svg{width:12px;height:12px;flex-shrink:0}
+
+.pc-approval-box{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#EAFBF3,#DFF5E9);border:1.5px solid #8FD9B4;border-radius:14px;padding:18px 20px;flex-wrap:wrap}
+.pc-approval-box.is-final{background:linear-gradient(135deg,var(--sky),#E4EAF1);border-color:var(--sky-line)}
+.pc-approval-ic{width:44px;height:44px;border-radius:12px;background:#1E7B4F;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc-approval-ic svg{width:22px;height:22px}
+.pc-approval-box.is-final .pc-approval-ic{background:var(--ink-3)}
+.pc-approval-txt{flex:1;min-width:220px}
+.pc-approval-txt b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:3px}
+.pc-approval-txt span{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.pc-approve-btn-lg{flex-shrink:0;background:linear-gradient(135deg,#3FB98A,#1E7B4F);color:#fff;border:none;font-weight:700;font-size:13.5px;padding:12px 20px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:.15s;display:flex;align-items:center;gap:8px}
+.pc-approve-btn-lg:hover{filter:brightness(1.06)}
+.pc-approve-btn-lg.is-final{background:rgba(11,37,69,.08);color:var(--ink-2)}
 .lb-section>h3 .htitle{flex:1}
 .lb-section>h3 .subhint{font-size:10.5px;text-transform:none;letter-spacing:0;color:var(--ink-3);font-weight:500}
 .lb-field .hint{display:block;font-size:11px;color:var(--ink-3);margin-top:5px;font-weight:400;text-transform:none;letter-spacing:0}
@@ -1022,6 +1034,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .doc.locked .lb-section:not(.lock-banner-section) .tbl-rowdel,
 .doc.locked .lb-section:not(.lock-banner-section) .etapas-addbar,
 .doc.locked .lb-section:not(.lock-banner-section) .fase-approve-btn,
+.doc.locked .lb-section:not(.lock-banner-section) .pc-approve-btn-lg,
 .doc.locked .lb-section:not(.lock-banner-section) .gdel,
 .doc.locked .lb-section:not(.lock-banner-section) .gallery-grid + .tbl-addrow
 { pointer-events:none!important; opacity:.62; filter:grayscale(.15) }
@@ -7757,6 +7770,17 @@ renderTree();
       </div>
 
       <div class="lb-section">
+        <div class="pc-approval-box" id="pcApprovalBox">
+          <div class="pc-approval-ic" id="pcApprovalIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="pc-approval-txt">
+            <b id="pcApprovalTitle">Pronto pra finalizar?</b>
+            <span id="pcApprovalDesc">Depois de conferir tudo em campo, aprove este plano como Final — ele é salvo e travado para edição. Pra alterar algo depois, você duplica uma cópia editável.</span>
+          </div>
+          <button class="pc-approve-btn-lg" id="pcBtnAprovarBottom" type="button" onclick="approvePlan()">Aprovar Plano como Final</button>
+        </div>
+      </div>
+
+      <div class="lb-section">
         <div class="lb-actions">
           <button class="lb-save" onclick="pcSave(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Salvar Plano</button>
           <button class="lb-save" id="pcCloudSaveBtn" onclick="pcSaveCloud()" style="background:linear-gradient(135deg,#3FB98A,#1E7B4F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>Salvar na Nuvem</button>
@@ -8193,38 +8217,68 @@ renderTree();
   }
 
   /* ---------- aprovação do plano (preliminar -> final) ---------- */
-  function approvePlan(){
+  async function approvePlan(){
     if(STATE.escopo.fase==='final'){
+      if(PC_LOCKED_AT){ toast('Este plano está travado. Use "Duplicar para editar" pra reverter numa cópia.'); return; }
       if(!confirm('Reverter este plano para a fase "Preliminar"? Isso desfaz a aprovação como Final.')) return;
       STATE.escopo.fase='preliminar';
       STATE.aprovacao={aprovado:false, data:null};
-    } else {
-      if(!confirm('Confirma a aprovação deste Plano de Captura como FINAL, após a visualização do ativo em campo?\n\nA fase será alterada de "Preliminar" para "Final".')) return;
-      STATE.escopo.fase='final';
-      STATE.aprovacao={aprovado:true, data:new Date().toISOString()};
+      document.getElementById('pcFaseSelect').value = STATE.escopo.fase;
+      updateTailstrip();
+      updateTitle();
+      renderApproval();
+      markDirty();
+      updateProgress();
+      return;
     }
-    document.getElementById('pcFaseSelect').value = STATE.escopo.fase;
-    updateTailstrip();
-    updateTitle();
-    renderApproval();
-    markDirty();
-    updateProgress();
+
+    if(!confirm('Confirma a aprovação deste Plano de Captura como FINAL, após a visualização do ativo em campo?\n\nAo confirmar, o plano é salvo e travado para edição — pra alterar algo depois, você duplica uma cópia editável.')) return;
+    STATE.escopo.fase='final';
+    STATE.aprovacao={aprovado:true, data:new Date().toISOString()};
+
+    // salva antes de travar (os botões de salvar somem quando o doc trava)
+    if(sb){ await pcSaveCloud(); } else { pcSave(false); }
+
+    const lockedAt = new Date().toISOString();
+    if(CURRENT_NODE) renderPlanoCaptura(CURRENT_NODE, true, STATE, lockedAt);
+    toast('Plano aprovado como Final e travado para edição.');
   }
 
   function renderApproval(){
+    const isFinal = STATE.escopo.fase==='final';
+
     const btn=document.getElementById('pcBtnAprovar');
     const badge=document.getElementById('pcAprovBadge');
-    if(!btn || !badge) return;
-    const isFinal = STATE.escopo.fase==='final';
-    btn.textContent = isFinal ? 'Reverter para Preliminar' : 'Aprovar Plano como Final';
-    btn.classList.toggle('is-final', isFinal);
-    if(STATE.aprovacao && STATE.aprovacao.aprovado){
-      const d = STATE.aprovacao.data ? new Date(STATE.aprovacao.data) : null;
-      badge.style.display='inline-flex';
-      badge.innerHTML = ICOK + '<span>Aprovado como Final' + (d ? (' em '+d.toLocaleDateString('pt-BR')) : '') + '</span>';
-    } else {
-      badge.style.display='none';
-      badge.innerHTML='';
+    if(btn && badge){
+      btn.textContent = isFinal ? 'Reverter para Preliminar' : 'Aprovar Plano como Final';
+      btn.classList.toggle('is-final', isFinal);
+      if(STATE.aprovacao && STATE.aprovacao.aprovado){
+        const d = STATE.aprovacao.data ? new Date(STATE.aprovacao.data) : null;
+        badge.style.display='inline-flex';
+        badge.innerHTML = ICOK + '<span>Aprovado como Final' + (d ? (' em '+d.toLocaleDateString('pt-BR')) : '') + '</span>';
+      } else {
+        badge.style.display='none';
+        badge.innerHTML='';
+      }
+    }
+
+    const box=document.getElementById('pcApprovalBox');
+    const btnBottom=document.getElementById('pcBtnAprovarBottom');
+    const title=document.getElementById('pcApprovalTitle');
+    const desc=document.getElementById('pcApprovalDesc');
+    if(box && btnBottom && title && desc){
+      box.classList.toggle('is-final', isFinal);
+      if(isFinal){
+        title.textContent = 'Plano aprovado como Final';
+        desc.textContent = PC_LOCKED_AT
+          ? 'Este plano está travado para edição. Pra alterar algo, use "Duplicar para editar" no aviso no topo da página.'
+          : 'A aprovação foi registrada.';
+        btnBottom.textContent = 'Reverter para Preliminar';
+      } else {
+        title.textContent = 'Pronto pra finalizar?';
+        desc.textContent = 'Depois de conferir tudo em campo, aprove este plano como Final — ele é salvo e travado para edição. Pra alterar algo depois, você duplica uma cópia editável.';
+        btnBottom.textContent = 'Aprovar Plano como Final';
+      }
     }
   }
 
