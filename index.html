@@ -4825,57 +4825,38 @@ async function gerarPdfBlob(headHtml, bodyHtml){
   }
 }
 
-/* Igual ao gerarPdfBlob acima, mas para documentos que já vêm como uma
-   página HTML completa e independente (com seu próprio <style>), como o
-   Certificado de Treino — que tem layout/paginação próprios (paisagem,
-   2 páginas) e não usa o template rp-page dos demais relatórios. */
-async function gerarPdfBlobFullHtml(fullHtml, opts){
+/* Igual ao gerarPdfBlob acima (mesmo documento, sem iframe — é o que
+   garante que os estilos sejam aplicados corretamente pelo html2canvas),
+   só que usando o layout próprio do Certificado de Treino (paisagem,
+   2 páginas) em vez do template rp-page dos demais relatórios. */
+async function gerarPdfBlobCertificado(){
   try{ await ensureHtml2Pdf(); }catch(e){ console.error('html2pdf.js não carregou:', e); return null; }
 
-  // Usa um iframe de verdade com o HTML completo (folha de estilo externa,
-  // fontes, tudo) em vez de recortar <style>/<body> manualmente — assim a
-  // página renderiza exatamente como no "Exportar / Imprimir PDF" manual,
-  // que já funcionava.
-  const iframe = document.createElement('iframe');
-  iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:1122px;height:900px;border:0';
-  document.body.appendChild(iframe);
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:297mm;background:#fff;z-index:-1';
+  // padding:0/margin:0 aqui de propósito — a margem passa a ser controlada
+  // pelo opt.margin do html2pdf logo abaixo, repetida em TODAS as páginas.
+  holder.innerHTML = `<style>${certStyles()}
+    .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0!important;padding:0!important;max-width:none!important;min-height:0!important}
+    .cert-page:last-child{page-break-after:auto!important}
+  </style>${certPagesHTML()}`;
+  document.body.appendChild(holder);
 
   try{
-    await new Promise((resolve, reject)=>{
-      iframe.onload = ()=>resolve();
-      iframe.onerror = ()=>reject(new Error('Falha ao carregar o iframe do documento'));
-      iframe.srcdoc = fullHtml;
-    });
-
-    const idoc = iframe.contentDocument;
-    const toolbar = idoc.querySelector('.cert-toolbar'); if(toolbar) toolbar.remove();
-
-    // zera o "respiro" que estava embutido no CSS da página — a margem passa
-    // a ser controlada pelo opt.margin do html2pdf logo abaixo, repetida em
-    // TODAS as páginas (era isso que deixava a 2ª página em branco/colada).
-    const fix = idoc.createElement('style');
-    fix.textContent = `
-      .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0!important;padding:0!important;max-width:none!important;min-height:0!important}
-      .cert-page:last-child{page-break-after:auto!important}`;
-    idoc.head.appendChild(fix);
-
-    // dá um instante pra imagens/assinaturas/fontes assentarem antes de capturar
-    await new Promise(r=>setTimeout(r, 300));
-
     const opt = {
       margin: [16,20,16,20], // topo, esquerda, baixo, direita (mm) — repete em cada página
       image: { type:'jpeg', quality:0.95 },
       html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
-      jsPDF: { unit:'mm', format:'a4', orientation:(opts&&opts.orientation)||'portrait' },
+      jsPDF: { unit:'mm', format:'a4', orientation:'landscape' },
       pagebreak: { mode:'css' }
     };
-    const blob = await window.html2pdf().set(opt).from(idoc.body).outputPdf('blob');
+    const blob = await window.html2pdf().set(opt).from(holder).outputPdf('blob');
     return blob;
   }catch(e){
-    console.error('Falha ao gerar PDF (HTML completo) com html2pdf.js:', e);
+    console.error('Falha ao gerar PDF do certificado com html2pdf.js:', e);
     return null;
   }finally{
-    document.body.removeChild(iframe);
+    document.body.removeChild(holder);
   }
 }
 
@@ -6165,8 +6146,7 @@ async function certSave(){
   s.classList.add('saved');
   document.getElementById('certStatusText').textContent = 'Salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 
-  const fullHtml = certBuildCertificateHTML();
-  const pdfBlob = await gerarPdfBlobFullHtml(fullHtml, {orientation:'landscape'});
+  const pdfBlob = await gerarPdfBlobCertificado();
   const fileName = buildDriveFileName('Certificado_de_Treino_Introdutorio', [fnPart(CERT_STATE.operadorNome,'sem_operador')]);
   const extra = pdfBlob ? { pdfBase64: await blobToBase64(pdfBlob), nomeArquivoSugerido: fileName } : undefined;
   if(!pdfBlob){ console.warn('PDF do certificado não pôde ser gerado no navegador; o Drive vai usar o layout padrão do Google Docs como alternativa.'); }
@@ -6243,7 +6223,7 @@ function certStyles(){
     .cert-page:last-child{page-break-after:auto}
   }`;
 }
-function certBuildCertificateHTML(){
+function certPagesHTML(){
   certGatherFields();
   const c = CERT_STATE;
   const dataTreinoFmt = certFmtData(c.dataTreinamento) || raEsc(c.localTreinamento);
@@ -6260,13 +6240,7 @@ function certBuildCertificateHTML(){
     </tr>`;
   }).join('');
 
-  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<title>Certificado — ${raEsc(c.operadorNome)||'xd4solutions'}</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>${certStyles()}</style></head>
-<body>
-  <div class="cert-toolbar"><span>Pré-visualização — o PDF final não mostra esta barra</span><button onclick="window.print()">Imprimir / Salvar como PDF</button></div>
-
+  return `
   <div class="cert-page">
     <img class="cert-logo" src="${XD4_LOGO}" alt="xd4solutions">
     <div class="cert-rule"></div>
@@ -6296,7 +6270,17 @@ function certBuildCertificateHTML(){
       <thead><tr><th style="width:9%">DATA</th><th style="width:14%">TREINAMENTO</th><th style="width:16%">CARGA HORÁRIA</th><th>DETALHAMENTO</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-  </div>
+  </div>`;
+}
+function certBuildCertificateHTML(){
+  const c = CERT_STATE;
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Certificado — ${raEsc(c.operadorNome)||'xd4solutions'}</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>${certStyles()}</style></head>
+<body>
+  <div class="cert-toolbar"><span>Pré-visualização — o PDF final não mostra esta barra</span><button onclick="window.print()">Imprimir / Salvar como PDF</button></div>
+  ${certPagesHTML()}
 </body></html>`;
 }
 function certExportCertificate(){
