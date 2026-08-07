@@ -4808,6 +4808,8 @@ async function gerarPdfBlob(headHtml, bodyHtml){
 
   try{
     const el = holder.querySelector('.rp-page');
+    await waitForImages(el);
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const opt = {
       margin: [15,14,16,14], // topo, esquerda, baixo, direita (mm) — repete em cada página
       image: { type:'jpeg', quality:0.95 },
@@ -4825,6 +4827,26 @@ async function gerarPdfBlob(headHtml, bodyHtml){
   }
 }
 
+/* Espera todas as <img> de um container terminarem de carregar (ou falharem)
+   antes de continuar — sem isso, uma imagem grande (como a logo do
+   certificado) pode ainda não estar pintada na tela quando o html2canvas
+   tira o "print", resultando numa página em branco. */
+function waitForImages(container, timeoutMs){
+  const imgs = [...container.querySelectorAll('img')];
+  if(!imgs.length) return Promise.resolve();
+  const perImg = imgs.map(img=>{
+    if(img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise(resolve=>{
+      img.addEventListener('load', resolve, {once:true});
+      img.addEventListener('error', resolve, {once:true}); // não trava se uma imagem falhar
+    });
+  });
+  return Promise.race([
+    Promise.all(perImg),
+    new Promise(resolve=>setTimeout(resolve, timeoutMs||4000))
+  ]);
+}
+
 /* Igual ao gerarPdfBlob acima (mesmo documento, sem iframe — é o que
    garante que os estilos sejam aplicados corretamente pelo html2canvas),
    só que usando o layout próprio do Certificado de Treino (paisagem,
@@ -4836,13 +4858,20 @@ async function gerarPdfBlobCertificado(){
   holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:297mm;background:#fff;z-index:-1';
   // padding:0/margin:0 aqui de propósito — a margem passa a ser controlada
   // pelo opt.margin do html2pdf logo abaixo, repetida em TODAS as páginas.
+  // As duas páginas ficam dentro de um único container (.cert-pdf-root),
+  // que é o elemento de fato capturado — evita passar a tag <style> junto.
   holder.innerHTML = `<style>${certStyles()}
-    .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0!important;padding:0!important;max-width:none!important;min-height:0!important}
+    .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0!important;padding:0!important;max-width:none!important;min-height:0!important;width:100%!important}
     .cert-page:last-child{page-break-after:auto!important}
-  </style>${certPagesHTML()}`;
+  </style><div class="cert-pdf-root">${certPagesHTML()}</div>`;
   document.body.appendChild(holder);
 
   try{
+    const el = holder.querySelector('.cert-pdf-root');
+    await waitForImages(el);
+    // dá um instante extra pro navegador terminar de pintar antes de capturar
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
     const opt = {
       margin: [16,20,16,20], // topo, esquerda, baixo, direita (mm) — repete em cada página
       image: { type:'jpeg', quality:0.95 },
@@ -4850,7 +4879,7 @@ async function gerarPdfBlobCertificado(){
       jsPDF: { unit:'mm', format:'a4', orientation:'landscape' },
       pagebreak: { mode:'css' }
     };
-    const blob = await window.html2pdf().set(opt).from(holder).outputPdf('blob');
+    const blob = await window.html2pdf().set(opt).from(el).outputPdf('blob');
     return blob;
   }catch(e){
     console.error('Falha ao gerar PDF do certificado com html2pdf.js:', e);
