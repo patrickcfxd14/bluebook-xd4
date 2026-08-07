@@ -4702,6 +4702,7 @@ function rpStyles(){
   .rp-check.on .mark{background:#2BA9E0;border-color:#2BA9E0}
   .rp-qual{color:#5A6B7F;font-weight:400}
   .rp-table{width:100%;border-collapse:collapse}
+  .rp-table tr{break-inside:avoid}
   .rp-table th{background:#0B2545;color:#fff;padding:7px 6px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
   .rp-table td{padding:6px 6px;border-bottom:1px solid #EEF3F9;font-size:11.5px;vertical-align:middle}
   .rp-table tbody tr:nth-child(even){background:#FAFBFC}
@@ -4732,7 +4733,6 @@ function rpStyles(){
     html,body{background:#fff}
     .rp-toolbar{display:none}
     .rp-page{max-width:none;margin:0;padding:0;box-shadow:none;border-radius:0}
-    .rp-table tr{break-inside:avoid}
   }`;
 }
 
@@ -4800,13 +4800,16 @@ async function gerarPdfBlob(headHtml, bodyHtml){
   // muito negativo bagunça a medição de largura do html2canvas e corta o conteúdo.
   const holder = document.createElement('div');
   holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:210mm;background:#fff;z-index:-1';
-  holder.innerHTML = `<style>${rpStyles()}</style><div class="rp-page" style="margin:0;box-shadow:none;border-radius:0">${headHtml}${bodyHtml}</div>`;
+  // padding:0 aqui de propósito — a margem da página passa a ser controlada
+  // pelo opt.margin do html2pdf logo abaixo, que se repete em TODAS as
+  // páginas (documentos longos deixavam de ter respiro a partir da 2ª página).
+  holder.innerHTML = `<style>${rpStyles()}</style><div class="rp-page" style="margin:0;padding:0;box-shadow:none;border-radius:0">${headHtml}${bodyHtml}</div>`;
   document.body.appendChild(holder);
 
   try{
     const el = holder.querySelector('.rp-page');
     const opt = {
-      margin: 0,
+      margin: [15,14,16,14], // topo, esquerda, baixo, direita (mm) — repete em cada página
       image: { type:'jpeg', quality:0.95 },
       html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
       jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
@@ -4828,36 +4831,51 @@ async function gerarPdfBlob(headHtml, bodyHtml){
    2 páginas) e não usa o template rp-page dos demais relatórios. */
 async function gerarPdfBlobFullHtml(fullHtml, opts){
   try{ await ensureHtml2Pdf(); }catch(e){ console.error('html2pdf.js não carregou:', e); return null; }
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(fullHtml, 'text/html');
-  const toolbar = doc.querySelector('.cert-toolbar'); if(toolbar) toolbar.remove();
-  const styleTags = [...doc.querySelectorAll('style')].map(s=>s.innerHTML).join('\n');
-  const bodyInner = doc.body.innerHTML;
 
-  const holder = document.createElement('div');
-  holder.style.cssText = 'position:fixed;left:0;top:-10000px;width:297mm;background:#fff;z-index:-1';
-  // força a quebra de página (fora do @media print, que o html2canvas não aplica)
-  holder.innerHTML = `<style>${styleTags}
-    .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0 auto!important;max-width:none!important}
-    .cert-page:last-child{page-break-after:auto!important}
-  </style>${bodyInner}`;
-  document.body.appendChild(holder);
+  // Usa um iframe de verdade com o HTML completo (folha de estilo externa,
+  // fontes, tudo) em vez de recortar <style>/<body> manualmente — assim a
+  // página renderiza exatamente como no "Exportar / Imprimir PDF" manual,
+  // que já funcionava.
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:1122px;height:900px;border:0';
+  document.body.appendChild(iframe);
 
   try{
+    await new Promise((resolve, reject)=>{
+      iframe.onload = ()=>resolve();
+      iframe.onerror = ()=>reject(new Error('Falha ao carregar o iframe do documento'));
+      iframe.srcdoc = fullHtml;
+    });
+
+    const idoc = iframe.contentDocument;
+    const toolbar = idoc.querySelector('.cert-toolbar'); if(toolbar) toolbar.remove();
+
+    // zera o "respiro" que estava embutido no CSS da página — a margem passa
+    // a ser controlada pelo opt.margin do html2pdf logo abaixo, repetida em
+    // TODAS as páginas (era isso que deixava a 2ª página em branco/colada).
+    const fix = idoc.createElement('style');
+    fix.textContent = `
+      .cert-page{page-break-after:always!important;box-shadow:none!important;margin:0!important;padding:0!important;max-width:none!important;min-height:0!important}
+      .cert-page:last-child{page-break-after:auto!important}`;
+    idoc.head.appendChild(fix);
+
+    // dá um instante pra imagens/assinaturas/fontes assentarem antes de capturar
+    await new Promise(r=>setTimeout(r, 300));
+
     const opt = {
-      margin: 0,
+      margin: [16,20,16,20], // topo, esquerda, baixo, direita (mm) — repete em cada página
       image: { type:'jpeg', quality:0.95 },
       html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
       jsPDF: { unit:'mm', format:'a4', orientation:(opts&&opts.orientation)||'portrait' },
       pagebreak: { mode:'css' }
     };
-    const blob = await window.html2pdf().set(opt).from(holder).outputPdf('blob');
+    const blob = await window.html2pdf().set(opt).from(idoc.body).outputPdf('blob');
     return blob;
   }catch(e){
     console.error('Falha ao gerar PDF (HTML completo) com html2pdf.js:', e);
     return null;
   }finally{
-    document.body.removeChild(holder);
+    document.body.removeChild(iframe);
   }
 }
 
