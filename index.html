@@ -278,12 +278,16 @@ svg{display:block}
 .chapindex{background:linear-gradient(180deg,var(--sky),var(--paper));border:1px solid var(--sky-line);border-radius:12px;padding:22px 24px 16px;margin-bottom:32px;box-shadow:var(--shadow)}
 .chapindex h4{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .chapindex h4::before{content:"";width:14px;height:2px;background:var(--accent);border-radius:2px}
-.chapindex .cols{display:grid;grid-template-columns:1fr 1fr;gap:1px 34px;min-width:0}
+.chapindex .cols{column-count:2;column-gap:34px;min-width:0}
+.chapindex .chgroup{break-inside:avoid;-webkit-column-break-inside:avoid}
 .chapindex a{display:flex;align-items:baseline;text-decoration:none;color:var(--ink-2);font-size:13px;padding:7px 5px;border-radius:6px;transition:.12s;cursor:pointer;min-width:0}
 .chapindex a:hover{background:var(--sky);color:var(--ink)}
 .chapindex a .n{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;font-size:12px;min-width:32px;margin-right:8px;flex-shrink:0}
 .chapindex a .tt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1}
 .chapindex a .dots{flex:1;min-width:8px;border-bottom:1px dotted var(--sky-line);margin:0 8px;transform:translateY(-3px)}
+.chapindex a.sub-item{padding-left:26px;font-size:12px}
+.chapindex a.sub-item .n{color:var(--ink-3);font-weight:500;min-width:36px;font-size:11px}
+.chapindex a.sub-item .tt{color:var(--ink-3)}
 
 h2.sec{font-size:20px;font-weight:700;color:var(--ink);margin:38px 0 14px;padding-bottom:9px;border-bottom:2px solid var(--sky-line);display:flex;gap:12px;align-items:baseline;scroll-margin-top:20px}
 h2.sec .sn{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:16px}
@@ -515,7 +519,7 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .dash-grid,.cat-grid{grid-template-columns:1fr}
   .vp-docs{grid-template-columns:1fr 1fr}
   .vp-specs{grid-template-columns:1fr 1fr}
-  .chapindex .cols{grid-template-columns:1fr}
+  .chapindex .cols{column-count:1}
   .vp-hero{flex-direction:column;text-align:center}
   .org{padding:20px 16px 50px}
 }
@@ -2612,7 +2616,13 @@ async function renderDocFromKey(key, meta){
   }
 
   const idPrefix = meta.idPrefix || key;
-  const chIndex = content.map(ch=>`<a onclick="scrollToSec('${idPrefix}-ch-${ch.num}')"><span class="n">${ch.num}.0</span><span class="tt">${titleCase(ch.title)}</span><span class="dots"></span></a>`).join('');
+  const chIndex = content.map(ch=>{
+    const subLinks = ch.sections
+      .filter(s=>{ const parts=s.num.split('.'); return parts.length>=2 && parts[1]!=='0'; })
+      .map(s=>`<a class="sub-item" onclick="scrollToSec('${idPrefix}-sec-${s.num}')"><span class="n">${s.num}</span><span class="tt">${titleCase(s.title)}</span><span class="dots"></span></a>`)
+      .join('');
+    return `<div class="chgroup"><a onclick="scrollToSec('${idPrefix}-ch-${ch.num}')"><span class="n">${ch.num}.0</span><span class="tt">${titleCase(ch.title)}</span><span class="dots"></span></a>${subLinks}</div>`;
+  }).join('');
   let body = '';
   content.forEach(ch=>{
     body += `<h2 class="sec" id="${idPrefix}-ch-${ch.num}"><span class="sn">${ch.num}.0</span> ${titleCase(ch.title)}</h2>`;
