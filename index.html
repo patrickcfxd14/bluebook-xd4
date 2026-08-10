@@ -1018,6 +1018,10 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .diag-btn.ghost:hover{color:var(--ink);border-color:var(--accent)}
 .diag-btn.primary{background:linear-gradient(135deg,var(--xd4),var(--blue));color:#fff;display:inline-flex;align-items:center;gap:7px}
 .diag-btn.primary svg{width:14px;height:14px}
+.diag-size{display:flex;align-items:center;gap:7px;color:var(--ink-2);font-size:12px}
+.diag-size input[type=range]{width:90px;accent-color:var(--xd4)}
+.diag-size span{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);min-width:34px}
+.diag-tool:disabled{opacity:.4;cursor:default;pointer-events:none}
 .lock-banner{background:linear-gradient(135deg,#FEF6DC,#FCEBB6);border:1.5px solid #E8B93A;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .lock-banner svg{width:24px;height:24px;color:#92660A;flex-shrink:0}
 .lock-banner .txt{flex:1;font-size:13px;color:#5A4008;line-height:1.5}
@@ -4310,7 +4314,7 @@ const RA_ACIDENTE_STEPS = [
   'Isolar a área e registrar fotos do local.',
   'Suspender a operação imediatamente.',
   'Comunicar o Chefe de Operações.',
-  'Preencher o relatório de missão.',
+  'Preencher relatório pós acidente.',
   'Recolher o equipamento e catalogar danos.'
 ];
 const RA_STATUS_OPTS = [
@@ -6247,20 +6251,22 @@ function certStyles(){
   .cert-toolbar span{font-size:12.5px;color:#C6D8EB}
   .cert-toolbar button{background:#2BA9E0;color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:12.5px;font-weight:600;cursor:pointer}
   .cert-page{max-width:297mm;min-height:175mm;margin:26px auto 60px;background:#fff;padding:16mm 20mm;box-shadow:0 6px 28px rgba(11,37,69,.18);position:relative}
-  .cert-logo{height:40px;display:block;margin-bottom:12px}
+  .cert-logo{height:58px;display:block;margin-bottom:12px}
   .cert-rule{height:2px;background:#2BA9E0;margin:0 0 26px}
   .cert-title{text-align:center;font-size:26px;color:#3A6EA5;font-weight:400;letter-spacing:.3px;margin:0 0 26px}
   .cert-course{text-align:center;font-size:14px;font-weight:700;color:#222;margin:0 0 18px}
   .cert-certify{text-align:center;font-size:13.5px;color:#222;margin:0 0 12px}
   .cert-name{text-align:center;font-size:14.5px;font-weight:700;color:#222;margin:0 0 20px}
   .cert-para{text-align:justify;margin:0 auto 14px;font-size:13px;color:#333;max-width:220mm}
-  .cert-signrow{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px;gap:30px}
+  .cert-signrow{display:flex;justify-content:space-between;align-items:flex-start;margin-top:34px;gap:30px}
   .cert-signblock{width:280px}
   .cert-signline{border-bottom:1px solid #333;height:52px;display:flex;align-items:flex-end;justify-content:center}
   .cert-signline img{max-height:50px;max-width:100%;object-fit:contain}
   .cert-signname{text-align:center;font-weight:700;font-size:12.5px;margin-top:6px}
   .cert-signrole{text-align:center;font-style:italic;font-size:11px;color:#333}
-  .cert-datebox{font-size:13px;color:#222;padding-bottom:8px}
+  .cert-datebox{width:280px;font-size:13px;color:#222}
+  .cert-datebox .dbx-spacer{height:52px;display:flex;align-items:flex-end;justify-content:center}
+  .cert-datebox .dbx-text{text-align:center;margin-top:6px}
   .cert-footnote{margin-top:26px;text-align:center;font-style:italic;font-size:9.5px;color:#666}
   .cert-page2-title{font-size:15px;font-weight:700;color:#222;margin:0 0 22px}
   table.cert-table{width:100%;border-collapse:collapse;font-size:11px}
@@ -6310,7 +6316,7 @@ function certPagesHTML(){
         <div class="cert-signrole">${raEsc(c.cargoInstrutor)}</div>
         <div class="cert-signrole">${raEsc(c.licencaInstrutor)}</div>
       </div>
-      <div class="cert-datebox">${raEsc(c.cidadeDataEmissao)}${dataEmissaoFmt?', '+dataEmissaoFmt:''}.</div>
+      <div class="cert-datebox"><div class="dbx-spacer"></div><div class="dbx-text">${raEsc(c.cidadeDataEmissao)}${dataEmissaoFmt?', '+dataEmissaoFmt:''}.</div></div>
     </div>
 
     <div class="cert-footnote">This document certifies that the certificate is suitable for carrying out an activity imposed by the Quality Inspection Operator, whose activities are described in document CBO 3912-15.</div>
@@ -7484,7 +7490,7 @@ renderTree();
       time:{operador1:'A definir', operador2:'A definir', tipoServico:'Captura de Imagem RGB e Térmica para Inspeção Visual Estrutural'},
       equip:{elios3:true, elios2:false, go2:false, go2Variante:'EDU', g1:false, rover:false},
       objetivo:'',
-      localidadeImg:null,
+      localidadeImg:null, localidadeImgDiag:null,
       coordenadas:'',
       entregaveis:'',
       seguranca:{
@@ -7501,7 +7507,7 @@ renderTree();
       ativoCaracteristicas:'',
       galeria:[],
       tempo:{horas:'', previsao:''},
-      etapas: ETAPAS_PADRAO.map((d,i)=>({id:'e'+(i+1), titulo:d.titulo, desc:d.desc, img:null, status:'padrao'})),
+      etapas: ETAPAS_PADRAO.map((d,i)=>({id:'e'+(i+1), titulo:d.titulo, desc:d.desc, img:null, imgDiag:null, status:'padrao'})),
       contingencia:{
         texto:'',
         agree:false
@@ -7604,7 +7610,7 @@ renderTree();
         </div>
         <div class="lb-tailstrip">
           <div class="cell"><div class="k">Empresa</div><div class="v" id="pcTailEmpresa">—</div></div>
-          <div class="cell"><div class="k">Estrutura</div><div class="v" id="pcTailEstrutura">—</div></div>
+          <div class="cell"><div class="k">Ativo</div><div class="v" id="pcTailEstrutura">—</div></div>
           <div class="cell"><div class="k">Data</div><div class="v" id="pcTailData">—</div></div>
           <div class="cell"><div class="k">Equipamento</div><div class="v" id="pcTailEquip">—</div></div>
         </div>
@@ -7615,9 +7621,8 @@ renderTree();
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg><span class="htitle">① Essencial</span><span class="pc-essential-tag">preencher em campo</span></h3>
         <div class="lb-grid">
           <div class="lb-field"><label>Empresa</label><input data-path="meta.empresa" id="pcEmpresaInput" list="pcEmpresaList" placeholder="Nome do cliente" autocomplete="off"><datalist id="pcEmpresaList"></datalist></div>
-          <div class="lb-field"><label>Estrutura</label><input data-path="meta.estrutura" id="pcEstruturaInput" list="pcEstruturaList" placeholder="Ex.: Ponte ferroviária…" autocomplete="off"><datalist id="pcEstruturaList"></datalist></div>
           <div class="lb-field"><label>Data</label><input data-path="meta.data" type="date"></div>
-          <div class="lb-field"><label>Ativos — Descrições</label><input data-path="meta.ativosDescricoes" placeholder="Descrição resumida dos ativos a inspecionar"></div>
+          <div class="lb-field"><label>Ativo</label><input data-path="meta.ativosDescricoes" id="pcAtivoInput" placeholder="Descrição resumida do ativo a inspecionar"></div>
         </div>
 
         <div class="lb-field" style="margin-top:16px"><label>Equipamento a ser Utilizado</label><span class="hint">Ao selecionar, as specs técnicas abaixo são preenchidas automaticamente.</span></div>
@@ -7819,10 +7824,17 @@ renderTree();
           <div class="diag-sep"></div>
           <div class="diag-colors" id="pcDiagColors"></div>
           <div class="diag-sep"></div>
-          <button class="diag-tool" onclick="undoDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Desfazer</button>
+          <button class="diag-tool" id="pcDiagUndoBtn" onclick="undoDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Desfazer</button>
+          <button class="diag-tool" id="pcDiagRedoBtn" onclick="redoDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 10-9 9 9.75 9.75 0 006.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>Refazer</button>
           <button class="diag-tool" onclick="clearDiagram()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/></svg>Limpar</button>
+          <div class="diag-sep"></div>
+          <div class="diag-size" title="Tamanho de todas as setas, linhas e ícones do desenho">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" opacity=".45"/></svg>
+            <input type="range" id="pcDiagSize" min="0.5" max="2.5" step="0.1" value="1" oninput="setDiagSize(this.value)">
+            <span id="pcDiagSizeLbl">100%</span>
+          </div>
         </div>
-        <div class="diag-hint">Arraste para desenhar setas, linhas ou linhas pontilhadas. Clique para carimbar drone/boneco/cachorro/carrinho/ponto ou adicionar texto.</div>
+        <div class="diag-hint">Arraste para desenhar setas, linhas ou linhas pontilhadas. Clique para carimbar drone/boneco/cachorro/carrinho/ponto ou adicionar texto. Use "Tamanho" pra redimensionar todas as setas e ícones já desenhados.</div>
         <div class="diag-canvas-wrap"><canvas id="pcDiagCanvas"></canvas></div>
         <div class="diag-actions">
           <div class="left">
@@ -7857,7 +7869,7 @@ renderTree();
 
     bindSimpleFields();
     renderEquip();
-    renderZone('localidade', document.getElementById('pcZoneLocalidade'), STATE.localidadeImg, v=>{STATE.localidadeImg=v;});
+    renderZone('localidade', document.getElementById('pcZoneLocalidade'), STATE.localidadeImg, v=>{STATE.localidadeImg=v;}, ()=>STATE.localidadeImgDiag, v=>{STATE.localidadeImgDiag=v;});
     renderGallery();
     renderEtapas();
     renderPOIChips();
@@ -7910,10 +7922,6 @@ renderTree();
     if(empresaInput){
       empresaInput.addEventListener('change', ()=>{ onEmpresaChange(empresaInput.value); });
     }
-    const estruturaInput=document.getElementById('pcEstruturaInput');
-    if(estruturaInput){
-      estruturaInput.addEventListener('change', ()=>{ autofillFromEstrutura(estruturaInput.value); });
-    }
   }
 
   /* ---------- integração com Supabase (nuvem) ---------- */
@@ -7948,7 +7956,7 @@ renderTree();
         if(wrap) wrap.style.display='';
         sel.onchange = ()=>{ if(sel.value) pcLoadCloud(sel.value); };
       }
-      if(statusEl) statusEl.textContent = 'Conectado. ' + CLOUD_EMPRESAS.length + ' empresa(s) cadastrada(s) — digite a Empresa e depois o Ativo/Estrutura para autopreencher.';
+      if(statusEl) statusEl.textContent = 'Conectado. ' + CLOUD_EMPRESAS.length + ' empresa(s) cadastrada(s) — digite a Empresa para autopreencher o Contato.';
     }catch(err){
       console.error('Supabase:', err);
       if(statusEl) statusEl.textContent='Não consegui conectar à nuvem agora. Verifique a URL/chave do Supabase ou tente novamente mais tarde.';
@@ -8160,6 +8168,7 @@ renderTree();
       el.value = (val===undefined || val===null) ? '' : val;
       el.addEventListener('input', ()=>{
         setPath(STATE, el.dataset.path, el.value);
+        if(el.dataset.path==='meta.ativosDescricoes') STATE.meta.estrutura = el.value;
         markDirty(); updateTailstrip(); updateProgress();
         if(el.dataset.path.startsWith('drone.')) updateDroneSummary();
       });
@@ -8213,7 +8222,7 @@ renderTree();
   function updateTailstrip(){
     const e1=document.getElementById('pcTailEmpresa'); if(!e1) return;
     e1.textContent = STATE.meta.empresa || '—';
-    document.getElementById('pcTailEstrutura').textContent = STATE.meta.estrutura || '—';
+    document.getElementById('pcTailEstrutura').textContent = STATE.meta.ativosDescricoes || '—';
     document.getElementById('pcTailData').textContent = STATE.meta.data || '—';
     const eq=[]; if(STATE.equip.elios3) eq.push('Elios 3'); if(STATE.equip.elios2) eq.push('Elios 2'); if(STATE.equip.go2) eq.push('GO2'+(STATE.equip.go2Variante?' ('+STATE.equip.go2Variante+')':'')); if(STATE.equip.g1) eq.push('G1'); if(STATE.equip.rover) eq.push('Rover');
     document.getElementById('pcTailEquip').textContent = eq.length? eq.join(', ') : '—';
@@ -8343,8 +8352,10 @@ renderTree();
   }
 
   /* ---------- image zone (genérica) ---------- */
-  function renderZone(id, box, val, setter){
+  function renderZone(id, box, val, setter, diagGetter, diagSetter){
     if(!box) return;
+    diagGetter = diagGetter || (()=>null);
+    diagSetter = diagSetter || (()=>{});
     if(val){
       box.className='imgzone has-img';
       box.innerHTML = `<img src="${val}" alt="anexo">
@@ -8355,11 +8366,11 @@ renderTree();
         </div>`;
       box.querySelector('input[type=file]').addEventListener('change', ev=>{
         const f=ev.target.files[0]; if(!f) return;
-        const r=new FileReader(); r.onload=()=>{ setter(r.result); renderZone(id, box, r.result, setter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
+        const r=new FileReader(); r.onload=()=>{ setter(r.result); diagSetter(null); renderZone(id, box, r.result, setter, diagGetter, diagSetter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
       });
-      box.querySelector('.imgbtn.danger').addEventListener('click', ()=>{ setter(null); renderZone(id, box, null, setter); markDirty(); updateProgress(); });
+      box.querySelector('.imgbtn.danger').addEventListener('click', ()=>{ setter(null); diagSetter(null); renderZone(id, box, null, setter, diagGetter, diagSetter); markDirty(); updateProgress(); });
       box.querySelector('.imgbtn.draw').addEventListener('click', ()=>{
-        openDiagramEditor(val, out=>{ setter(out); renderZone(id, box, out, setter); markDirty(); updateProgress(); });
+        openDiagramEditor(val, diagGetter(), (out, diagData)=>{ setter(out); diagSetter(diagData); renderZone(id, box, out, setter, diagGetter, diagSetter); markDirty(); updateProgress(); });
       });
     } else {
       box.className='imgzone';
@@ -8372,19 +8383,25 @@ renderTree();
         <button class="imgbtn draw standalone" type="button">${IC_DRAW}Ou criar desenho / diagrama</button>`;
       box.querySelector('input[type=file]').addEventListener('change', ev=>{
         const f=ev.target.files[0]; if(!f) return;
-        const r=new FileReader(); r.onload=()=>{ setter(r.result); renderZone(id, box, r.result, setter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
+        const r=new FileReader(); r.onload=()=>{ setter(r.result); diagSetter(null); renderZone(id, box, r.result, setter, diagGetter, diagSetter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
       });
       box.querySelector('.imgbtn.draw').addEventListener('click', (ev)=>{
         ev.stopPropagation();
-        openDiagramEditor(null, out=>{ setter(out); renderZone(id, box, out, setter); markDirty(); updateProgress(); });
+        openDiagramEditor(null, diagGetter(), (out, diagData)=>{ setter(out); diagSetter(diagData); renderZone(id, box, out, setter, diagGetter, diagSetter); markDirty(); updateProgress(); });
       });
     }
   }
 
   /* ---------- editor de desenho / diagrama ---------- */
+  /* Cada elemento desenhado vira um objeto no array diagElements (vetorial,
+     não pixels), guardado junto do STATE. Isso permite: (1) desfazer/refazer
+     que sobrevive a salvar e reabrir o desenho, e (2) redimensionar TODAS as
+     setas/linhas/ícones já colocados, de uma vez, sem perder o que foi feito. */
   let diagCanvas=null, diagCtx=null, diagDpr=1;
-  let diagTool='arrow', diagColor='#134074';
-  let diagHist=[], diagDrawing=false, diagStart=null, diagCallback=null;
+  let diagTool='arrow', diagColor='#134074', diagSize=1;
+  let diagElements=[], diagRedo=[], diagDrawing=false, diagStart=null, diagPreview=null;
+  let diagBackground=null, diagBgImg=null;
+  let diagCallback=null;
   const DIAG_COLORS=['#134074','#B42318','#1E7B4F','#B5820A','#0B2545','#000000'];
 
   function renderDiagColors(){
@@ -8396,16 +8413,20 @@ renderTree();
     diagTool=t;
     document.querySelectorAll('#pcDiagOverlay .diag-tool[data-tool]').forEach(b=> b.classList.toggle('on', b.dataset.tool===t));
   }
-  function pushDiagHist(){
-    if(!diagCtx) return;
-    diagHist.push(diagCtx.getImageData(0,0,diagCanvas.width,diagCanvas.height));
-    if(diagHist.length>40) diagHist.shift();
+  /* Controle de tamanho: aplica de uma vez a TODOS os elementos já
+     desenhados (setas, linhas, ícones) e também vira o padrão pros próximos. */
+  function setDiagSize(v){
+    diagSize=parseFloat(v)||1;
+    const lbl=document.getElementById('pcDiagSizeLbl'); if(lbl) lbl.textContent=Math.round(diagSize*100)+'%';
+    diagElements.forEach(el=>{ el.size=diagSize; });
+    redrawDiagram();
   }
-  function restoreLastDiagHist(){
-    if(diagHist.length) diagCtx.putImageData(diagHist[diagHist.length-1],0,0);
+  function updateDiagUndoRedoUI(){
+    const u=document.getElementById('pcDiagUndoBtn'); if(u) u.disabled = diagElements.length===0;
+    const r=document.getElementById('pcDiagRedoBtn'); if(r) r.disabled = diagRedo.length===0;
   }
 
-  function openDiagramEditor(existingSrc, callback){
+  function openDiagramEditor(existingSrc, existingData, callback){
     diagCallback=callback;
     document.getElementById('pcDiagOverlay').classList.add('show');
     const wrap=document.querySelector('#pcDiagOverlay .diag-canvas-wrap');
@@ -8417,42 +8438,70 @@ renderTree();
       diagCanvas.height=Math.round(rect.height*diagDpr);
       diagCtx=diagCanvas.getContext('2d');
       diagCtx.setTransform(diagDpr,0,0,diagDpr,0,0);
-      diagCtx.fillStyle='#ffffff';
-      diagCtx.fillRect(0,0,rect.width,rect.height);
-      diagHist=[];
-      if(existingSrc){
-        const img=new Image();
-        img.onload=()=>{
-          const cw=rect.width, ch=rect.height;
-          const scale=Math.min(cw/img.width, ch/img.height);
-          const dw=img.width*scale, dh=img.height*scale;
-          const dx=(cw-dw)/2, dy=(ch-dh)/2;
-          diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,cw,ch);
-          diagCtx.drawImage(img, dx,dy,dw,dh);
-          pushDiagHist();
-        };
-        img.src=existingSrc;
+      diagRedo=[];
+      diagBgImg=null;
+      if(existingData && (existingData.elements||[]).length){
+        /* diagrama salvo anteriormente por este editor — restaura tudo,
+           incluindo o histórico de setas/ícones, editável de verdade. */
+        diagElements = JSON.parse(JSON.stringify(existingData.elements));
+        diagBackground = existingData.background || null;
+        diagSize = existingData.size || 1;
+      } else if(existingSrc){
+        /* imagem/foto já existente sem dados vetoriais (upload comum, ou
+           desenho salvo antes desta atualização) — vira fundo fixo. */
+        diagElements = [];
+        diagBackground = existingSrc;
+        diagSize = 1;
       } else {
-        pushDiagHist();
+        diagElements = [];
+        diagBackground = null;
+        diagSize = 1;
       }
-      setDiagTool('arrow'); renderDiagColors();
-      setupDiagPointerEvents();
+      const szInput=document.getElementById('pcDiagSize'); if(szInput) szInput.value=diagSize;
+      const szLbl=document.getElementById('pcDiagSizeLbl'); if(szLbl) szLbl.textContent=Math.round(diagSize*100)+'%';
+      const finishSetup=()=>{ setDiagTool('arrow'); renderDiagColors(); setupDiagPointerEvents(); updateDiagUndoRedoUI(); redrawDiagram(); };
+      if(diagBackground){
+        diagBgImg=new Image();
+        diagBgImg.onload=finishSetup;
+        diagBgImg.onerror=finishSetup;
+        diagBgImg.src=diagBackground;
+      } else {
+        finishSetup();
+      }
     });
   }
+
+  /* Redesenha tudo do zero a partir do modelo vetorial: fundo (se houver) +
+     cada elemento na ordem em que foi criado. */
+  function redrawDiagram(){
+    if(!diagCtx || !diagCanvas) return;
+    const rect=diagCanvas.getBoundingClientRect();
+    const cw=rect.width, ch=rect.height;
+    diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,cw,ch);
+    if(diagBgImg && diagBgImg.complete && diagBgImg.naturalWidth){
+      const scale=Math.min(cw/diagBgImg.naturalWidth, ch/diagBgImg.naturalHeight);
+      const dw=diagBgImg.naturalWidth*scale, dh=diagBgImg.naturalHeight*scale;
+      diagCtx.drawImage(diagBgImg, (cw-dw)/2, (ch-dh)/2, dw, dh);
+    }
+    diagElements.forEach(el=> drawElement(el));
+    if(diagPreview) drawElement(diagPreview);
+    updateDiagUndoRedoUI();
+  }
+
   function setupDiagPointerEvents(){
     const canvas=diagCanvas;
     function pos(e){ const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top}; }
     canvas.onpointerdown=(e)=>{
       e.preventDefault();
       const p=pos(e);
-      if(diagTool==='drone'){ drawDroneStamp(p.x,p.y); pushDiagHist(); return; }
-      if(diagTool==='person'){ drawPersonStamp(p.x,p.y); pushDiagHist(); return; }
-      if(diagTool==='dog'){ drawDogStamp(p.x,p.y); pushDiagHist(); return; }
-      if(diagTool==='car'){ drawCarStamp(p.x,p.y); pushDiagHist(); return; }
-      if(diagTool==='dot'){ drawDot(p.x,p.y); pushDiagHist(); return; }
+      const stampType = ['drone','person','dog','car','dot'].includes(diagTool) ? diagTool : null;
+      if(stampType){
+        diagElements.push({type:stampType, x:p.x, y:p.y, color:diagColor, size:diagSize});
+        diagRedo=[]; redrawDiagram(); return;
+      }
       if(diagTool==='text'){
         const txt=window.prompt('Texto do rótulo:');
-        if(txt){ drawLabel(p.x,p.y,txt); pushDiagHist(); }
+        if(txt){ diagElements.push({type:'text', x:p.x, y:p.y, text:txt, color:diagColor, size:diagSize}); diagRedo=[]; redrawDiagram(); }
         return;
       }
       diagDrawing=true; diagStart=p;
@@ -8461,51 +8510,66 @@ renderTree();
     canvas.onpointermove=(e)=>{
       if(!diagDrawing) return;
       const p=pos(e);
-      restoreLastDiagHist();
-      if(diagTool==='arrow') drawArrow(diagStart.x,diagStart.y,p.x,p.y);
-      else if(diagTool==='line') drawLine(diagStart.x,diagStart.y,p.x,p.y);
-      else if(diagTool==='dashed') drawDashedLine(diagStart.x,diagStart.y,p.x,p.y);
+      diagPreview={type:diagTool, x1:diagStart.x, y1:diagStart.y, x2:p.x, y2:p.y, color:diagColor, size:diagSize};
+      redrawDiagram();
     };
     canvas.onpointerup=(e)=>{
       if(!diagDrawing) return;
       diagDrawing=false;
       const p=pos(e);
-      restoreLastDiagHist();
-      if(diagTool==='arrow') drawArrow(diagStart.x,diagStart.y,p.x,p.y);
-      else if(diagTool==='line') drawLine(diagStart.x,diagStart.y,p.x,p.y);
-      else if(diagTool==='dashed') drawDashedLine(diagStart.x,diagStart.y,p.x,p.y);
-      pushDiagHist();
+      diagPreview=null;
+      const dx=p.x-diagStart.x, dy=p.y-diagStart.y;
+      if(Math.hypot(dx,dy)>=2){
+        diagElements.push({type:diagTool, x1:diagStart.x, y1:diagStart.y, x2:p.x, y2:p.y, color:diagColor, size:diagSize});
+        diagRedo=[];
+      }
+      redrawDiagram();
     };
   }
-  function drawArrow(x1,y1,x2,y2){
+
+  function drawElement(el){
+    const s = el.size || 1;
+    switch(el.type){
+      case 'arrow': drawArrow(el.x1,el.y1,el.x2,el.y2,el.color,s); break;
+      case 'line': drawLine(el.x1,el.y1,el.x2,el.y2,el.color,s); break;
+      case 'dashed': drawDashedLine(el.x1,el.y1,el.x2,el.y2,el.color,s); break;
+      case 'person': drawPersonStamp(el.x,el.y,el.color,s); break;
+      case 'dog': drawDogStamp(el.x,el.y,el.color,s); break;
+      case 'car': drawCarStamp(el.x,el.y,el.color,s); break;
+      case 'dot': drawDot(el.x,el.y,el.color,s); break;
+      case 'drone': drawDroneStamp(el.x,el.y,el.color,s); break;
+      case 'text': drawLabel(el.x,el.y,el.text,el.color,s); break;
+    }
+  }
+  function drawArrow(x1,y1,x2,y2,color,s){
     const ctx=diagCtx;
     const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy);
     if(len<2) return;
-    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=3*s; ctx.lineCap='round';
     ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-    const angle=Math.atan2(dy,dx), headLen=Math.min(16,len*0.5);
+    const angle=Math.atan2(dy,dx), headLen=Math.min(16*s,len*0.5);
     ctx.beginPath(); ctx.moveTo(x2,y2);
     ctx.lineTo(x2-headLen*Math.cos(angle-Math.PI/7), y2-headLen*Math.sin(angle-Math.PI/7));
     ctx.lineTo(x2-headLen*Math.cos(angle+Math.PI/7), y2-headLen*Math.sin(angle+Math.PI/7));
     ctx.closePath(); ctx.fill();
   }
-  function drawLine(x1,y1,x2,y2){
+  function drawLine(x1,y1,x2,y2,color,s){
     const ctx=diagCtx;
-    ctx.strokeStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.strokeStyle=color; ctx.lineWidth=3*s; ctx.lineCap='round';
     ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
   }
-  function drawDashedLine(x1,y1,x2,y2){
+  function drawDashedLine(x1,y1,x2,y2,color,s){
     const ctx=diagCtx;
     ctx.save();
-    ctx.strokeStyle=diagColor; ctx.lineWidth=3; ctx.lineCap='round';
-    ctx.setLineDash([11,9]);
+    ctx.strokeStyle=color; ctx.lineWidth=3*s; ctx.lineCap='round';
+    ctx.setLineDash([11*s,9*s]);
     ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
     ctx.restore();
   }
-  function drawPersonStamp(x,y){
+  function drawPersonStamp(x,y,color,s){
     const ctx=diagCtx;
-    ctx.save(); ctx.translate(x,y);
-    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.4; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=2.4; ctx.lineCap='round'; ctx.lineJoin='round';
     ctx.beginPath(); ctx.arc(0,-11,3.4,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.moveTo(0,-7.6); ctx.lineTo(0,4); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(-7,-2.5); ctx.lineTo(7,-2.5); ctx.stroke();
@@ -8513,10 +8577,10 @@ renderTree();
     ctx.beginPath(); ctx.moveTo(0,4); ctx.lineTo(6.5,13); ctx.stroke();
     ctx.restore();
   }
-  function drawDogStamp(x,y){
+  function drawDogStamp(x,y,color,s){
     const ctx=diagCtx;
-    ctx.save(); ctx.translate(x,y);
-    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
     ctx.beginPath(); ctx.moveTo(-4,-5); ctx.lineTo(-8,-12); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(4,-5); ctx.lineTo(8,-12); ctx.stroke();
     ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.stroke();
@@ -8525,10 +8589,10 @@ renderTree();
     ctx.beginPath(); ctx.arc(3,-2,1,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
-  function drawCarStamp(x,y){
+  function drawCarStamp(x,y,color,s){
     const ctx=diagCtx;
-    ctx.save(); ctx.translate(x,y);
-    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
     ctx.beginPath();
     ctx.moveTo(-10,3); ctx.lineTo(-8,-3); ctx.lineTo(-4,-6); ctx.lineTo(4,-6); ctx.lineTo(8,-3); ctx.lineTo(10,3);
     ctx.closePath(); ctx.stroke();
@@ -8537,16 +8601,16 @@ renderTree();
     ctx.beginPath(); ctx.arc(5,5.5,2.4,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
-  function drawDot(x,y){
+  function drawDot(x,y,color,s){
     const ctx=diagCtx;
-    ctx.fillStyle=diagColor;
-    ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=color;
+    ctx.beginPath(); ctx.arc(x,y,6*s,0,Math.PI*2); ctx.fill();
     ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
   }
-  function drawDroneStamp(x,y){
+  function drawDroneStamp(x,y,color,s){
     const ctx=diagCtx;
-    ctx.save(); ctx.translate(x,y);
-    ctx.strokeStyle=diagColor; ctx.fillStyle=diagColor; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=2; ctx.lineCap='round';
     ctx.beginPath(); ctx.arc(0,0,3.5,0,Math.PI*2); ctx.fill();
     [[-9,-9],[9,-9],[-9,9],[9,9]].forEach(([ax,ay])=>{
       ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(ax,ay); ctx.stroke();
@@ -8554,29 +8618,42 @@ renderTree();
     });
     ctx.restore();
   }
-  function drawLabel(x,y,text){
+  function drawLabel(x,y,text,color,s){
     const ctx=diagCtx;
-    ctx.font='600 13px "IBM Plex Sans", sans-serif';
+    ctx.font=(600*Math.min(s,1.6))+' '+Math.round(13*s)+'px "IBM Plex Sans", sans-serif';
     ctx.textBaseline='middle';
-    const padX=6; const w=ctx.measureText(text).width;
+    const padX=6*s; const w=ctx.measureText(text).width;
     ctx.fillStyle='rgba(255,255,255,.92)';
-    ctx.fillRect(x-padX, y-11, w+padX*2, 22);
-    ctx.fillStyle=diagColor;
+    ctx.fillRect(x-padX, y-11*s, w+padX*2, 22*s);
+    ctx.fillStyle=color;
     ctx.fillText(text, x, y);
   }
-  function undoDiagram(){ if(diagHist.length>1){ diagHist.pop(); restoreLastDiagHist(); } }
-  function clearDiagram(){
-    const rect=diagCanvas.getBoundingClientRect();
-    diagCtx.fillStyle='#ffffff'; diagCtx.fillRect(0,0,rect.width,rect.height);
-    pushDiagHist();
+  function undoDiagram(){
+    if(!diagElements.length) return;
+    diagRedo.push(diagElements.pop());
+    redrawDiagram();
   }
-  function closeDiagram(){ document.getElementById('pcDiagOverlay').classList.remove('show'); diagCallback=null; }
+  function redoDiagram(){
+    if(!diagRedo.length) return;
+    diagElements.push(diagRedo.pop());
+    redrawDiagram();
+  }
+  function clearDiagram(){
+    diagElements=[]; diagRedo=[]; diagBackground=null; diagBgImg=null;
+    redrawDiagram();
+  }
+  function closeDiagram(){
+    document.getElementById('pcDiagOverlay').classList.remove('show');
+    diagCallback=null; diagPreview=null;
+  }
   function saveDiagram(){
     if(!diagCanvas || !diagCallback){ closeDiagram(); return; }
+    diagPreview=null; redrawDiagram();
     const out=diagCanvas.toDataURL('image/png');
+    const diagData={ elements: JSON.parse(JSON.stringify(diagElements)), background: diagBackground, size: diagSize };
     const cb=diagCallback;
     closeDiagram();
-    cb(out);
+    cb(out, diagData);
   }
 
   /* ---------- galeria ---------- */
@@ -8592,10 +8669,10 @@ renderTree();
       cell.querySelector('.gtitle').addEventListener('input', e=>{ STATE.galeria[i].titulo=e.target.value; markDirty(); });
       cell.querySelector('.gdel').addEventListener('click', ()=>{ STATE.galeria.splice(i,1); renderGallery(); markDirty(); updateProgress(); });
       box.appendChild(cell);
-      renderZone('g'+i, cell.querySelector('.gzone'), item.img, v=>{ STATE.galeria[i].img=v; });
+      renderZone('g'+i, cell.querySelector('.gzone'), item.img, v=>{ STATE.galeria[i].img=v; }, ()=>STATE.galeria[i].imgDiag, v=>{ STATE.galeria[i].imgDiag=v; });
     });
   }
-  function addGalleryItem(){ STATE.galeria.push({titulo:'', img:null}); renderGallery(); markDirty(); }
+  function addGalleryItem(){ STATE.galeria.push({titulo:'', img:null, imgDiag:null}); renderGallery(); markDirty(); }
 
   /* ---------- etapas ---------- */
   function escapeAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -8635,7 +8712,7 @@ renderTree();
       const ta=document.getElementById('pcEtapa_'+item.id);
       ta.value = item.desc || '';
       ta.addEventListener('input', ()=>{ item.desc=ta.value; markDirty(); updateProgress(); });
-      renderZone('etapa_'+item.id, document.getElementById('pcZoneEtapa_'+item.id), item.img, v=>{ item.img=v; });
+      renderZone('etapa_'+item.id, document.getElementById('pcZoneEtapa_'+item.id), item.img, v=>{ item.img=v; }, ()=>item.imgDiag, v=>{ item.imgDiag=v; });
     });
 
     wrap.querySelectorAll('.etapa-title-input').forEach(inp=>{
@@ -8670,7 +8747,7 @@ renderTree();
 
   function addEtapa(){
     const id='e'+Date.now().toString(36)+Math.floor(Math.random()*1000);
-    STATE.etapas.push({id, titulo:'Nova etapa', desc:'', img:null, status:'ajustada'});
+    STATE.etapas.push({id, titulo:'Nova etapa', desc:'', img:null, imgDiag:null, status:'ajustada'});
     PC_ETAPA_EXPANDED.add(id);
     renderEtapas(); markDirty(); updateProgress();
     const wrap=document.getElementById('pcEtapasWrap');
@@ -8753,8 +8830,7 @@ renderTree();
     <div class="rp-section"><h3>Informações</h3>
       <div class="rp-grid cols3">
         <div class="rp-field"><div class="k">Empresa</div><div class="v">${raEsc(STATE.meta.empresa)||'—'}</div></div>
-        <div class="rp-field"><div class="k">Estrutura</div><div class="v">${raEsc(STATE.meta.estrutura)||'—'}</div></div>
-        <div class="rp-field"><div class="k">Ativos — Descrições</div><div class="v">${raEsc(STATE.meta.ativosDescricoes)||'—'}</div></div>
+        <div class="rp-field"><div class="k">Ativo</div><div class="v">${raEsc(STATE.meta.ativosDescricoes)||'—'}</div></div>
         <div class="rp-field"><div class="k">Data</div><div class="v">${raEsc(STATE.meta.data)||'—'}</div></div>
         <div class="rp-field"><div class="k">Referência</div><div class="v">${raEsc(STATE.meta.referencia)||'—'}</div></div>
         <div class="rp-field"><div class="k">Proposta</div><div class="v">${raEsc(STATE.meta.proposta)||'—'}</div></div>
@@ -8899,7 +8975,9 @@ renderTree();
   window.addGalleryItem = addGalleryItem;
   window.setDiagTool = setDiagTool;
   window.setDiagColor = setDiagColor;
+  window.setDiagSize = setDiagSize;
   window.undoDiagram = undoDiagram;
+  window.redoDiagram = redoDiagram;
   window.clearDiagram = clearDiagram;
   window.closeDiagram = closeDiagram;
   window.saveDiagram = saveDiagram;
