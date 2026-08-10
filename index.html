@@ -319,7 +319,11 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 .callout.crit{background:var(--crit-bg);border:1px solid rgba(180,35,24,.25);color:var(--ink)}.callout.crit b{color:var(--crit)}
 .callout.warn{background:var(--warn-bg);border:1px solid rgba(181,130,10,.25);color:var(--ink)}.callout.warn b{color:var(--warn)}
 .callout.note{background:var(--sky);border:1px solid var(--sky-line);color:var(--ink-2)}.callout.note b{color:var(--blue)}
-.doc table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13.5px;border:1px solid var(--sky-line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.doc-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:20px 0;border-radius:8px}
+.doc table{width:100%;border-collapse:collapse;margin:0;font-size:13.5px;border:1px solid var(--sky-line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+@media(max-width:640px){
+  .doc-table-wrap .doc table{min-width:520px}
+}
 .doc table thead th{background:var(--navy);color:#fff;text-align:left;padding:11px 13px;font-weight:600;font-size:12.5px}
 .doc table tbody td{padding:10px 13px;border-top:1px solid var(--sky-line);color:var(--ink);vertical-align:top}
 .doc table tbody tr:nth-child(even){background:var(--sky)}
@@ -526,6 +530,7 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
   .tree{position:fixed;top:62px;bottom:0;left:0;width:300px;z-index:35;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow-lg)}
   .tree.open{transform:translateX(0)}
   .mob-tree-btn{display:flex}
+  .tree-collapse-btn{display:none}
   .doc{margin:14px auto 40px;padding:26px 20px 100px}.ph,.vp{margin:14px auto 40px;padding:26px 18px 80px}
   .home{padding:18px 16px 70px}
   .ctrl,.home-stats{grid-template-columns:1fr 1fr}
@@ -538,19 +543,25 @@ h3.sub .sn{font-family:'IBM Plex Mono',monospace;color:var(--ink-3);font-size:14
 }
 @media(max-width:640px){
   /* banner: no celular não cabe tudo — some com o que menos falta
-     (relógio e assistente de IA), encolhe ícones e trunca o nome do
-     usuário, pra não cortar o chip de login nem sumir com a marca */
-  .banner{padding:0 10px;gap:8px}
-  .banner-right{gap:5px}
-  .brand{flex-shrink:0}
+     (relógio e assistente de IA), encolhe ícones e o chip de login
+     (nome + botão Sair) pra caber sem cortar nada */
+  .banner{padding:0 10px;gap:6px}
+  .banner-right{gap:4px}
+  .brand{min-width:0}
   .brand .t2{display:none}
   .clock{display:none}
   #openChat{display:none}
-  .icon-btn{width:32px;height:32px}
-  .icon-btn svg{width:16px;height:16px}
-  .user-chip{padding:4px 4px 4px 8px;max-width:130px}
-  .user-chip span{max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block}
-  .user-chip button{padding:4px 6px;font-size:11px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  .user-chip{padding:3px 3px 3px 7px;max-width:none;flex-shrink:0}
+  .user-chip svg{display:none}
+  .user-chip span{max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block}
+  .user-chip button{padding:4px 6px;font-size:11px;flex-shrink:0}
+}
+@media(max-width:420px){
+  #viewToggle{display:none}
+  .brand .t1{font-size:14px}
+  .user-chip span{max-width:56px}
 }
 @media(max-width:480px){
   .vp-docs{grid-template-columns:1fr}
@@ -2707,7 +2718,20 @@ async function renderDocFromKey(key, meta){
     <div class="doc-foot">XD4Solutions · ${meta.footer} · Documento controlado pelo SGQ</div>
   </div>
   <nav class="spy" id="spy"></nav>`;
+  wrapDocTables();
   buildSpy(); toggleSpy(true);
+}
+
+/* Envolve toda <table> dentro do documento numa div com rolagem
+   horizontal, pra tabelas largas não ficarem espremidas no celular. */
+function wrapDocTables(){
+  viewDoc.querySelectorAll('.doc table').forEach(t=>{
+    if(t.parentElement && t.parentElement.classList.contains('doc-table-wrap')) return;
+    const wrap=document.createElement('div');
+    wrap.className='doc-table-wrap';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  });
 }
 
 function renderMGO(){
