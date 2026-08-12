@@ -1024,10 +1024,14 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .img-lightbox-close{position:absolute;top:18px;right:22px;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;border:1px solid rgba(255,255,255,.25)}
 .img-lightbox-close:hover{background:rgba(255,255,255,.22)}
 .img-lightbox-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.65);font-size:12px;font-family:'IBM Plex Mono',monospace}
-.diag-modal{background:#fff;border-radius:16px;width:min(760px,96vw);box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;max-height:92vh}
+.diag-modal{background:#fff;border-radius:16px;width:min(1180px,96vw);height:min(860px,92vh);box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column}
+.diag-modal.fs{width:100vw;height:100vh;border-radius:0}
+.diag-overlay.diag-fs{padding:0}
 .diag-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);flex-shrink:0}
 .diag-head h4{font-size:14.5px;font-weight:700}
-.diag-close{width:28px;height:28px;border-radius:8px;font-size:20px;color:var(--ink-3);display:flex;align-items:center;justify-content:center}
+.diag-head-actions{display:flex;align-items:center;gap:6px}
+.diag-close{width:28px;height:28px;border-radius:8px;font-size:20px;color:var(--ink-3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.diag-close svg{width:16px;height:16px}
 .diag-close:hover{background:var(--sky);color:var(--ink)}
 .diag-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--line);background:var(--sky);flex-shrink:0}
 .diag-tool{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:8px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-2);font-size:12.5px;font-weight:600}
@@ -1038,7 +1042,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .diag-colors{display:flex;align-items:center;gap:6px}
 .diag-color{width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--line);cursor:pointer}
 .diag-color.on{box-shadow:0 0 0 2px var(--ink)}
-.diag-canvas-wrap{position:relative;background:repeating-conic-gradient(#f3f6fa 0% 25%,#fff 0% 50%) 0 0/18px 18px;overflow:hidden;flex:1;min-height:340px;max-height:56vh}
+.diag-canvas-wrap{position:relative;background:repeating-conic-gradient(#f3f6fa 0% 25%,#fff 0% 50%) 0 0/18px 18px;overflow:hidden;flex:1;min-height:260px}
 .diag-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .diag-hint{padding:8px 18px 0;font-size:11.5px;color:var(--ink-3);flex-shrink:0}
 .diag-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;flex-shrink:0}
@@ -7900,7 +7904,7 @@ renderTree();
 
     <div class="diag-overlay" id="pcDiagOverlay">
       <div class="diag-modal">
-        <div class="diag-head"><h4>Desenho / Diagrama Ilustrativo</h4><button class="diag-close" onclick="closeDiagram()" type="button">&times;</button></div>
+        <div class="diag-head"><h4>Desenho / Diagrama Ilustrativo</h4><div class="diag-head-actions"><button class="diag-close" id="pcDiagFsBtn" onclick="toggleDiagFullscreen()" type="button" title="Expandir para tela cheia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3m11-5v3a2 2 0 01-2 2h-3"/></svg></button><button class="diag-close" onclick="closeDiagram()" type="button" title="Fechar">&times;</button></div></div>
         <div class="diag-toolbar">
           <button class="diag-tool" data-tool="move" onclick="setDiagTool('move')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>Mover</button>
           <button class="diag-tool on" data-tool="arrow" onclick="setDiagTool('arrow')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19L19 5M19 5H10M19 5v9"/></svg>Seta</button>
@@ -8543,9 +8547,85 @@ renderTree();
     const r=document.getElementById('pcDiagRedoBtn'); if(r) r.disabled = diagRedo.length===0;
   }
 
+  /* ---------- tela cheia + redimensionamento do editor ----------
+     O canvas guarda cada elemento em coordenadas absolutas (pixels do
+     tamanho que o canvas tinha na hora em que foi desenhado). Se a área do
+     editor mudar de tamanho (ex.: entrar/sair da tela cheia, ou girar o
+     celular), precisamos "traduzir" cada seta/ícone/texto pra continuar no
+     mesmo lugar em relação à FOTO de fundo — não simplesmente esticar tudo,
+     senão o desenho descola da imagem. */
+  const ICON_EXPAND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3m11-5v3a2 2 0 01-2 2h-3"/></svg>';
+  const ICON_COLLAPSE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v3a2 2 0 01-2 2H4M21 8h-3a2 2 0 01-2-2V3M3 16h3a2 2 0 012 2v3M16 21v-3a2 2 0 012-2h3"/></svg>';
+
+  function diagPointMapper(oldW,oldH,newW,newH){
+    if(diagBgImg && diagBgImg.complete && diagBgImg.naturalWidth){
+      const iw=diagBgImg.naturalWidth, ih=diagBgImg.naturalHeight;
+      const oldScale=Math.min(oldW/iw, oldH/ih), oldOffX=(oldW-iw*oldScale)/2, oldOffY=(oldH-ih*oldScale)/2;
+      const newScale=Math.min(newW/iw, newH/ih), newOffX=(newW-iw*newScale)/2, newOffY=(newH-ih*newScale)/2;
+      return (x,y)=>[ (x-oldOffX)/oldScale*newScale+newOffX, (y-oldOffY)/oldScale*newScale+newOffY ];
+    }
+    const sx = oldW>0 ? newW/oldW : 1, sy = oldH>0 ? newH/oldH : 1;
+    return (x,y)=>[x*sx, y*sy];
+  }
+  function resizeDiagCanvasKeepAligned(){
+    if(!diagCanvas) return;
+    const wrap=document.querySelector('#pcDiagOverlay .diag-canvas-wrap');
+    if(!wrap) return;
+    const oldRect=diagCanvas.getBoundingClientRect();
+    const oldW=oldRect.width, oldH=oldRect.height;
+    requestAnimationFrame(()=>{
+      const rect=wrap.getBoundingClientRect();
+      const newW=rect.width, newH=rect.height;
+      if(newW<1||newH<1) return;
+      if(oldW>1 && oldH>1 && (Math.abs(newW-oldW)>0.5 || Math.abs(newH-oldH)>0.5)){
+        const map=diagPointMapper(oldW,oldH,newW,newH);
+        diagElements.forEach(el=>{
+          if(el.x!=null && el.y!=null){ const [nx,ny]=map(el.x,el.y); el.x=nx; el.y=ny; }
+          if(el.x1!=null && el.y1!=null){ const [nx,ny]=map(el.x1,el.y1); el.x1=nx; el.y1=ny; }
+          if(el.x2!=null && el.y2!=null){ const [nx,ny]=map(el.x2,el.y2); el.x2=nx; el.y2=ny; }
+        });
+      }
+      diagDpr=window.devicePixelRatio||1;
+      diagCanvas.width=Math.round(newW*diagDpr);
+      diagCanvas.height=Math.round(newH*diagDpr);
+      diagCtx=diagCanvas.getContext('2d');
+      diagCtx.setTransform(diagDpr,0,0,diagDpr,0,0);
+      redrawDiagram();
+    });
+  }
+  function toggleDiagFullscreen(){
+    const modal=document.querySelector('#pcDiagOverlay .diag-modal');
+    const overlay=document.getElementById('pcDiagOverlay');
+    const btn=document.getElementById('pcDiagFsBtn');
+    if(!modal||!overlay) return;
+    const isFs=modal.classList.toggle('fs');
+    overlay.classList.toggle('diag-fs', isFs);
+    if(btn){ btn.innerHTML = isFs?ICON_COLLAPSE:ICON_EXPAND; btn.title = isFs?'Sair da tela cheia':'Expandir para tela cheia'; }
+    resizeDiagCanvasKeepAligned();
+  }
+  function diagEscHandler(e){
+    if(e.key!=='Escape') return;
+    const overlay=document.getElementById('pcDiagOverlay');
+    if(!overlay || !overlay.classList.contains('show')) return;
+    const modal=overlay.querySelector('.diag-modal');
+    if(modal && modal.classList.contains('fs')) toggleDiagFullscreen();
+    else closeDiagram();
+  }
+  window.addEventListener('resize', ()=>{
+    const overlay=document.getElementById('pcDiagOverlay');
+    if(overlay && overlay.classList.contains('show')) resizeDiagCanvasKeepAligned();
+  });
+
   function openDiagramEditor(existingSrc, existingData, callback){
     diagCallback=callback;
-    document.getElementById('pcDiagOverlay').classList.add('show');
+    const overlayEl=document.getElementById('pcDiagOverlay');
+    overlayEl.classList.add('show');
+    overlayEl.classList.remove('diag-fs');
+    const modalEl=overlayEl.querySelector('.diag-modal');
+    if(modalEl) modalEl.classList.remove('fs');
+    const fsBtn=document.getElementById('pcDiagFsBtn');
+    if(fsBtn){ fsBtn.innerHTML=ICON_EXPAND; fsBtn.title='Expandir para tela cheia'; }
+    document.addEventListener('keydown', diagEscHandler);
     const wrap=document.querySelector('#pcDiagOverlay .diag-canvas-wrap');
     requestAnimationFrame(()=>{
       const rect=wrap.getBoundingClientRect();
@@ -8830,6 +8910,7 @@ renderTree();
   }
   function closeDiagram(){
     document.getElementById('pcDiagOverlay').classList.remove('show');
+    document.removeEventListener('keydown', diagEscHandler);
     diagCallback=null; diagPreview=null;
   }
   function saveDiagram(){
@@ -9166,6 +9247,7 @@ renderTree();
   window.setDiagSize = setDiagSize;
   window.undoDiagram = undoDiagram;
   window.redoDiagram = redoDiagram;
+  window.toggleDiagFullscreen = toggleDiagFullscreen;
   window.clearDiagram = clearDiagram;
   window.closeDiagram = closeDiagram;
   window.saveDiagram = saveDiagram;
