@@ -1017,13 +1017,6 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .lb-reset svg{width:14px;height:14px}
 .diag-overlay{position:fixed;inset:0;background:rgba(11,20,35,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:900;opacity:0;pointer-events:none;transition:.2s;padding:20px}
 .diag-overlay.show{opacity:1;pointer-events:auto}
-.imgzone.has-img img.zoomable{cursor:zoom-in}
-.img-lightbox{position:fixed;inset:0;background:rgba(8,14,26,.88);display:flex;align-items:center;justify-content:center;z-index:950;opacity:0;pointer-events:none;transition:.18s;padding:36px}
-.img-lightbox.show{opacity:1;pointer-events:auto}
-.img-lightbox img{max-width:92vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.5);cursor:zoom-out}
-.img-lightbox-close{position:absolute;top:18px;right:22px;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;border:1px solid rgba(255,255,255,.25)}
-.img-lightbox-close:hover{background:rgba(255,255,255,.22)}
-.img-lightbox-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.65);font-size:12px;font-family:'IBM Plex Mono',monospace}
 .diag-modal{background:#fff;border-radius:16px;width:min(760px,96vw);box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;max-height:92vh}
 .diag-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);flex-shrink:0}
 .diag-head h4{font-size:14.5px;font-weight:700}
@@ -1256,13 +1249,6 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
     <div id="viewDoc" class="view"></div>
     <div id="viewChat" class="view"></div>
   </main>
-</div>
-
-<!-- Lightbox de imagem (zoom em fotos/diagramas anexados) -->
-<div class="img-lightbox" id="imgLightbox" onclick="closeImageLightbox()">
-  <button class="img-lightbox-close" type="button" onclick="event.stopPropagation();closeImageLightbox()" aria-label="Fechar">&times;</button>
-  <img id="imgLightboxImg" src="" alt="Imagem ampliada" onclick="event.stopPropagation();closeImageLightbox()">
-  <div class="img-lightbox-hint">Clique na imagem ou fora dela para fechar · ESC</div>
 </div>
 
 <!-- Command palette -->
@@ -7293,27 +7279,10 @@ cmdkInput.addEventListener('keydown',e=>{
   cmdkResults.querySelectorAll('.cmdk-item').forEach((el,i)=>el.classList.toggle('sel',i===cmdkSel));
 });
 cmdkOverlay.addEventListener('click',e=>{ if(e.target===cmdkOverlay) closeCmdk(); });
-
-/* ---------- lightbox de imagem (zoom em fotos/diagramas anexados) ---------- */
-const imgLightbox = document.getElementById('imgLightbox');
-const imgLightboxImg = document.getElementById('imgLightboxImg');
-function openImageLightbox(src){
-  if(!src || !imgLightbox) return;
-  imgLightboxImg.src = src;
-  imgLightbox.classList.add('show');
-}
-function closeImageLightbox(){
-  if(!imgLightbox) return;
-  imgLightbox.classList.remove('show');
-  imgLightboxImg.src = '';
-}
-window.openImageLightbox = openImageLightbox;
-window.closeImageLightbox = closeImageLightbox;
-
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); openCmdk(); }
   else if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){ e.preventDefault(); openCmdk(); }
-  else if(e.key==='Escape'){ closeCmdk(); closeImageLightbox(); }
+  else if(e.key==='Escape'){ closeCmdk(); }
 });
 
 /* ---------- ASSISTENTE DE IA (chat ligado à API do RAG) ---------- */
@@ -7907,13 +7876,10 @@ renderTree();
           <button class="diag-tool" data-tool="dashed" onclick="setDiagTool('dashed')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 20L6.5 16.5M10 13L13.5 9.5M17 6L20.5 2.5"/></svg>Linha Pontilhada</button>
           <button class="diag-tool" data-tool="drone" onclick="setDiagTool('drone')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M5 5l4.5 4.5M19 5l-4.5 4.5M5 19l4.5-4.5M19 19l-4.5-4.5"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>Drone</button>
           <button class="diag-tool" data-tool="person" onclick="setDiagTool('person')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8.5v6.5M6.5 11h11M12 15l-5 6M12 15l5 6"/></svg>Boneco</button>
-          <button class="diag-tool" data-tool="operador1" onclick="setDiagTool('operador1')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8.5v6.5M6.5 11h11M12 15l-5 6M12 15l5 6"/></svg>Operador 1</button>
-          <button class="diag-tool" data-tool="operador2" onclick="setDiagTool('operador2')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 8.5v6.5M6.5 11h11M12 15l-5 6M12 15l5 6"/></svg>Operador 2</button>
           <button class="diag-tool" data-tool="dog" onclick="setDiagTool('dog')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8L4 4M17 8l3-4"/><circle cx="12" cy="13" r="6"/><circle cx="9.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="0.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="16" rx="1.6" ry="1.1" fill="currentColor" stroke="none"/></svg>Cachorro</button>
           <button class="diag-tool" data-tool="car" onclick="setDiagTool('car')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-4.5A2 2 0 016.4 7h11.2a2 2 0 011.9 1.5L21 13"/><rect x="2.5" y="13" width="19" height="4" rx="1"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Carrinho</button>
           <button class="diag-tool" data-tool="dot" onclick="setDiagTool('dot')" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>Ponto</button>
           <button class="diag-tool" data-tool="text" onclick="setDiagTool('text')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Texto</button>
-          <button class="diag-tool" data-tool="circle360" onclick="setDiagTool('circle360')" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7"/><path d="M21 3v6h-6"/></svg>360° (Voo Circular)</button>
           <div class="diag-sep"></div>
           <div class="diag-colors" id="pcDiagColors"></div>
           <div class="diag-sep"></div>
@@ -7927,7 +7893,7 @@ renderTree();
             <span id="pcDiagSizeLbl">100%</span>
           </div>
         </div>
-        <div class="diag-hint">Arraste para desenhar setas, linhas ou linhas pontilhadas. Clique para carimbar drone/boneco/cachorro/carrinho/ponto ou adicionar texto. Os botões "Operador 1" e "Operador 2" carimbam um boneco já identificado. Use "360° (Voo Circular)" pra marcar um ponto onde o drone dá uma volta orbitando o ativo. Use "Tamanho" pra redimensionar todas as setas e ícones já desenhados.</div>
+        <div class="diag-hint">Arraste para desenhar setas, linhas ou linhas pontilhadas. Clique para carimbar drone/boneco/cachorro/carrinho/ponto ou adicionar texto. Use "Tamanho" pra redimensionar todas as setas e ícones já desenhados.</div>
         <div class="diag-canvas-wrap"><canvas id="pcDiagCanvas"></canvas></div>
         <div class="diag-actions">
           <div class="left">
@@ -8451,13 +8417,12 @@ renderTree();
     diagSetter = diagSetter || (()=>{});
     if(val){
       box.className='imgzone has-img';
-      box.innerHTML = `<img src="${val}" alt="anexo" class="zoomable" title="Clique para ampliar">
+      box.innerHTML = `<img src="${val}" alt="anexo">
         <div class="imgbar">
           <button class="imgbtn draw" type="button">${IC_DRAW}Desenhar / Anotar</button>
           <label class="imgbtn">${IC_EDIT}Substituir<input type="file" accept="image/*"></label>
           <button class="imgbtn danger" type="button">${IC_TRASH}Remover</button>
         </div>`;
-      box.querySelector('img').addEventListener('click', ()=>openImageLightbox(val));
       box.querySelector('input[type=file]').addEventListener('change', ev=>{
         const f=ev.target.files[0]; if(!f) return;
         const r=new FileReader(); r.onload=()=>{ setter(r.result); diagSetter(null); renderZone(id, box, r.result, setter, diagGetter, diagSetter); markDirty(); updateProgress(); }; r.readAsDataURL(f);
@@ -8588,7 +8553,7 @@ renderTree();
     canvas.onpointerdown=(e)=>{
       e.preventDefault();
       const p=pos(e);
-      const stampType = ['drone','person','dog','car','dot','operador1','operador2','circle360'].includes(diagTool) ? diagTool : null;
+      const stampType = ['drone','person','dog','car','dot'].includes(diagTool) ? diagTool : null;
       if(stampType){
         diagElements.push({type:stampType, x:p.x, y:p.y, color:diagColor, size:diagSize});
         diagRedo=[]; redrawDiagram(); return;
@@ -8628,13 +8593,10 @@ renderTree();
       case 'line': drawLine(el.x1,el.y1,el.x2,el.y2,el.color,s); break;
       case 'dashed': drawDashedLine(el.x1,el.y1,el.x2,el.y2,el.color,s); break;
       case 'person': drawPersonStamp(el.x,el.y,el.color,s); break;
-      case 'operador1': drawPersonStamp(el.x,el.y,el.color,s); drawOperatorLabel(el.x,el.y,'Operador 1',el.color,s); break;
-      case 'operador2': drawPersonStamp(el.x,el.y,el.color,s); drawOperatorLabel(el.x,el.y,'Operador 2',el.color,s); break;
       case 'dog': drawDogStamp(el.x,el.y,el.color,s); break;
       case 'car': drawCarStamp(el.x,el.y,el.color,s); break;
       case 'dot': drawDot(el.x,el.y,el.color,s); break;
       case 'drone': drawDroneStamp(el.x,el.y,el.color,s); break;
-      case 'circle360': drawCircle360Stamp(el.x,el.y,el.color,s); break;
       case 'text': drawLabel(el.x,el.y,el.text,el.color,s); break;
     }
   }
@@ -8715,32 +8677,6 @@ renderTree();
     });
     ctx.restore();
   }
-  /* carimbo de "voo circular / 360°": círculo quase completo com uma seta na
-     ponta indicando o sentido do giro, e um pontinho no centro representando
-     a posição do drone parado girando/orbitando o ponto. */
-  function drawCircle360Stamp(x,y,color,s){
-    const ctx=diagCtx;
-    const r = 13*s;
-    const startAngle = -Math.PI/2 + 0.3;
-    const endAngle = startAngle + Math.PI*1.65;
-    ctx.save();
-    ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=2.6*Math.min(s,1.8); ctx.lineCap='round';
-    ctx.beginPath();
-    ctx.arc(x,y,r,startAngle,endAngle,false);
-    ctx.stroke();
-    const ex = x + r*Math.cos(endAngle);
-    const ey = y + r*Math.sin(endAngle);
-    const tangentAngle = endAngle + Math.PI/2;
-    const headLen = 9*s;
-    ctx.beginPath();
-    ctx.moveTo(ex + headLen*0.55*Math.cos(tangentAngle), ey + headLen*0.55*Math.sin(tangentAngle));
-    ctx.lineTo(ex - headLen*Math.cos(tangentAngle-Math.PI/7), ey - headLen*Math.sin(tangentAngle-Math.PI/7));
-    ctx.lineTo(ex - headLen*Math.cos(tangentAngle+Math.PI/7), ey - headLen*Math.sin(tangentAngle+Math.PI/7));
-    ctx.closePath();
-    ctx.fill();
-    ctx.beginPath(); ctx.arc(x,y,2.2*s,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-  }
   function drawLabel(x,y,text,color,s){
     const ctx=diagCtx;
     ctx.font=(600*Math.min(s,1.6))+' '+Math.round(13*s)+'px "IBM Plex Sans", sans-serif';
@@ -8750,23 +8686,6 @@ renderTree();
     ctx.fillRect(x-padX, y-11*s, w+padX*2, 22*s);
     ctx.fillStyle=color;
     ctx.fillText(text, x, y);
-  }
-  /* rótulo de identificação centralizado abaixo do boneco (Operador 1 / Operador 2) */
-  function drawOperatorLabel(x,y,text,color,s){
-    const ctx=diagCtx;
-    ctx.save();
-    ctx.font=(700*Math.min(s,1.6))+' '+Math.round(11*s)+'px "IBM Plex Sans", sans-serif';
-    ctx.textBaseline='middle';
-    ctx.textAlign='center';
-    const padX=6*s; const w=ctx.measureText(text).width;
-    const py = y + 17*s;
-    ctx.fillStyle='rgba(255,255,255,.92)';
-    ctx.fillRect(x-w/2-padX, py-9*s, w+padX*2, 18*s);
-    ctx.strokeStyle=color; ctx.lineWidth=1;
-    ctx.strokeRect(x-w/2-padX, py-9*s, w+padX*2, 18*s);
-    ctx.fillStyle=color;
-    ctx.fillText(text, x, py);
-    ctx.restore();
   }
   function undoDiagram(){
     if(!diagElements.length) return;
@@ -8940,17 +8859,15 @@ renderTree();
     if(STATE.equip.go2) eq.push('GO2'+(STATE.equip.go2Variante?' ('+STATE.equip.go2Variante+')':''));
     if(STATE.equip.g1) eq.push('G1'); if(STATE.equip.rover) eq.push('Rover');
 
-    const imgCell = (src, caption, large) => src ? `<div style="${large?'width:100%':'flex:1;min-width:220px'};border:1px solid #E4EAF1;border-radius:8px;overflow:hidden;background:#fff">
-        <div style="width:100%;height:${large?'480px':'200px'};display:flex;align-items:center;justify-content:center;background:#F4F7FB">
-          <img src="${src}" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block">
-        </div>
+    const imgCell = (src, caption) => src ? `<div style="flex:1;min-width:220px;border:1px solid #E4EAF1;border-radius:8px;overflow:hidden;background:#fff">
+        <img src="${src}" style="width:100%;max-height:220px;object-fit:contain;display:block;background:#F4F7FB">
         ${caption?`<div style="padding:6px 10px;font-size:11px;color:#5A6B80;border-top:1px solid #E4EAF1">${raEsc(caption)}</div>`:''}
       </div>` : '';
     const galeriaImgs = (STATE.galeria||[]).filter(g=>g.img).map(g=>imgCell(g.img, g.titulo||'Referência da estrutura')).join('');
     const etapasHtml = (STATE.etapas||[]).map((e,i)=>`
       <div class="rp-section"><h3>Etapa ${String(i+1).padStart(2,'0')} — ${raEsc(e.titulo)} <span style="font-weight:400;color:#5A6B80;font-size:12px">(${ETAPA_STATUS_LABEL[e.status]||'Padrão'})</span></h3>
         <div class="rp-declare" style="white-space:pre-wrap">${raEsc(e.desc)||'—'}</div>
-        ${e.img?`<div style="margin-top:10px">${imgCell(e.img,'Diagrama ilustrativo',true)}</div>`:''}
+        ${e.img?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(e.img,'Diagrama ilustrativo')}</div>`:''}
       </div>`).join('');
 
     const headHtml = `
@@ -9010,7 +8927,7 @@ renderTree();
       <div class="rp-grid">
         <div class="rp-field"><div class="k">Coordenadas de Referência</div><div class="v">${raEsc(STATE.coordenadas)||'—'}</div></div>
       </div>
-      ${STATE.localidadeImg?`<div style="margin-top:10px">${imgCell(STATE.localidadeImg,'Localidade',true)}</div>`:''}
+      ${STATE.localidadeImg?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(STATE.localidadeImg,'Localidade')}</div>`:''}
     </div>
 
     <div class="rp-section"><h3>Entregáveis</h3>
