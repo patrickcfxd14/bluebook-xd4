@@ -8941,7 +8941,9 @@ renderTree();
     if(STATE.equip.g1) eq.push('G1'); if(STATE.equip.rover) eq.push('Rover');
 
     const imgCell = (src, caption, large) => src ? `<div style="${large?'width:100%':'flex:1;min-width:220px'};border:1px solid #E4EAF1;border-radius:8px;overflow:hidden;background:#fff">
-        <img src="${src}" style="width:100%;${large?'max-height:640px':'max-height:220px'};object-fit:contain;display:block;background:#F4F7FB">
+        <div style="width:100%;height:${large?'480px':'200px'};display:flex;align-items:center;justify-content:center;background:#F4F7FB">
+          <img src="${src}" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block">
+        </div>
         ${caption?`<div style="padding:6px 10px;font-size:11px;color:#5A6B80;border-top:1px solid #E4EAF1">${raEsc(caption)}</div>`:''}
       </div>` : '';
     const galeriaImgs = (STATE.galeria||[]).filter(g=>g.img).map(g=>imgCell(g.img, g.titulo||'Referência da estrutura')).join('');
