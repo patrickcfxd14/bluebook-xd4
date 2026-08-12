@@ -972,7 +972,7 @@ table.lb-table td.lb-local input{min-width:100px;font-family:'IBM Plex Sans',san
 .imgzone .ph .t{font-size:12.5px;font-weight:600;color:var(--ink-2)}
 .imgzone .ph .s{font-size:11px}
 .imgzone.has-img{padding:0;cursor:default;border-style:solid}
-.imgzone img{width:100%;max-height:300px;object-fit:contain;border-radius:10px;display:block;background:#fff}
+.imgzone img{width:100%;max-height:520px;object-fit:contain;border-radius:10px;display:block;background:#fff}
 .imgzone .imgbar{display:flex;justify-content:flex-end;gap:8px;padding:8px}
 .imgzone .imgbtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;background:var(--paper);border:1px solid var(--line);color:var(--ink-2)}
 .imgzone .imgbtn:hover{color:var(--ink);border-color:var(--accent)}
@@ -8866,11 +8866,18 @@ renderTree();
         <img src="${src}" style="width:100%;max-height:220px;object-fit:contain;display:block;background:#F4F7FB">
         ${caption?`<div style="padding:6px 10px;font-size:11px;color:#5A6B80;border-top:1px solid #E4EAF1">${raEsc(caption)}</div>`:''}
       </div>` : '';
+    /* célula grande, largura total — usada pra diagramas/plano de captura e
+       localidade, onde a clareza do desenho importa mais que caber vários
+       lado a lado (diferente da galeria, que usa imgCell menor em grade). */
+    const imgCellFull = (src, caption) => src ? `<div style="width:100%;border:1px solid #E4EAF1;border-radius:8px;overflow:hidden;background:#fff">
+        <img src="${src}" style="width:100%;max-height:560px;object-fit:contain;display:block;background:#F4F7FB">
+        ${caption?`<div style="padding:7px 12px;font-size:11.5px;color:#5A6B80;border-top:1px solid #E4EAF1">${raEsc(caption)}</div>`:''}
+      </div>` : '';
     const galeriaImgs = (STATE.galeria||[]).filter(g=>g.img).map(g=>imgCell(g.img, g.titulo||'Referência da estrutura')).join('');
     const etapasHtml = (STATE.etapas||[]).map((e,i)=>`
       <div class="rp-section"><h3>Etapa ${String(i+1).padStart(2,'0')} — ${raEsc(e.titulo)} <span style="font-weight:400;color:#5A6B80;font-size:12px">(${ETAPA_STATUS_LABEL[e.status]||'Padrão'})</span></h3>
         <div class="rp-declare" style="white-space:pre-wrap">${raEsc(e.desc)||'—'}</div>
-        ${e.img?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(e.img,'Diagrama ilustrativo')}</div>`:''}
+        ${e.img?`<div style="margin-top:10px">${imgCellFull(e.img,'Diagrama ilustrativo')}</div>`:''}
       </div>`).join('');
 
     const headHtml = `
@@ -8930,7 +8937,7 @@ renderTree();
       <div class="rp-grid">
         <div class="rp-field"><div class="k">Coordenadas de Referência</div><div class="v">${raEsc(STATE.coordenadas)||'—'}</div></div>
       </div>
-      ${STATE.localidadeImg?`<div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">${imgCell(STATE.localidadeImg,'Localidade')}</div>`:''}
+      ${STATE.localidadeImg?`<div style="margin-top:10px">${imgCellFull(STATE.localidadeImg,'Localidade')}</div>`:''}
     </div>
 
     <div class="rp-section"><h3>Entregáveis</h3>
