@@ -2072,7 +2072,7 @@ function routeTo(id){
   if(n.type==='logbook'){ renderLogbook(n); show(viewDoc); return; }
   if(n.type==='maintlog'){ renderMaintLog(n); show(viewDoc); return; }
   if(n.type==='planocaptura'){ renderPlanoCaptura(n); show(viewDoc); return; }
-  if(n.type==='riskassessment'){ renderRiskAssessment(n); show(viewDoc); return; }
+  if(n.type==='riskassessment'){ RA_CLOUD_ID=null; renderRiskAssessment(n); show(viewDoc); return; }
   if(n.type==='group'){ renderGroup(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='vehicle'){ renderVehicle(n); show(viewDoc); toggleSpy(false); return; }
   if(n.type==='asset'){ renderAsset(n); show(viewDoc); toggleSpy(false); return; }
@@ -3223,8 +3223,9 @@ async function raLoadCloud(id){
   try{
     const { data, error } = await sb.from('risk_assessments').select('state,created_at').eq('id', id).single();
     if(error) throw error;
+    RA_CLOUD_ID = id;
     if(RA_NODE) renderRiskAssessment(RA_NODE, data.state);
-    raToast('Avaliação carregada da nuvem');
+    raToast('Avaliação carregada da nuvem — Salvar agora atualiza este mesmo registro');
   }catch(err){ console.error('raLoadCloud:', err); }
 }
 function raUnlockCopy(){
@@ -3233,6 +3234,7 @@ function raUnlockCopy(){
 }
 function raDuplicate(){
   if(!RA_NODE) return;
+  RA_CLOUD_ID = null;
   RA_STATE = Object.assign({}, RA_STATE, {
     dataMissao:'', declData:'', declLocal:'', declNome:'', agree:false, assinaturaImg:null
   });
@@ -4412,6 +4414,7 @@ function raDefaultState(){
 let RA_STATE = null;
 let RA_NODE = null;
 let RA_LOCKED_AT = null;
+let RA_CLOUD_ID = null; // id do registro na nuvem sendo editado — setado ao carregar/salvar; Salvar atualiza esse registro, Duplicar limpa pra criar um novo
 const RA_ICOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
 
 function renderRiskAssessment(n, overrideState, lockedAtIso){
@@ -5156,10 +5159,37 @@ async function raSave(){
   else if(r.reason==='not_configured'){ raToast('Risk Assessment salvo localmente (Google Drive não configurado)'); }
   else { console.error('Detalhe do erro de envio:', r); raToast('Falha ao enviar ao Drive: '+(r.reason||'erro desconhecido')+'. Veja o console (F12) para detalhes.'); }
 
-  sbSaveSnapshot('risk_assessments', {
+  const cloudResult = await raSaveOrUpdateCloud({
     cliente: RA_STATE.cliente||null, local_ativo: RA_STATE.localAtivo||null,
     data: RA_STATE.dataMissao||null, state: RA_STATE
   });
+  if(!cloudResult.ok && cloudResult.reason!=='not_configured'){
+    console.error('Supabase risk_assessments:', cloudResult);
+    raToast('Atenção: falha ao salvar na nuvem (Supabase): '+(cloudResult.reason||'erro desconhecido'));
+  }
+}
+
+/* Salva o Risk Assessment na nuvem. Se já existe um registro carregado
+   (RA_CLOUD_ID setado — veio de "carregar da nuvem" ou de um save anterior),
+   ATUALIZA esse mesmo registro em vez de criar um novo, pra dar pra deixar
+   a avaliação salva e a pessoa completar/assinar depois sem duplicar.
+   Só cria um registro novo quando não há RA_CLOUD_ID (avaliação nova ou
+   depois de clicar em "Duplicar"). */
+async function raSaveOrUpdateCloud(payload){
+  if(!sb) return {ok:false, reason:'not_configured'};
+  try{
+    if(RA_CLOUD_ID){
+      const { error } = await sb.from('risk_assessments').update(payload).eq('id', RA_CLOUD_ID);
+      if(error) throw error;
+      return {ok:true, id:RA_CLOUD_ID};
+    }
+    const { data, error } = await sb.from('risk_assessments').insert(payload).select('id').single();
+    if(error) throw error;
+    RA_CLOUD_ID = data.id;
+    return {ok:true, id:data.id};
+  }catch(err){
+    return {ok:false, reason: err.message||'erro'};
+  }
 }
 
 /* ================================================================
